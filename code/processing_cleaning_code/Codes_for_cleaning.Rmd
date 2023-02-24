@@ -1,0 +1,353 @@
+---
+title: "Codes_for_cleaning"
+author: "Shiwani Sapkota"
+date: "2023-02-24"
+output: html_document
+---
+
+LOADING REQUIRED PACKAGES
+
+```{r}
+library(readr)
+library(skimr)
+library(tidyverse)
+library(dplyr)
+library(survey)
+library(naniar)
+```
+
+LOADING DATA FILE
+
+```{r}
+# I will be working on rds file so loading and looking at the raw rds data file
+setwd('/Users/ShiwaniSapkota/Desktop/UGA Semester 2 (Spring 2023) courses/EPID 8060E/Project/Raw Data from NHIS')
+data_main <- readRDS("mammogram_ses1.rds")
+```
+
+LOOKING AT THE DATA
+
+```{r}
+# Looking at the data
+glimpse(data_main)
+summary(data_main)
+skim(data_main)
+```
+
+DATA CLEANING
+
+```{r}
+# Converting the data file to data frame and converting all columns to lowercase
+data_main_df <- data.frame(data_main)
+names(data_main_df) <- tolower(names(data_main_df)) 
+
+# Lets look at the columns to check if our above code worked
+colnames(data_main_df)
+
+# Restricting our study to only females i.e. 2
+data_main_df <- data_main_df[(which(data_main_df$sex == 2)), ]
+
+# Checking if our above code worked and if there are any missing values in `sex` variable
+unique(data_main_df$sex)
+dim(data_main_df)
+sum(is.na(data_main_df$sex))
+
+# Restricting our study to only females who are 40-74 years old
+unique(data_main_df$age)
+data_main_df <- subset(data_main_df, data_main_df$age >= 40 & data_main_df$age <= 74)
+
+# Checking if our above code worked and if there are any missing values in `age` variable
+unique(data_main_df$age)
+dim(data_main_df)
+sum(is.na(data_main_df$age))
+
+# Categorizing the `age` variable into 7 categories each with 5 years gap
+head(data_main_df$age, n = 5)
+data_main_df$age[data_main_df$age >= 40 & data_main_df$age <= 44] <- 1
+data_main_df$age[data_main_df$age >= 45 & data_main_df$age <= 49] <- 2
+data_main_df$age[data_main_df$age >= 50 & data_main_df$age <= 54] <- 3
+data_main_df$age[data_main_df$age >= 55 & data_main_df$age <= 59] <- 4
+data_main_df$age[data_main_df$age >= 60 & data_main_df$age <= 64] <- 5
+data_main_df$age[data_main_df$age >= 65 & data_main_df$age <= 69] <- 6
+data_main_df$age[data_main_df$age >= 70 & data_main_df$age <= 74] <- 7
+
+# Checking to see if our `age` variable was categorized correctly as we wanted
+head(data_main_df$age, n = 5)
+unique(data_main_df$age)
+
+# Looking at `hispyn` variable (hispanic ethnicity, dichotomous: 1 as non-hispanic and 2 as hipanic ethnicity)
+unique(data_main_df$hispyn)
+data_main_df <- data_main_df %>% 
+  rename("hispanic_status" = "hispyn")
+sum(is.na(data_main_df$hispanic_status))
+dim(data_main_df)
+
+# Looking at the `pooryn` above or below poverty threshold variable
+unique(data_main_df$pooryn)
+
+# Renaming `pooryn` variable to `income`
+data_main_df <- data_main_df %>% 
+  rename("income" = "pooryn")
+
+# Filtering only at or above poverty threshold: 1 and below poverty threshold:2
+data_main_df <- filter(data_main_df, income %in% c(1, 2))
+unique(data_main_df$income)
+dim(data_main_df)
+sum(is.na(data_main_df$income))
+
+# Looking at the `educrec2` education attainment variable
+unique(data_main_df$educrec2)
+
+# Renaming `educrec2` variable to `education`
+data_main_df <- data_main_df %>% 
+  rename("education" = "educrec2")
+
+# Filtering out the `education` variable contents
+data_main_df <- filter(data_main_df, education %in% c(10, 20, 31, 32, 41, 42, 51, 54, 60))
+
+# Recoding `education` variable
+# education: 1:	Never attended/kindergarten only
+#            2:	Less than high school
+#            3:	High school
+#            4:	Some college or Associate's degree
+#            5:	Bachelor's degree and higher
+data_main_df$education[data_main_df$education == 10] <- 1
+data_main_df$education[data_main_df$education == 20 | data_main_df$education == 31 | data_main_df$education == 32 | data_main_df$education == 41] <- 2
+data_main_df$education[data_main_df$education == 42] <- 3
+data_main_df$education[data_main_df$education == 51] <- 4
+data_main_df$education[data_main_df$education == 54 | data_main_df$education == 60] <- 5
+sum(is.na(data_main_df$education))
+dim(data_main_df)
+unique(data_main_df$education)
+
+# Looking at the `marstcohab` education attainment variable
+unique(data_main_df$marstcohab)
+
+# Renaming `marstcohab` variable to `marital_status`
+data_main_df <- data_main_df %>% 
+  rename("marital_status" = "marstcohab")
+
+# Removing the unknown marital status
+data_main_df <- filter(data_main_df, marital_status %in% c(1, 2, 4, 5, 6, 7, 8))
+unique(data_main_df$marital_status)
+
+# Recoding `marital_status` variable
+# marital_status: 0:	Never married
+#                 1:	Married
+#                 2:	Single (separated/widowed/divorced)
+#                 3:	Living with partner
+data_main_df$marital_status[data_main_df$marital_status == 8] <- 0
+data_main_df$marital_status[data_main_df$marital_status == 1 | data_main_df$marital_status == 2] <- 1
+data_main_df$marital_status[data_main_df$marital_status == 4 | data_main_df$marital_status == 5 | data_main_df$marital_status == 6] <- 2
+data_main_df$marital_status[data_main_df$marital_status == 7] <- 3
+unique(data_main_df$marital_status)
+dim(data_main_df)
+
+# Looking at the `hinotcove` health insurance coverage variable
+unique(data_main_df$hinotcove)
+
+# Renaming `hinotcove` variable to `insurance_status`
+data_main_df <- data_main_df %>% 
+  rename("insurance_status" = "hinotcove")
+
+# Removing the unknown insurance status
+data_main_df <- filter(data_main_df, insurance_status %in% c(1, 2))
+unique(data_main_df$insurance_status)
+
+# Recoding `insurance_status` variable
+# insurance_status: 0:	No coverage
+#                   1:	Coverage
+data_main_df$insurance_status[data_main_df$insurance_status == 1] <- 0
+data_main_df$insurance_status[data_main_df$insurance_status == 2] <- 1
+sum(is.na(data_main_df$insurance_status))
+unique(data_main_df$insurance_status)
+dim(data_main_df)
+
+# Looking at the `hiprivatee` private insurance variable
+unique(data_main_df$hiprivatee)
+
+# Renaming `hiprivatee` variable to `privateinsurance_status`
+data_main_df <- data_main_df %>% 
+  rename("privateinsurance_status" = "hiprivatee")
+
+# Removing the unknown and no information private insurance status
+# privateinsurance_status: 1: No
+#                          2: Yes
+data_main_df <- filter(data_main_df, privateinsurance_status %in% c(1, 2))
+sum(is.na(data_main_df$privateinsurance_status))
+unique(data_main_df$privateinsurance_status)
+
+# Looking at the `himcaide` medicaid status variable
+unique(data_main_df$himcaide)
+
+# Renaming `himcaide` variable to `medicaid_status`
+data_main_df <- data_main_df %>% 
+  rename("medicaid_status" = "himcaide")
+
+# Removing the unknown and no information medicaid status
+# medicaid_status: 1: No
+#                  2: Yes
+data_main_df <- filter(data_main_df, medicaid_status %in% c(1, 2))
+unique(data_main_df$medicaid_status)
+sum(is.na(data_main_df$medicaid_status))
+
+# Looking at the `himcaree` medicare status variable
+unique(data_main_df$himcaree)
+
+# Renaming `himcaree` variable to `medicare_status`
+data_main_df <- data_main_df %>% 
+  rename("medicare_status" = "himcaree")
+
+# Removing no information medicare status
+# medicare_status: 1: No
+#                  2: Yes
+data_main_df <- filter(data_main_df, medicare_status %in% c(1, 2))
+unique(data_main_df$medicare_status)
+sum(is.na(data_main_df$medicare_status))
+
+# Looking at the `health` health status variable
+unique(data_main_df$health)
+
+# Renaming `health` variable to `health_status`
+data_main_df <- data_main_df %>% 
+  rename("health_status" = "health")
+
+# Removing unknown health status and recoding the variable
+# health_status: 1: Excellent/very good/good
+#                2: Fair or poor
+data_main_df <- filter(data_main_df, health_status %in% c(1, 2, 3, 4, 5))
+data_main_df$health_status[data_main_df$health_status == 1 | data_main_df$health_status == 2 | data_main_df$health_status == 3] <- 1
+data_main_df$health_status[data_main_df$health_status == 4 | data_main_df$marital_status == 5] <- 2
+sum(is.na(data_main_df$health_status))
+dim(data_main_df)
+
+# Looking at the `mamev` ever had a mammogram variable
+unique(data_main_df$mamev)
+
+# Renaming `mamev` variable to `mammogram_status`
+data_main_df <- data_main_df %>% 
+  rename("mammogram_status" = "mamev")
+
+# Removing unknown mammogram status and recoding the variable
+# mammogram_status: 0: No
+#                   1: Yes
+data_main_df <- filter(data_main_df, mammogram_status %in% c(1, 2))
+data_main_df$mammogram_status[data_main_df$mammogram_status == 1] <- 0
+data_main_df$mammogram_status[data_main_df$mammogram_status == 2] <- 1
+sum(is.na(data_main_df$mammogram_status))
+dim(data_main_df)
+unique(data_main_df$mammogram_status)
+
+# Looking at the `cancerev` ever told had cancer variable
+unique(data_main_df$cancerev)
+
+# Renaming `cancerev` variable to `cancer_status`
+data_main_df <- data_main_df %>% 
+  rename("cancer_status" = "cancerev")
+
+# Removing unknown cancer status and recoding the variable
+# cancer_status: 0: No
+#                1: Yes
+data_main_df <- filter(data_main_df, cancer_status %in% c(1, 2))
+unique(data_main_df$cancer_status)
+data_main_df$cancer_status[data_main_df$cancer_status == 1] <- 0
+data_main_df$cancer_status[data_main_df$cancer_status == 2] <- 1
+sum(is.na(data_main_df$cancer_status))
+dim(data_main_df)
+
+# Limiting our study to only non-cancer people
+data_main_df <- data_main_df[(which(data_main_df$cancer_status == 0)), ]
+unique(data_main_df$cancer_status)
+dim(data_main_df)
+
+# Looking at the `smokestatus2` Cigarette smoking recode 2: Current detailed/former/never variable
+unique(data_main_df$smokestatus2)
+
+# Renaming `smokestatus2r` variable to `smoking_status`
+data_main_df <- data_main_df %>% 
+  rename("smoking_status" = "smokestatus2")
+
+# Removing unknown smoking status and recoding the variable
+# smoking_status: 0: Never
+#                 1: Current
+#                 2: Former
+data_main_df <- filter(data_main_df, smoking_status %in% c(11, 12, 20, 30))
+unique(data_main_df$smoking_status)
+data_main_df$smoking_status[data_main_df$smoking_status == 30] <- 0
+data_main_df$smoking_status[data_main_df$smoking_status == 11 | data_main_df$smoking_status == 12] <- 1
+data_main_df$smoking_status[data_main_df$smoking_status == 20] <- 2
+sum(is.na(data_main_df$smoking_status))
+dim(data_main_df)
+
+# Looking at the `alcstat1` Alcohol drinking status variable
+unique(data_main_df$alcstat1)
+
+# Renaming `alcstat1` variable to `alcohol_status`
+data_main_df <- data_main_df %>% 
+  rename("alcohol_status" = "alcstat1")
+
+# Removing unknown alcohol status and recoding the variable
+# smoking_status: 0: Never
+#                 1: Current
+#                 2: Former
+data_main_df <- filter(data_main_df, alcohol_status %in% c(1:3))
+unique(data_main_df$alcohol_status)
+data_main_df$alcohol_status[data_main_df$alcohol_status == 1] <- 0
+data_main_df$alcohol_status[data_main_df$alcohol_status == 3] <- 1
+data_main_df$alcohol_status[data_main_df$alcohol_status == 2] <- 2
+sum(is.na(data_main_df$alcohol_status))
+dim(data_main_df)
+
+# Looking at the `usualpl` Has usual place for medical care variable
+unique(data_main_df$usualpl)
+
+# Renaming `usualpl` variable to `usual_medicalcare_status`
+data_main_df <- data_main_df %>% 
+  rename("usual_medicalcare_status" = "usualpl")
+
+# Removing unknown usual medicalcare status and recoding the variable
+# usual_medicalcare_status: 0: No place
+#                           1: Usual place
+data_main_df <- filter(data_main_df, usual_medicalcare_status %in% c(1:3))
+unique(data_main_df$usual_medicalcare_status)
+data_main_df$usual_medicalcare_status[data_main_df$usual_medicalcare_status == 1] <- 0
+data_main_df$usual_medicalcare_status[data_main_df$usual_medicalcare_status == 2 | data_main_df$usual_medicalcare_status == 3] <- 1
+sum(is.na(data_main_df$usual_medicalcare_status))
+dim(data_main_df)
+
+# Looking at the `region` Region of residence variable
+unique(data_main_df$region)
+
+# Renaming `region` variable to `region_residence`
+# region_residence: 1: Northeast
+#                   2: North Central/Midwest
+#                   3: South
+#                   4: West
+data_main_df <- data_main_df %>% 
+  rename("region_residence" = "region")
+sum(is.na(data_main_df$region_residence))
+
+# Looking at the `diabeticev` Ever told had diabetes variable
+unique(data_main_df$diabeticev)
+
+# Renaming `diabeticev` variable to `diabetes_status`
+data_main_df <-  data_main_df %>% 
+  rename("diabetes_status" = "diabeticev")
+
+# Removing unknown diabetes status and recoding the variable
+# diabetes_status: 0: No
+#                  1: Yes
+data_main_df <- filter(data_main_df, diabetes_status %in% c(1, 2, 3))
+data_main_df$diabetes_status[data_main_df$diabetes_status == 1] <- 0
+data_main_df$diabetes_status[data_main_df$diabetes_status == 2 | data_main_df$diabetes_status == 3] <- 1
+sum(is.na(data_main_df$diabetes_status))
+dim(data_main_df)
+```
+
+SAVING THE CLEANED DATA FILE AS A CSV and RDS FILE
+
+```{r}
+# Commenting this out so that it does not get created many times
+# data_main_clean <- subset(data_main_df, select = c("year", "strata", "psu", "perweight", "sampweight", "sex", "age", "hispanic_status", "income", "education", "marital_status", "region_residence", "insurance_status", "privateinsurance_status", "medicaid_status", "medicare_status", "health_status", "mammogram_status", "cancer_status", "usual_medicalcare_status", "smoking_status", "alcohol_status", "diabetes_status"))
+# write_csv(data_main_clean, "mammogram_ses_clean.csv")
+# saveRDS(data_main_clean, "mammogram_ses_clean.rds")
+```
