@@ -13,13 +13,20 @@ library(readr)
 library(tidyverse)
 library(dplyr)
 library(survey)
-library(gmodels) #for ch-sq freuency table
+library(naniar)
+library(gmodels) #for ch-sq frequency table
 library(vcd) # for three way frequency table
 library(gtsummary)
+library(openxlsx)
+library(ggplot2)
+library(ggthemes)
 ```
+
+LOADING AND LOOKING AT THE DATA
 
 ```{r}
 # Reading the cleaned csv file
+setwd('/Users/ShiwaniSapkota/Desktop/UGA Semester 2 (Spring 2023) courses/EPID 8060E/Project/Raw Data from NHIS')
 data_clean <- readRDS("mammogram_ses_clean.rds")
 head(data_clean)
 
@@ -52,86 +59,135 @@ data_clean_main$diabetes_status <- as.factor(data_clean_main$diabetes_status)
 CREATING DEMOGRAPHIC CHARACTERISTICS TABLE
 
 ```{r}
+# Recoding variables to work in making table
+data_clean_maint <- data_clean_main
+data_clean_maint$hispanic_status <- recode_factor(data_clean_maint$hispanic_status, '1' = 'Non-hispanic Female', '2' = 'Hispanic Female')
+data_clean_maint$mammogram_status <- recode_factor(data_clean_maint$mammogram_status, '0' = 'No', '1' = 'Yes')
+data_clean_maint$age <- recode_factor(data_clean_maint$age, '1' = '40-44 years', '2' = '45-49 years', '3' = '50-54 years', '4' = '55-59 years', '5' = '60-64 years', '6' = '65-69 years', '7' = '70-74 years')
+data_clean_maint$income <- recode_factor(data_clean_maint$income, '1' = 'At or above poverty threshold', '2' = 'Below poverty threshold')
+data_clean_maint$education <- recode_factor(data_clean_maint$education, '1' = 'Never attended/kindergarten only', '2' = 'Less than high school', '3' = 'High school', '4' = 'Some college or Associate degree', '5' = 'Bachelor degree and higher')
+data_clean_maint$marital_status <- recode_factor(data_clean_maint$marital_status, '0' = 'Never married', '1' = 'Married', '2' = 'Single (separated/widowed/divorced)', '3' = 'Living with partner')
+data_clean_maint$region_residence <- recode_factor(data_clean_maint$region_residence, '1' = 'Northeast', '2' = 'North Central/Midwest', '3' = 'South', '4' = 'West')
+data_clean_maint$insurance_status <- recode_factor(data_clean_maint$insurance_status, '0' = 'No Coverage', '1' = 'Coverage')
+data_clean_maint$health_status <- recode_factor(data_clean_maint$health_status, '1' = 'Excellent/very good/good', '2' = 'Fair/poor')
+data_clean_maint$usual_medicalcare_status <- recode_factor(data_clean_maint$usual_medicalcare_status, '0' = 'No place', '1' = 'Usual place')
+data_clean_maint$smoking_status <- recode_factor(data_clean_maint$smoking_status, '0' = 'Never', '1' = 'Current', '2' = 'Former')
+data_clean_maint$alcohol_status <- recode_factor(data_clean_maint$alcohol_status, '0' = 'Never', '1' = 'Current', '2' = 'Former')
+data_clean_maint$diabetes_status <- recode_factor(data_clean_maint$diabetes_status, '0' = 'No', '1' = 'Yes')
+
 # Lets look at the distribution of hipanic and non-hispanic women during the given years
-CrossTable(data_clean_main$year, data_clean_main$hispanic_status)
+CrossTable(data_clean_maint$year, data_clean_maint$hispanic_status)
 
 # Lets look at the mammogram status among hipanic and non-hispanic women during the given years
-CrossTable(data_clean_main$mammogram_status, data_clean_main$hispanic_status)
+CrossTable(data_clean_maint$mammogram_status, data_clean_maint$hispanic_status)
 
 # Lets look at the number of mammogram status of women aged 40-74 during the years
-CrossTable(data_clean_main$year, data_clean_main$mammogram_status)
+CrossTable(data_clean_maint$year, data_clean_maint$mammogram_status)
 
 # Lets look only at the socio-economic characteristics of women aged 40-64 by hispanic race status for different years
 # Lets look at the age distribution among hispanic and non-hipanic women during the given years
-year_age_hisp <- data_clean_main %>% select(year, age, hispanic_status)
+year_age_hisp <- data_clean_maint %>% select(year, age, hispanic_status)
 mytable1 <- xtabs(~year+age+hispanic_status, data = year_age_hisp)
 ftable(mytable1)
 ftable(addmargins(prop.table(mytable1, c(1, 2)), 3))*100
 
 # Lets look at the mammogram distribution among hispanic and non-hipanic women during the given years
-year_mammogram_hisp <- data_clean_main %>% select(year, mammogram_status, hispanic_status)
+year_mammogram_hisp <- data_clean_maint %>% select(year, mammogram_status, hispanic_status)
 mytable2 <- xtabs(~year+mammogram_status+hispanic_status, data = year_mammogram_hisp)
 ftable(mytable2)
 ftable(addmargins(prop.table(mytable2, c(1, 2)), 3))*100
 
 # Lets look at the income distribution among hispanic and non-hipanic women during the given years
-year_income_hisp <- data_clean_main %>% select(year, income, hispanic_status)
+year_income_hisp <- data_clean_maint %>% select(year, income, hispanic_status)
 mytable3 <- xtabs(~year+income+hispanic_status, data = year_income_hisp)
 ftable(mytable3)
 ftable(addmargins(prop.table(mytable3, c(1, 2)), 3))*100
 
 # Lets look at the education status among hispanic and non-hipanic women during the given years
-year_education_hisp <- data_clean_main %>% select(year, education, hispanic_status)
+year_education_hisp <- data_clean_maint %>% select(year, education, hispanic_status)
 mytable4 <- xtabs(~year+education+hispanic_status, data = year_education_hisp)
 ftable(mytable4)
 ftable(addmargins(prop.table(mytable4, c(1, 2)), 3))*100
 
 # Lets look at the marital status among hispanic and non-hipanic women during the given years
-year_marital_hisp <- data_clean_main %>% select(year, marital_status, hispanic_status)
+year_marital_hisp <- data_clean_maint %>% select(year, marital_status, hispanic_status)
 mytable5 <- xtabs(~year+marital_status+hispanic_status, data = year_marital_hisp)
 ftable(mytable5)
 ftable(addmargins(prop.table(mytable5, c(1, 2)), 3))*100
 
 # Lets look at the region of residence among hispanic and non-hipanic women during the given years
-year_residence_hisp <- data_clean_main %>% select(year, region_residence, hispanic_status)
+year_residence_hisp <- data_clean_maint %>% select(year, region_residence, hispanic_status)
 mytable6 <- xtabs(~year+region_residence+hispanic_status, data = year_residence_hisp)
 ftable(mytable6)
 ftable(addmargins(prop.table(mytable6, c(1, 2)), 3))*100
 
 # Lets look at the insurance status among hispanic and non-hipanic women during the given years
-year_insurance_hisp <- data_clean_main %>% select(year, insurance_status, hispanic_status)
+year_insurance_hisp <- data_clean_maint %>% select(year, insurance_status, hispanic_status)
 mytable7 <- xtabs(~year+insurance_status+hispanic_status, data = year_insurance_hisp)
 ftable(mytable7)
 ftable(addmargins(prop.table(mytable7, c(1, 2)), 3))*100
 
 # Lets look at the usual medical care status among hispanic and non-hipanic women during the given years
-year_usualmedicalcare_hisp <- data_clean_main %>% select(year, usual_medicalcare_status, hispanic_status)
+year_usualmedicalcare_hisp <- data_clean_maint %>% select(year, usual_medicalcare_status, hispanic_status)
 mytable8 <- xtabs(~year+usual_medicalcare_status+hispanic_status, data = year_usualmedicalcare_hisp)
 ftable(mytable8)
 ftable(addmargins(prop.table(mytable8, c(1, 2)), 3))*100
 
 # Lets look at the smoking status among hispanic and non-hipanic women during the given years
-year_smoking_hisp <- data_clean_main %>% select(year, smoking_status, hispanic_status)
+year_smoking_hisp <- data_clean_maint %>% select(year, smoking_status, hispanic_status)
 mytable9 <- xtabs(~year+smoking_status+hispanic_status, data = year_smoking_hisp)
 ftable(mytable9)
 ftable(addmargins(prop.table(mytable9, c(1, 2)), 3))*100
 
 # Lets look at the alcohol status among hispanic and non-hipanic women during the given years
-year_alcohol_hisp <- data_clean_main %>% select(year, alcohol_status, hispanic_status)
+year_alcohol_hisp <- data_clean_maint %>% select(year, alcohol_status, hispanic_status)
 mytable10 <- xtabs(~year+alcohol_status+hispanic_status, data = year_alcohol_hisp)
 ftable(mytable10)
 ftable(addmargins(prop.table(mytable10, c(1, 2)), 3))*100
 
 # Lets look at the diabetes status among hispanic and non-hipanic women during the given years
-year_diabetes_hisp <- data_clean_main %>% select(year, diabetes_status, hispanic_status)
+year_diabetes_hisp <- data_clean_maint %>% select(year, diabetes_status, hispanic_status)
 mytable11 <- xtabs(~year+diabetes_status+hispanic_status, data = year_diabetes_hisp)
 ftable(mytable11)
 ftable(addmargins(prop.table(mytable11, c(1, 2)), 3))*100
+
+# Lets create a single complete demographic characteristics table by year and hispanic_status of women
+table1 <- data_clean_maint %>% 
+    select(mammogram_status, age, income, education, marital_status, region_residence, insurance_status, health_status, usual_medicalcare_status, smoking_status, alcohol_status, diabetes_status, year, hispanic_status) %>%
+    tbl_strata(
+      strata = year,
+      .tbl_fun = 
+        ~ .x %>%
+        tbl_summary(
+        missing = "no",
+        by = c("hispanic_status"),
+        statistic = all_categorical() ~ "{n} ({p}%)"))
+table1
 ```
 
-CREATING SOME FIGURES
+CREATING FIGURE
 
 ```{r}
+# Summarizing mammogram_status and hispanic_status in the given years (Type I)
+data_clean_main1 <- data_clean_main
+data_clean_main1$hispanic_status <- recode_factor(data_clean_main1$hispanic_status, '1' = 'Non-hispanic Female', '2' = 'Hispanic Female')
 
+# Lets save this figure
+# png("figure1_mammogram_ses.png", width = 10, height = 10, units = "in", res = 300)
+ggplot(data = data_clean_main1, aes(x = mammogram_status)) +
+  geom_histogram(fill = "white", colour = "red", stat = "count", position = position_dodge()) +
+  facet_grid(hispanic_status ~ year) +
+  scale_x_discrete(labels = c("No", "Yes")) +
+  theme_bw()
+# dev.off()
+
+# Summarizing mammogram_status and hispanic_status in the given years (Type II)
+# png("figure1optional_mammogram_ses.png", width = 10, height = 10, units = "in", res = 300)
+ggplot(data_clean_main1, aes(x = mammogram_status))+
+  geom_bar(aes(fill = hispanic_status), stat = "count", color = "white",
+    position = position_dodge(0.9)) +
+  facet_wrap(~year) +
+  scale_x_discrete(labels = c("No", "Yes"))
+# dev.off()
 ```
 

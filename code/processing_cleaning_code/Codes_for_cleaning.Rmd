@@ -216,7 +216,7 @@ data_main_df <- data_main_df %>%
 #                2: Fair or poor
 data_main_df <- filter(data_main_df, health_status %in% c(1, 2, 3, 4, 5))
 data_main_df$health_status[data_main_df$health_status == 1 | data_main_df$health_status == 2 | data_main_df$health_status == 3] <- 1
-data_main_df$health_status[data_main_df$health_status == 4 | data_main_df$marital_status == 5] <- 2
+data_main_df$health_status[data_main_df$health_status == 4 | data_main_df$health_status == 5] <- 2
 sum(is.na(data_main_df$health_status))
 dim(data_main_df)
 

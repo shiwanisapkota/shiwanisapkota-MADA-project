@@ -1,7 +1,7 @@
 ---
-title: "Example Manuscript Template for a Data Analysis Project"
-subtitle: ""
-author: Andreas Handel
+title: "Manuscript for MADA Project"
+subtitle: "Mammogram Screening: Sociodemographic factors for hispanic and non-hispanic adult women"
+author: Shiwani Sapkota
 date: "`r Sys.Date()`"
 format:
   docx:
@@ -44,7 +44,7 @@ The extracted data set contains the above listed variables information for years
 
 **QUESTIONS/HYPOTHESIS TO BE ADDRESSED**
 
-The main research question of this study is: Is there any association between mammogram screening for breast cancer and socio-economic status of people?
+The main research question of this study is: Is there any association between mammogram screening for breast cancer and sociodemographic status of hispanic and non-hispanic adult women?
 
 **METHOD OF ANALYSIS**
 
@@ -71,6 +71,12 @@ library(knitr)
 # Introduction
 
 ## General Background Information
+
+
+
+
+
+
 
 *Provide enough background on your topic that others can understand the why and how of your analysis*
 

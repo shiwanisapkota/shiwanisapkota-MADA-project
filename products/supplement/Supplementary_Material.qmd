@@ -1,0 +1,122 @@
+---
+title: "Supplement to Manuscript for MADA Project"
+subtitle: ""
+author: Shiwani Sapkota
+date: "`r Sys.Date()`"
+format:
+  pdf:
+    toc: false
+    number-sections: true
+    highlight-style: github
+bibliography: ../../dataanalysis_template_references.bib
+csl: ../../vancouver.csl
+---
+
+
+```{r, echo=FALSE, message=FALSE}
+# load a few R packages
+library(knitr)
+library(ipumsr)
+library(readr)
+library(skimr)
+library(tidyverse)
+library(dplyr)
+library(survey)
+library(naniar)
+library(gmodels) #for ch-sq frequency table
+library(vcd) # for three way frequency table
+library(gtsummary)
+library(openxlsx)
+library(ggplot2)
+library(ggthemes)
+```
+
+# Overview
+
+In this supplement file, you can find details about the data file extraction and codes involved in the process of data extraction and data analysis.
+
+
+# Code and file information
+
+```{r}
+# Skip this code chunk if you already have `mammogram_ses1.rds` raw data file
+# NHIS provides .xml and .dat file while extracting the data from website
+# Commenting these codes as they were used for data extraction and data preparation process which are needed to be done only once before preparing the data file
+
+# Preparing and loading the raw data file and saving as .csv and .rds files
+# setwd('/Users/ShiwaniSapkota/Desktop/UGA Semester 2 (Spring 2023) courses/EPID 8060E/Project/Raw Data from NHIS')
+# ddi <- read_ipums_ddi("nhis_00003.xml")
+# data <- read_ipums_micro(ddi)
+
+# Saving the raw data file as .csv file and commenting out this code so it does not get created everytime we run this code chunk
+# readr::write_csv(data, mammogram_ses.csv")
+
+# It seems the created csv file is very large (153 MB) and GitKraken won't like it so lets create an rds file so that could be of small size
+
+# Saving the raw data file as .rds file and commenting out this code so it does not get created everytime we run this code chunk
+# saveRDS(data, "mammogram_ses1.rds")
+
+# From here, you can follow general steps involved in data analysis and the
+# respective codes are documented in the respected folders of this project:
+# 1. Data cleaning
+# 2. Exploratory Data analysis
+# 3. Main statistical analysis
+```
+
+{{< pagebreak >}}
+
+
+# Additional Method Details
+
+Often, the main manuscript only allows for an overview description of the methods. Use the supplement to describe all your methods, models and approaches in a lot of detail. Reference specific parts of your code as needed.
+
+{{< pagebreak >}}
+
+
+# Additional results
+
+Show additional results here. Those can be some useful exploratory/descriptive figures or tables, or results from additional analyses that didn't make it into the main text.
+
+
+## Example additional result
+
+
+@tbl-resulttable1 shows an additional table summarizing a model fit.
+
+```{r}
+#| label: tbl-resulttable1
+#| tbl-cap: "Another fit table."
+#| echo: FALSE
+resulttable1 = readRDS(here("results","resulttable1.rds"))
+knitr::kable(resulttable1)
+```
+
+
+
+@fig-result2 shows a scatterplot figure produced by one of the R scripts.
+
+
+```{r}
+#| label: fig-result2
+#| fig-cap: "Height and weight."
+#| echo: FALSE
+knitr::include_graphics(here("results","height_weight.png"))
+```
+
+
+{{< pagebreak >}}
+
+
+# Discussion
+
+Any additional discussion regarding the supplementary material/findings.
+
+These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template. 
+
+{{< pagebreak >}}
+
+
+# References
+
+
+
