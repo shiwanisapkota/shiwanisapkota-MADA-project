@@ -20,14 +20,14 @@ library(gtsummary)
 library(openxlsx)
 library(ggplot2)
 library(ggthemes)
+library(here)
 ```
 
 LOADING AND LOOKING AT THE DATA
 
 ```{r}
 # Reading the cleaned csv file
-setwd('/Users/ShiwaniSapkota/Desktop/UGA Semester 2 (Spring 2023) courses/EPID 8060E/Project/Raw Data from NHIS')
-data_clean <- readRDS("mammogram_ses_clean.rds")
+data_clean <- readRDS(here("data", "processed_cleaned_data", "mammogram_ses_clean.rds"))
 head(data_clean)
 
 # Creating a new object to work with for the analysis

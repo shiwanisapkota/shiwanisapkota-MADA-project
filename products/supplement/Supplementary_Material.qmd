@@ -44,12 +44,11 @@ In this supplement file, you can find details about the data file extraction and
 # Commenting these codes as they were used for data extraction and data preparation process which are needed to be done only once before preparing the data file
 
 # Preparing and loading the raw data file and saving as .csv and .rds files
-# setwd('/Users/ShiwaniSapkota/Desktop/UGA Semester 2 (Spring 2023) courses/EPID 8060E/Project/Raw Data from NHIS')
 # ddi <- read_ipums_ddi("nhis_00003.xml")
 # data <- read_ipums_micro(ddi)
 
 # Saving the raw data file as .csv file and commenting out this code so it does not get created everytime we run this code chunk
-# readr::write_csv(data, mammogram_ses.csv")
+# readr::write_csv(data, "mammogram_ses.csv")
 
 # It seems the created csv file is very large (153 MB) and GitKraken won't like it so lets create an rds file so that could be of small size
 

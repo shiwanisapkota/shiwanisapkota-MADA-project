@@ -14,14 +14,14 @@ library(tidyverse)
 library(dplyr)
 library(survey)
 library(naniar)
+library(here)
 ```
 
 LOADING DATA FILE
 
 ```{r}
 # I will be working on rds file so loading and looking at the raw rds data file
-setwd('/Users/ShiwaniSapkota/Desktop/UGA Semester 2 (Spring 2023) courses/EPID 8060E/Project/Raw Data from NHIS')
-data_main <- readRDS("mammogram_ses1.rds")
+data_main <- readRDS(here("data", "raw_data", "mammogram_ses1.rds"))
 ```
 
 LOOKING AT THE DATA
@@ -348,6 +348,6 @@ SAVING THE CLEANED DATA FILE AS A CSV and RDS FILE
 ```{r}
 # Commenting this out so that it does not get created many times
 # data_main_clean <- subset(data_main_df, select = c("year", "strata", "psu", "perweight", "sampweight", "sex", "age", "hispanic_status", "income", "education", "marital_status", "region_residence", "insurance_status", "privateinsurance_status", "medicaid_status", "medicare_status", "health_status", "mammogram_status", "cancer_status", "usual_medicalcare_status", "smoking_status", "alcohol_status", "diabetes_status"))
-# write_csv(data_main_clean, "mammogram_ses_clean.csv")
-# saveRDS(data_main_clean, "mammogram_ses_clean.rds")
+# write_csv(data_main_clean, file = (here("data", "processed_cleaned_data", "mammogram_ses_clean.csv"))
+# saveRDS(data_main_clean, file = (here("data", "processed_cleaned_data", "mammogram_ses_clean.rds")
 ```
