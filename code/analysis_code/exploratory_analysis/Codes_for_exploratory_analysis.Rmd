@@ -1,5 +1,5 @@
 ---
-title: "Codes_for_EDA"
+title: "Codes_for_exploratory_analysis"
 author: "Shiwani Sapkota"
 date: "2023-02-24"
 output: html_document
@@ -7,7 +7,7 @@ output: html_document
 
 LOADING REQUIRED PACKAGES
 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 # Loading required packages
 library(readr)
 library(tidyverse)
@@ -26,7 +26,7 @@ library(here)
 LOADING AND LOOKING AT THE DATA
 
 ```{r}
-# Reading the cleaned csv file
+# Reading the cleaned rds file
 data_clean <- readRDS(here("data", "processed_cleaned_data", "mammogram_ses_clean.rds"))
 head(data_clean)
 
@@ -163,12 +163,16 @@ table1 <- data_clean_maint %>%
         by = c("hispanic_status"),
         statistic = all_categorical() ~ "{n} ({p}%)"))
 table1
+
+# Lets save the above generated table as a `demographic_table1.rds` table in results folder
+# Commenting this out so that it does not get created many times
+# saveRDS(table1, file = (here("results", "exploratory_analysis_result", "demographic_table1.rds")))
 ```
 
 CREATING FIGURE
 
 ```{r}
-# Summarizing mammogram_status and hispanic_status in the given years (Type I)
+# Summarizing mammogram_status and Hispanic_status in the given years (Type I)
 data_clean_main1 <- data_clean_main
 data_clean_main1$hispanic_status <- recode_factor(data_clean_main1$hispanic_status, '1' = 'Non-hispanic Female', '2' = 'Hispanic Female')
 
@@ -181,7 +185,7 @@ ggplot(data = data_clean_main1, aes(x = mammogram_status)) +
   theme_bw()
 # dev.off()
 
-# Summarizing mammogram_status and hispanic_status in the given years (Type II)
+# Summarizing mammogram_status and Hispanic_status in the given years (Type II)
 # png("figure1optional_mammogram_ses.png", width = 10, height = 10, units = "in", res = 300)
 ggplot(data_clean_main1, aes(x = mammogram_status))+
   geom_bar(aes(fill = hispanic_status), stat = "count", color = "white",

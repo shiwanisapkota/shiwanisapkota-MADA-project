@@ -7,7 +7,7 @@ output: html_document
 
 LOADING REQUIRED PACKAGES
 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 library(readr)
 library(skimr)
 library(tidyverse)

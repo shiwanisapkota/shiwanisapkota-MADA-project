@@ -1,0 +1,173 @@
+---
+title: "Codes_for_statistical_analysis"
+author: "Shiwani Sapkota"
+date: "2023-03-16"
+output: html_document
+---
+
+LOADING REQUIRED PACKAGES
+
+```{r, warning = FALSE, message = FALSE}
+# Loading required packages
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(gtsummary)
+library(ggplot2)
+library(ggthemes)
+library(here)
+library(tidymodels)
+library(performance)
+```
+
+LOADING AND LOOKING AT THE DATA
+
+```{r}
+# Reading the cleaned rds file
+data_clean <- readRDS(here("data", "processed_cleaned_data", "mammogram_ses_clean.rds"))
+glimpse(data_clean)
+
+# Creating a new object to work with for the analysis
+data_clean_main <- data_clean
+
+# Making sure there are no missing values in any variables
+any(is.na(data_clean_main))
+```
+
+FITTING LOGISTIC REGRESSION
+
+Since our outcome variable `mammogram_status` is of binary type, we will be using bivariate and multivariate logistic regression methods for model fittings.
+
+```{r}
+# Setting up the logistic regression
+log_mod <- logistic_reg() %>%
+  set_engine("glm")
+```
+
+BIVARIATE LOGISTIC REGRESSION
+
+```{r}
+# Using `mammogram_status` as the outcome and `year` as the predictor
+log_fit_year <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(year), data = data_clean_main)
+tidy(log_fit_year)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `hispanic_status` as the predictor
+log_fit_hispanicstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(hispanic_status), data = data_clean_main)
+tidy(log_fit_hispanicstatus)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `hispanic_status` as the predictor
+log_fit_hispanicstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(hispanic_status), data = data_clean_main)
+tidy(log_fit_hispanicstatus)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `age` as the predictor
+log_fit_age <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age), data = data_clean_main)
+tidy(log_fit_age)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `income` as the predictor
+log_fit_income <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(income), data = data_clean_main)
+tidy(log_fit_income)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `education` as the predictor
+log_fit_education <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(education), data = data_clean_main)
+tidy(log_fit_education)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `marital_status` as the predictor
+log_fit_maritalstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(marital_status), data = data_clean_main)
+tidy(log_fit_maritalstatus)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `region_residence` as the predictor
+log_fit_regionresidence <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(region_residence), data = data_clean_main)
+tidy(log_fit_regionresidence)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `insurance_status` as the predictor
+log_fit_insurancestatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(insurance_status), data = data_clean_main)
+tidy(log_fit_insurancestatus)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `health_status` as the predictor
+log_fit_healthstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(health_status), data = data_clean_main)
+tidy(log_fit_healthstatus)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `usual_medicalcare_status` as the predictor
+log_fit_usualmedicalcarestatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(usual_medicalcare_status), data = data_clean_main)
+tidy(log_fit_usualmedicalcarestatus)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `smoking_status` as the predictor
+log_fit_smokingstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(smoking_status), data = data_clean_main)
+tidy(log_fit_smokingstatus)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `alcohol_status` as the predictor
+log_fit_alcoholstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(alcohol_status), data = data_clean_main)
+tidy(log_fit_alcoholstatus)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and `diabetes_status` as the predictor
+log_fit_diabetesstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(diabetes_status), data = data_clean_main)
+tidy(log_fit_diabetesstatus)
+```
+
+MULTIVARIATE LOGISTIC REGRESSION
+
+Fitting full model
+
+```{r}
+# Using `mammogram_status` as the outcome and the remaining variables as the predictors
+log_fit_fullmodel <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence) + as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(smoking_status) + as.factor(alcohol_status) + as.factor(diabetes_status), data = data_clean_main)
+table2 <- tidy(log_fit_fullmodel)
+table2
+saveRDS(table2, file = (here("results", "final_analysis_result", "full_model.rds")))
+```
+
+Fitting model using some predictors
+
+```{r}
+# Using `mammogram_status` as the outcome and age & hispanic_status as predictors
+log_fit_age_hispanic <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status), data = data_clean_main)
+tidy(log_fit_age_hispanic)
+```
+
+
+```{r}
+# Using `mammogram_status` as the outcome and demographic characteristics variables as predictors
+log_fit_demographic <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence), data = data_clean_main)
+tidy(log_fit_demographic)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome and the medical characteristics as the predictors
+log_fit_medical <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(diabetes_status), data = data_clean_main)
+tidy(log_fit_fullmodel)
+```
+
+```{r}
+# Using `mammogram_status` as the outcome, and smoking & alcohol characteristics as the predictors
+log_fit_smoking_alcohol <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(smoking_status) + as.factor(alcohol_status), data = data_clean_main)
+tidy(log_fit_smoking_alcohol)
+```
+
+
+
