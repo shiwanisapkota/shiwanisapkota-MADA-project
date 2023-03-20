@@ -1,6 +1,6 @@
 ---
 title: "Supplement to Manuscript for MADA Project"
-subtitle: ""
+subtitle: "Supplement Materials"
 author: Shiwani Sapkota
 date: "`r Sys.Date()`"
 format:
@@ -11,7 +11,6 @@ format:
 bibliography: ../../dataanalysis_template_references.bib
 csl: ../../vancouver.csl
 ---
-
 
 ```{r, echo=FALSE, message=FALSE}
 # load a few R packages
@@ -34,7 +33,6 @@ library(ggthemes)
 # Overview
 
 In this supplement file, you can find details about the data file extraction and codes involved in the process of data extraction and data analysis.
-
 
 # Code and file information
 
@@ -62,60 +60,44 @@ In this supplement file, you can find details about the data file extraction and
 # 3. Main statistical analysis
 ```
 
-{{< pagebreak >}}
-
-
-# Additional Method Details
-
-Often, the main manuscript only allows for an overview description of the methods. Use the supplement to describe all your methods, models and approaches in a lot of detail. Reference specific parts of your code as needed.
-
-{{< pagebreak >}}
-
-
-# Additional results
-
-Show additional results here. Those can be some useful exploratory/descriptive figures or tables, or results from additional analyses that didn't make it into the main text.
-
-
-## Example additional result
-
-
-@tbl-resulttable1 shows an additional table summarizing a model fit.
+## Additional result
 
 ```{r}
-#| label: tbl-resulttable1
-#| tbl-cap: "Another fit table."
+#| label: Additional Table 1
+#| tbl-cap: "Fit table using mammogram status as the outcome and age & hispanic_status as predictors."
 #| echo: FALSE
-resulttable1 = readRDS(here("results","resulttable1.rds"))
-knitr::kable(resulttable1)
+additionaltable1 = readRDS(here("results", "statistical_analysis_result", "age_hispanic_model.rds"))
+knitr::kable(additionaltable1)
 ```
-
-
-
-@fig-result2 shows a scatterplot figure produced by one of the R scripts.
-
 
 ```{r}
-#| label: fig-result2
-#| fig-cap: "Height and weight."
+#| label: Additional Table 2
+#| tbl-cap: "Fit table using mammogram status as the outcome and demographic characteristics variables as predictors."
 #| echo: FALSE
-knitr::include_graphics(here("results","height_weight.png"))
+additionaltable2 = readRDS(here("results", "statistical_analysis_result", "demographic_model.rds"))
+knitr::kable(additionaltable2)
 ```
 
+```{r}
+#| label: Additional Table 3
+#| tbl-cap: "Fit table using mammogram status as the outcome and the medical characteristics as the predictors."
+#| echo: FALSE
+additionaltable1 = readRDS(here("results", "statistical_analysis_result", "medical_model.rds"))
+knitr::kable(additionaltable3)
+```
 
-{{< pagebreak >}}
-
+```{r}
+#| label: Additional Table 4
+#| tbl-cap: "Fit table using mammogram status as the outcome and smoking & alcohol characteristics as the predictors."
+#| echo: FALSE
+additionaltable1 = readRDS(here("results", "statistical_analysis_result", "smoking_alcohol_model.rds"))
+knitr::kable(additionaltable4)
+```
 
 # Discussion
 
-Any additional discussion regarding the supplementary material/findings.
-
-These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template. 
-
-{{< pagebreak >}}
-
+[**To be added]
 
 # References
 
-
-
+[**To be added]

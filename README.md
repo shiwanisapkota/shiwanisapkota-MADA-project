@@ -1,6 +1,6 @@
 # Overview
 
-This repository is a final project for Modern Applied Data Analysis (EPID 8060E) course. A template file and folder structure for the MADA project/paper done with R/Quarto/Github. 
+This repository is a final project for Modern Applied Data Analysis (EPID 8060E) course. 
 
 # Used Programs 
 

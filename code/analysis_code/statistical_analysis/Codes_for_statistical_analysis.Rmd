@@ -139,7 +139,7 @@ Fitting full model
 log_fit_fullmodel <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence) + as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(smoking_status) + as.factor(alcohol_status) + as.factor(diabetes_status), data = data_clean_main)
 table2 <- tidy(log_fit_fullmodel)
 table2
-saveRDS(table2, file = (here("results", "final_analysis_result", "full_model.rds")))
+saveRDS(table2, file = (here("results", "statistical_analysis_result", "full_model.rds")))
 ```
 
 Fitting model using some predictors
@@ -147,26 +147,30 @@ Fitting model using some predictors
 ```{r}
 # Using `mammogram_status` as the outcome and age & hispanic_status as predictors
 log_fit_age_hispanic <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status), data = data_clean_main)
-tidy(log_fit_age_hispanic)
+table3 <- tidy(log_fit_age_hispanic)
+saveRDS(table3, file = (here("results", "statistical_analysis_result", "age_hispanic_model.rds")))
 ```
 
 
 ```{r}
 # Using `mammogram_status` as the outcome and demographic characteristics variables as predictors
 log_fit_demographic <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence), data = data_clean_main)
-tidy(log_fit_demographic)
+table4 <- tidy(log_fit_demographic)
+saveRDS(table4, file = (here("results", "statistical_analysis_result", "demographic_model.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and the medical characteristics as the predictors
 log_fit_medical <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(diabetes_status), data = data_clean_main)
-tidy(log_fit_fullmodel)
+table5 <- tidy(log_fit_medical)
+saveRDS(table5, file = (here("results", "statistical_analysis_result", "medical_model.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome, and smoking & alcohol characteristics as the predictors
 log_fit_smoking_alcohol <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(smoking_status) + as.factor(alcohol_status), data = data_clean_main)
-tidy(log_fit_smoking_alcohol)
+table6 <- tidy(log_fit_smoking_alcohol)
+saveRDS(table6, file = (here("results", "statistical_analysis_result", "smoking_alcohol_model.rds")))
 ```
 
 

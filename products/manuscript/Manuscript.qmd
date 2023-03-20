@@ -41,7 +41,7 @@ The study was limited within 40-74 years Hispanic and non-Hispanic women with no
 **Table 1: Demographic characteristics of study population**
 
 ```{r, warning = FALSE, message = FALSE}
-
+#| echo: FALSE
 library(here)
 library(knitr)
 
@@ -70,9 +70,11 @@ Figure 1 shows the summary of mammography screening status and the Hispanic and 
 **Table 2: Fitting full model using mammogram_status as outcome variable and other variables as predictor variables.**
 
 ```{r, warning = FALSE, message = FALSE}
+#| echo: FALSE
+
 # Loading the `full_model.rds` table which was created during the statistical analysis process
-result_table2 <- readRDS(here("results", "final_analysis_result", "full_model.rds"))
-result_table2
+result_table2 <- readRDS(here("results", "statistical_analysis_result", "full_model.rds"))
+print(result_table2, n = Inf, width = Inf)
 ```
 
 # Discussion
