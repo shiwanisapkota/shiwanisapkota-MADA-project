@@ -373,42 +373,11 @@ pre code {
 <p>LOADING REQUIRED PACKAGES</p>
 <pre class="r"><code>library(readr)
 library(skimr)
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0     ✔ dplyr   1.1.0
-## ✔ tibble  3.1.8     ✔ stringr 1.4.1
-## ✔ tidyr   1.2.0     ✔ forcats 0.5.2
-## ✔ purrr   0.3.4     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(dplyr)
-library(survey)</code></pre>
-<pre><code>## Loading required package: grid
-## Loading required package: Matrix
-## 
-## Attaching package: &#39;Matrix&#39;
-## 
-## The following objects are masked from &#39;package:tidyr&#39;:
-## 
-##     expand, pack, unpack
-## 
-## Loading required package: survival
-## 
-## Attaching package: &#39;survey&#39;
-## 
-## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     dotchart</code></pre>
-<pre class="r"><code>library(naniar)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;naniar&#39;
-## 
-## The following object is masked from &#39;package:skimr&#39;:
-## 
-##     n_complete</code></pre>
-<pre class="r"><code>library(here)</code></pre>
-<pre><code>## here() starts at /Users/shiwanisapkota/Desktop/MADA Course/shiwanisapkota-MADA-project</code></pre>
+library(tidyverse)
+library(dplyr)
+library(survey)
+library(naniar)
+library(here)</code></pre>
 <p>LOADING DATA FILE</p>
 <pre class="r"><code># I will be working on rds file so loading and looking at the raw rds data file
 data_main &lt;- readRDS(here(&quot;data&quot;, &quot;raw_data&quot;, &quot;mammogram_ses1.rds&quot;))</code></pre>
@@ -3500,10 +3469,10 @@ sum(is.na(data_main_df$diabetes_status))</code></pre>
 <pre class="r"><code>dim(data_main_df)</code></pre>
 <pre><code>## [1] 24848   138</code></pre>
 <p>SAVING THE CLEANED DATA FILE AS A CSV and RDS FILE</p>
-<pre class="r"><code># Commenting this out so that it does not get created many times
-# data_main_clean &lt;- subset(data_main_df, select = c(&quot;year&quot;, &quot;strata&quot;, &quot;psu&quot;, &quot;perweight&quot;, &quot;sampweight&quot;, &quot;sex&quot;, &quot;age&quot;, &quot;hispanic_status&quot;, &quot;income&quot;, &quot;education&quot;, &quot;marital_status&quot;, &quot;region_residence&quot;, &quot;insurance_status&quot;, &quot;privateinsurance_status&quot;, &quot;medicaid_status&quot;, &quot;medicare_status&quot;, &quot;health_status&quot;, &quot;mammogram_status&quot;, &quot;cancer_status&quot;, &quot;usual_medicalcare_status&quot;, &quot;smoking_status&quot;, &quot;alcohol_status&quot;, &quot;diabetes_status&quot;))
-# write_csv(data_main_clean, file = (here(&quot;data&quot;, &quot;processed_cleaned_data&quot;, &quot;mammogram_ses_clean.csv&quot;))
-# saveRDS(data_main_clean, file = (here(&quot;data&quot;, &quot;processed_cleaned_data&quot;, &quot;mammogram_ses_clean.rds&quot;)</code></pre>
+<pre class="r"><code># Saving our cleaned data as csv and rds files
+data_main_clean &lt;- subset(data_main_df, select = c(&quot;year&quot;, &quot;sex&quot;, &quot;age&quot;, &quot;hispanic_status&quot;, &quot;income&quot;, &quot;education&quot;, &quot;marital_status&quot;, &quot;region_residence&quot;, &quot;insurance_status&quot;, &quot;privateinsurance_status&quot;, &quot;medicaid_status&quot;, &quot;medicare_status&quot;, &quot;health_status&quot;, &quot;mammogram_status&quot;, &quot;cancer_status&quot;, &quot;usual_medicalcare_status&quot;, &quot;smoking_status&quot;, &quot;alcohol_status&quot;, &quot;diabetes_status&quot;))
+write_csv(data_main_clean, file = (here(&quot;data&quot;, &quot;processed_cleaned_data&quot;, &quot;mammogram_ses_clean.csv&quot;)))
+saveRDS(data_main_clean, file = (here(&quot;data&quot;, &quot;processed_cleaned_data&quot;, &quot;mammogram_ses_clean.rds&quot;)))</code></pre>
 
 
 

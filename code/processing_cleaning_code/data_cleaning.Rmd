@@ -346,8 +346,8 @@ dim(data_main_df)
 SAVING THE CLEANED DATA FILE AS A CSV and RDS FILE
 
 ```{r}
-# Commenting this out so that it does not get created many times
-# data_main_clean <- subset(data_main_df, select = c("year", "strata", "psu", "perweight", "sampweight", "sex", "age", "hispanic_status", "income", "education", "marital_status", "region_residence", "insurance_status", "privateinsurance_status", "medicaid_status", "medicare_status", "health_status", "mammogram_status", "cancer_status", "usual_medicalcare_status", "smoking_status", "alcohol_status", "diabetes_status"))
-# write_csv(data_main_clean, file = (here("data", "processed_cleaned_data", "mammogram_ses_clean.csv"))
-# saveRDS(data_main_clean, file = (here("data", "processed_cleaned_data", "mammogram_ses_clean.rds")
+# Saving our cleaned data as csv and rds files
+data_main_clean <- subset(data_main_df, select = c("year", "sex", "age", "hispanic_status", "income", "education", "marital_status", "region_residence", "insurance_status", "privateinsurance_status", "medicaid_status", "medicare_status", "health_status", "mammogram_status", "cancer_status", "usual_medicalcare_status", "smoking_status", "alcohol_status", "diabetes_status"))
+write_csv(data_main_clean, file = (here("data", "processed_cleaned_data", "mammogram_ses_clean.csv")))
+saveRDS(data_main_clean, file = (here("data", "processed_cleaned_data", "mammogram_ses_clean.rds")))
 ```

@@ -14,13 +14,14 @@ library(tidyverse)
 library(dplyr)
 library(survey)
 library(naniar)
-library(gmodels) #for ch-sq frequency table
+library(gmodels) #for chi-sq frequency table
 library(vcd) # for three way frequency table
 library(gtsummary)
 library(openxlsx)
 library(ggplot2)
 library(ggthemes)
 library(here)
+here()
 ```
 
 LOADING AND LOOKING AT THE DATA
@@ -165,8 +166,7 @@ table1 <- data_clean_maint %>%
 table1
 
 # Lets save the above generated table as a `demographic_table1.rds` table in results folder
-# Commenting this out so that it does not get created many times
-# saveRDS(table1, file = (here("results", "exploratory_analysis_result", "demographic_table1.rds")))
+saveRDS(table1, file = (here("results", "exploratory_analysis_result", "demographic_table1.rds")))
 ```
 
 CREATING FIGURE
@@ -177,21 +177,21 @@ data_clean_main1 <- data_clean_main
 data_clean_main1$hispanic_status <- recode_factor(data_clean_main1$hispanic_status, '1' = 'Non-hispanic Female', '2' = 'Hispanic Female')
 
 # Lets save this figure
-# png("figure1_mammogram_ses.png", width = 10, height = 10, units = "in", res = 300)
-ggplot(data = data_clean_main1, aes(x = mammogram_status)) +
+figure1 <- ggplot(data = data_clean_main1, aes(x = mammogram_status)) +
   geom_histogram(fill = "white", colour = "red", stat = "count", position = position_dodge()) +
   facet_grid(hispanic_status ~ year) +
   scale_x_discrete(labels = c("No", "Yes")) +
   theme_bw()
-# dev.off()
+ggsave(filename = here("results","exploratory_analysis_result", "figure1_mammogram_ses.png"), plot = figure1)
 
 # Summarizing mammogram_status and Hispanic_status in the given years (Type II)
-# png("figure1optional_mammogram_ses.png", width = 10, height = 10, units = "in", res = 300)
-ggplot(data_clean_main1, aes(x = mammogram_status))+
+figure1_optional<- ggplot(data_clean_main1, aes(x = mammogram_status))+
   geom_bar(aes(fill = hispanic_status), stat = "count", color = "white",
     position = position_dodge(0.9)) +
   facet_wrap(~year) +
   scale_x_discrete(labels = c("No", "Yes"))
-# dev.off()
+
+# Saving this figure
+ggsave(filename = here("results","exploratory_analysis_result", "figure1optional_mammogram_ses.png"), plot = figure1_optional)
 ```
 

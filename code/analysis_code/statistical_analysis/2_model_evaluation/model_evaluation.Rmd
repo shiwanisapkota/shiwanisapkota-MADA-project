@@ -1,0 +1,173 @@
+---
+title: "Model Evaluation"
+author: "Shiwani Sapkota"
+date: "2023-04-07"
+output: html_document
+---
+
+LOADING REQUIRED PACKAGES
+
+```{r, warning = FALSE, message = FALSE}
+# Loading required packages
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(gtsummary)
+library(ggplot2)
+library(ggthemes)
+library(here)
+library(tidymodels)
+library(performance)
+library(vip)
+library(broom)
+```
+
+LOADING AND LOOKING AT THE DATA
+
+```{r}
+# Reading the cleaned rds file
+data_clean <- readRDS(here("data", "processed_cleaned_data", "mammogram_ses_clean.rds"))
+glimpse(data_clean)
+
+# Creating a new object to work with for the analysis
+data_clean_main <- data_clean
+
+# Making sure there are no missing values in any variables
+any(is.na(data_clean_main))
+
+# Changing class of mammogram_status variable from integer to factor as we can't use mammogram_status (main outcome) as an integer while preparing recipe and training the model
+class(data_clean_main$mammogram_status)
+data_clean_main$mammogram_status <- as.factor(data_clean_main$mammogram_status)
+data_clean_main$year <- as.factor(data_clean_main$year)
+data_clean_main$age <- as.factor(data_clean_main$age)
+data_clean_main$hispanic_status <- as.factor(data_clean_main$hispanic_status)
+data_clean_main$income <- as.factor(data_clean_main$income)
+data_clean_main$education <- as.factor(data_clean_main$education)
+data_clean_main$marital_status <- as.factor(data_clean_main$marital_status)
+data_clean_main$insurance_status <- as.factor(data_clean_main$insurance_status)
+data_clean_main$health_status <- as.factor(data_clean_main$health_status)
+data_clean_main$usual_medicalcare_status <- as.factor(data_clean_main$usual_medicalcare_status)
+data_clean_main$smoking_status <- as.factor(data_clean_main$smoking_status)
+data_clean_main$alcohol_status <- as.factor(data_clean_main$alcohol_status)
+data_clean_main$diabetes_status <- as.factor(data_clean_main$diabetes_status)
+```
+
+Let's start working on improving our model fits. 
+
+MODEL EVALUATION
+
+DATA SPLITTING
+
+```{r}
+# Setting seed
+set.seed(123)
+
+# Putting 3/4 of the data into the training set
+data_split <- initial_split(data_clean_main, prop = 3/4)
+
+# Creating data frames for the two sets
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+```
+
+**FULL MODEL: CREATING RECIPE THAT FITS A LOGISTIC MODEL USING  AS OUTCOME OF INTEREST AND ALL OTHER VARIABLES AS PREDICTORS**
+
+```{r}
+# Using mammogram status as a categorical outcome of interest and all other variables of interest as predictors
+data_clean_main_rec <- recipe(mammogram_status ~ year + age + hispanic_status + income + education + marital_status + region_residence + insurance_status + health_status + usual_medicalcare_status + smoking_status + alcohol_status + diabetes_status, data = train_data)
+
+# Fitting the logistic model
+data_clean_main_mod <- logistic_reg() %>% 
+                     set_engine("glm")
+
+# Modelling workflow for pairing model and recipe 
+data_clean_main_wflow <- workflow() %>% 
+  add_model(data_clean_main_mod) %>% 
+  add_recipe(data_clean_main_rec)
+data_clean_main_wflow
+
+# Using the resulting predictors for preparing recipe and training the model
+data_clean_main_fit <- 
+data_clean_main_wflow %>% 
+  fit(data = train_data)
+
+# Pulling the fitted model object and using tidy() function for getting a tidy tibble of model coefficients
+data_clean_main_fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+```
+
+**FULL MODEL: USING TRAINED WORKFLOW TO PREDICT**
+
+```{r, warning = FALSE}
+# Using the trained workflow (data_clean_main_fit) to predict with the unseen test data
+predict(data_clean_main_fit, test_data)
+
+# Using argument() with the model plus test data for saving them together
+data_clean_main_aug <- 
+  augment(data_clean_main_fit, test_data)
+  
+data_clean_main_aug %>%
+  select(mammogram_status, .pred_0, .pred_1)
+  
+# Creating ROC curve and piping to the autoplot() method
+data_clean_main_aug %>% 
+  roc_curve(truth = mammogram_status, .pred_0) %>% 
+  autoplot()
+
+# Using roc_auc() for estimating the area under the curve 
+data_clean_main_aug %>% 
+  roc_auc(truth = mammogram_status, .pred_0)
+```
+
+**ALTERNATIVE MODEL: USING MAMMOGRAM STATUS AS OUTCOME OF INTEREST AND HISPANIC STATUS AS MAIN PREDICTOR**
+
+```{r}
+# Using mammogram status as a categorical outcome of interest and hispanic status as main predictor
+data_clean_main_rec2 <- recipe(mammogram_status ~ hispanic_status, data = train_data)
+
+# Fitting the logistic model
+data_clean_main_mod2 <- logistic_reg() %>% 
+                    set_engine("glm")
+
+# Modelling workflow for pairing model and recipe 
+data_clean_main_wflow2 <- workflow() %>% 
+  add_model(data_clean_main_mod2) %>% 
+  add_recipe(data_clean_main_rec2)
+data_clean_main_wflow2
+
+# Using the resulting predictors for preparing recipe and training the model
+data_clean_main_fit2 <- 
+ data_clean_main_wflow2 %>% 
+  fit(data = train_data)
+
+# Pulling the fitted model object and using tidy() function for getting a tidy tibble of model coefficients
+data_clean_main_fit2 %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+```
+
+**ALTERNATIVE MODEL: USING TRAINED WORKFLOW TO PREDICT**
+
+```{r, warning = FALSE}
+# Using the trained workflow (data_clean_main_fit) to predict with the unseen test data
+predict(data_clean_main_fit2, test_data)
+
+# Using argument() with the model plus test data for saving them together
+data_clean_main_aug2 <- 
+  augment(data_clean_main_fit2, test_data)
+  
+data_clean_main_aug2 %>%
+  select(mammogram_status, .pred_0, .pred_1)
+  
+# Creating ROC curve and piping to the autoplot() method
+data_clean_main_aug2 %>% 
+  roc_curve(truth = mammogram_status, .pred_0) %>% 
+  autoplot()
+
+# Using roc_auc() for estimating the area under the curve 
+data_clean_main_aug2 %>% 
+  roc_auc(truth = mammogram_status, .pred_0)
+```
+
+From the above result, we see that the full model (using mammogram status as the main outcome of interest and other variables as predictors) has ROC-AUC as 0.76 while the alternative model (using mammogram status as the main outcome of interest and Hispanic status as the main predictor) has ROC-AUC as 0.54. So, we can say that for mammogram status, the full model with all the predictors of interest is better than the alternative model having only Hispanic status as the main predictor.
