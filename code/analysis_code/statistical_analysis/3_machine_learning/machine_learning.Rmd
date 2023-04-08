@@ -1,0 +1,235 @@
+---
+title: "Model Selection"
+author: "Shiwani Sapkota"
+date: "2023-04-07"
+output: html_document
+---
+
+LOADING REQUIRED PACKAGES
+
+```{r, warning = FALSE}
+library(here)
+library(tidyverse)
+library(tidymodels)
+library(ggplot2)
+library(ranger)
+library(rpart)
+library(glmnet)
+library(vip)
+library(rpart.plot)
+library(performance)
+library(yardstick)
+library(recipes)
+```
+
+LOADING DATA
+
+```{r}
+# Reading the cleaned rds file
+data_clean <- readRDS(here("data", "processed_cleaned_data", "mammogram_ses_clean.rds"))
+glimpse(data_clean)
+
+# Creating a new object to work with for the analysis
+data_clean_main <- data_clean
+
+# Making sure there are no missing values in any variables
+any(is.na(data_clean_main))
+
+# Changing variables as factors
+data_clean_main$mammogram_status <- as.factor(data_clean_main$mammogram_status)
+data_clean_main$year <- as.factor(data_clean_main$year)
+data_clean_main$age <- as.factor(data_clean_main$age)
+data_clean_main$hispanic_status <- as.factor(data_clean_main$hispanic_status)
+data_clean_main$income <- as.factor(data_clean_main$income)
+data_clean_main$education <- as.factor(data_clean_main$education)
+data_clean_main$marital_status <- as.factor(data_clean_main$marital_status)
+data_clean_main$insurance_status <- as.factor(data_clean_main$insurance_status)
+data_clean_main$health_status <- as.factor(data_clean_main$health_status)
+data_clean_main$usual_medicalcare_status <- as.factor(data_clean_main$usual_medicalcare_status)
+data_clean_main$smoking_status <- as.factor(data_clean_main$smoking_status)
+data_clean_main$alcohol_status <- as.factor(data_clean_main$alcohol_status)
+data_clean_main$diabetes_status <- as.factor(data_clean_main$diabetes_status)
+```
+
+**DATA SETUP**
+
+```{r}
+# Setting the random seed to 123
+set.seed(123)
+
+# Splitting dataset into 70% training and 30% testing and using mammogram status outcome as stratification
+data_split <- initial_split(data_clean_main, prop = 7/10, strata = mammogram_status)
+  
+# Creating data frames for the two sets
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+
+# Creating 5-fold cross-validation, 5 times repeated
+CV_fold_data <- vfold_cv(train_data, v = 5, repeats = 5, strata = mammogram_status)
+
+# Creating a recipe
+recipe_data <- recipe(mammogram_status ~ year + age + hispanic_status + income + education + marital_status + region_residence + insurance_status + health_status + usual_medicalcare_status + smoking_status + alcohol_status + diabetes_status, data = train_data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+```
+
+**NULL MODEL PERFORMANCE**
+
+```{r}
+# Using train data
+# Creating a recipe for null model
+recipe_null_train <- recipe(mammogram_status ~ 1, data = train_data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+# Creating a logistic model recipe
+recipe_null_logistic <- logistic_reg() %>% 
+  set_engine("glm") %>% 
+  set_mode("classification")
+
+# Creating workflow pairing model and recipe 
+workflow_null_train <- workflow() %>% 
+  add_model(recipe_null_logistic) %>% 
+  add_recipe(recipe_null_train)
+
+# Fitting null model with the folds created from train data 
+train_null <- fit_resamples(workflow_null_train, resamples = CV_fold_data)
+
+# Computing ROC AUC for train data
+metrics_null_train <- collect_metrics(train_null)
+metrics_null_train
+```
+
+From the null model, we got ROC AUC as 0.5.
+
+DECISION TREE MODEL: MODEL TUNING AND FITTING
+
+```{r}
+# Tuning hyperparameters by creating model specification that identifies which hyperparameters we are planning to tune
+tune_tree_model <- 
+  decision_tree(
+    cost_complexity = tune(),
+    tree_depth = tune()) %>%
+  set_engine("rpart") %>% 
+  set_mode("classification")
+tune_tree_model
+
+# Creating a regular grid of values for using some convenience functions for each hyperparameter
+tree_grid <- grid_regular(cost_complexity(), tree_depth(), levels = 5)
+tree_grid %>% count(tree_depth)
+
+# Tuning the workflow using model specification and recipe and model
+tree_wf <- workflow() %>%
+  add_model(tune_tree_model) %>%
+  add_recipe(recipe_data)
+
+# Tuning using cross-validation and the tune_grid() function
+tree_res <- tree_wf %>% 
+  tune_grid(resamples = CV_fold_data,
+    grid = tree_grid)
+```
+
+DECISION TREE MODEL: MODEL EVALUATION
+
+```{r}
+# Plotting and saving the above results
+decision_tree <- tree_res %>% autoplot()
+decision_tree
+ggsave(filename = here("results","statistical_analysis_result", "3_machine_learning_result", "figure2_decision_tree_model.png"), plot = decision_tree)
+
+# Getting the best-fit model
+tree_res %>%
+  show_best()
+best_tree <- tree_res %>%
+  select_best(metric = "roc_auc")
+
+# Getting the final workflow
+final_wf <- tree_wf %>% 
+  finalize_workflow(best_tree)
+
+# Fitting to the training data with the final workflow
+final_fit <- final_wf %>%
+  fit(train_data)
+
+# Plotting the final fit
+rpart.plot(extract_fit_parsnip(final_fit)$fit, roundint = FALSE)
+
+# Predicted outcomes
+predicted_fit <- predict(final_fit, train_data)
+```
+
+From the decision-tree model, we got ROC AUC (Area under the receiver operating characteristic curve) as 0.7.
+
+LASSO MODEL: MODEL TUNING AND FITTING
+
+```{r}
+# Building the model
+model_lasso <- logistic_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet")
+
+# We will be using the recipe (recipe_data) that we created above 
+# Creating the workflow
+wf_lasso <- workflow() %>% 
+  add_model(model_lasso) %>% 
+  add_recipe(recipe_data)
+
+# Model tuning using grid
+lasso_grid <- tibble(penalty = 10^seq(-4, -1, length.out = 30))
+lasso_grid %>% top_n(-5)
+lasso_grid %>% top_n(5)
+
+# Tuning the model using tune_grid() function
+res_lasso <- wf_lasso %>% tune_grid(resamples = CV_fold_data, grid = lasso_grid,
+    control = control_grid(verbose = FALSE, save_pred = TRUE), metrics = NULL)
+res_lasso %>% collect_metrics()
+```
+
+LASSO MODEL: MODEL EVALUATION
+
+```{r}
+# Plotting the above results
+res_lasso %>% autoplot()
+
+# Getting the best-fit model
+res_lasso %>%
+  show_best()
+best_lasso <- res_lasso %>%
+  select_best(metric = "roc_auc")
+
+# Getting the final workflow
+final_lasso_wf <- wf_lasso %>% 
+  finalize_workflow(best_lasso)
+
+# Fitting to the training data with the final workflow
+final_lasso_fit <- final_lasso_wf %>% fit(train_data) 
+
+# Plotting and saving the final fit
+plot_lasso <- extract_fit_engine(final_lasso_fit)
+lasso_model_figure <- plot(plot_lasso, "lambda")
+lasso_model_figure
+ggsave(filename = here("results","statistical_analysis_result", "3_machine_learning_result", "figure3_lasso_model.png"), plot = lasso_model_figure)
+
+# Predicted outcomes
+predicted_lasso_fit <- predict(final_lasso_fit, train_data)
+
+# Looking at the coefficients and penalty for each variable in Lasso model
+summary(best_lasso)
+coefficients <- final_lasso_fit %>% extract_fit_parsnip() %>% tidy()
+final_lasso_fit %>% extract_fit_parsnip() %>% tidy()
+
+# Saving the above coefficients and penalty data in a table
+table10 <- final_lasso_fit
+saveRDS(table10, file = (here("results", "statistical_analysis_result", "3_machine_learning_result", "lasso_model_final_fit.rds")))
+```
+
+From the Lasso model, we got ROC AUC as 0.8.
+
+Based on the above results, lasso model performed the best as it had the highest ROC AUC compared to decision tree model. Hence, lasso model was selected.
+
+FINAL EVALUATION
+
+```{r}
+# Fitting the final lasso model on split data
+final_lasso_test <- final_lasso_wf %>% last_fit(data_split) 
+final_lasso_test %>% collect_metrics()
+```
+
+From the above final model, we got ROC AUC as 0.8.
+

@@ -73,7 +73,7 @@ Figure 1 shows the summary of mammography screening status and the Hispanic and 
 #| echo: FALSE
 
 # Loading the `full_model.rds` table which was created during the statistical analysis process
-result_table2 <- readRDS(here("results", "statistical_analysis_result", "full_model.rds"))
+result_table2 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "full_model.rds"))
 print(result_table2, n = Inf, width = Inf)
 ```
 

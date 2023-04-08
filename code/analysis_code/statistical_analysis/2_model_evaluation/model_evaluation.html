@@ -491,6 +491,9 @@ data_clean_main_fit %&gt;%
 ##  9 age6         1.50       0.0976    15.4   1.32e-53
 ## 10 age7         1.54       0.106     14.6   5.61e-48
 ## # … with 18 more rows</code></pre>
+<pre class="r"><code># Saving the above coefficients table
+table8 &lt;- data_clean_main_fit
+saveRDS(table8, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;2_model_evaluation_result&quot;, &quot;logistic_full_model.rds&quot;)))</code></pre>
 <p><strong>FULL MODEL: USING TRAINED WORKFLOW TO PREDICT</strong></p>
 <pre class="r"><code># Using the trained workflow (data_clean_main_fit) to predict with the unseen test data
 predict(data_clean_main_fit, test_data)</code></pre>
@@ -579,6 +582,9 @@ data_clean_main_fit2 %&gt;%
 ##   &lt;chr&gt;               &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)         1.96     0.0242      81.0 0       
 ## 2 hispanic_status2   -0.564    0.0527     -10.7 1.16e-26</code></pre>
+<pre class="r"><code># Saving the above coefficients table
+table9 &lt;- data_clean_main_fit2
+saveRDS(table9, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;2_model_evaluation_result&quot;, &quot;logistic_outcome_mainpredictor.rds&quot;)))</code></pre>
 <p><strong>ALTERNATIVE MODEL: USING TRAINED WORKFLOW TO
 PREDICT</strong></p>
 <pre class="r"><code># Using the trained workflow (data_clean_main_fit) to predict with the unseen test data

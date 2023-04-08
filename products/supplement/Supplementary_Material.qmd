@@ -82,7 +82,7 @@ knitr::kable(additionaltable2)
 #| label: Additional Table 3
 #| tbl-cap: "Fit table using mammogram status as the outcome and the medical characteristics as the predictors."
 #| echo: FALSE
-additionaltable1 = readRDS(here("results", "statistical_analysis_result", "medical_model.rds"))
+additionaltable3 = readRDS(here("results", "statistical_analysis_result", "medical_model.rds"))
 knitr::kable(additionaltable3)
 ```
 
@@ -90,9 +90,88 @@ knitr::kable(additionaltable3)
 #| label: Additional Table 4
 #| tbl-cap: "Fit table using mammogram status as the outcome and smoking & alcohol characteristics as the predictors."
 #| echo: FALSE
-additionaltable1 = readRDS(here("results", "statistical_analysis_result", "smoking_alcohol_model.rds"))
+additionaltable4 = readRDS(here("results", "statistical_analysis_result", "smoking_alcohol_model.rds"))
 knitr::kable(additionaltable4)
 ```
+
+```{r}
+#| label: Additional Table 5
+#| tbl-cap: "Model fitting table using mammogram status as the outcome and demographic characteristics as the predictors."
+#| echo: FALSE
+additionaltable5 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "demographic_model.rds"))
+knitr::kable(additionaltable5)
+```
+
+```{r}
+#| label: Additional Table 6
+#| tbl-cap: "Model fitting table using mammogram status as the outcome and medical characteristics as the predictors."
+#| echo: FALSE
+additionaltable6 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "medical_model.rds"))
+knitr::kable(additionaltable6)
+```
+
+```{r}
+#| label: Additional Table 7
+#| tbl-cap: "Model fitting table using mammogram status as the outcome and smoking and alcohol characteristics as the predictors."
+#| echo: FALSE
+additionaltable7 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "smoking_alcohol_model.rds"))
+knitr::kable(additionaltable7)
+```
+
+```{r}
+#| label: Additional Table 8
+#| tbl-cap: "Model fitting table using mammogram status as the outcome and year, age, and hispanic characteristics as the predictors."
+#| echo: FALSE
+additionaltable8 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "year_age_hispanic_model.rds"))
+knitr::kable(additionaltable8)
+```
+
+```{r}
+#| label: Additional Table 9
+#| tbl-cap: "Model performance comparison."
+#| echo: FALSE
+additionaltable9 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "model_performance_comparison.rds"))
+knitr::kable(additionaltable9)
+```
+
+```{r}
+#| label: Additional Table 10
+#| tbl-cap: "Model coefficients table using mammogram status as the outcome and other variables of interests as the predictors using model evaluation."
+#| echo: FALSE
+additionaltable10 = readRDS(here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_full_model.rds"))
+knitr::kable(additionaltable10)
+```
+
+```{r}
+#| label: Additional Table 11
+#| tbl-cap: "Model coefficients table using mammogram status as the outcome and hispanic status as the main predictor using model evaluation."
+#| echo: FALSE
+additionaltable11 = readRDS(here("results", "statistical_analysis_result", "3_machine_learning_result", "lasso_model_final_fit.rds"))
+knitr::kable(additionaltable11)
+```
+
+```{r}
+#| label: Additional Table 12
+#| tbl-cap: "Lasso model final fit using machine learning approach."
+#| echo: FALSE
+additionaltable12 = readRDS(here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_outcome_mainpredictor.rds"))
+knitr::kable(additionaltable12)
+```
+
+```{r}
+#| label: Additional Figure 1
+#| fig-cap: "Decision tree model."
+#| echo: FALSE
+knitr::include_graphics("/results/statistical_analysis_result/3_machine_learning_result/figure2_decision_tree_model.png")
+```
+
+```{r}
+#| label: Additional Figure 2
+#| fig-cap: "Lasso model."
+#| echo: FALSE
+knitr::include_graphics("/results/statistical_analysis_result/3_machine_learning_result/figure3_lasso_model.png")
+```
+
 
 # Discussion
 

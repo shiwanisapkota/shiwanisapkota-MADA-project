@@ -95,6 +95,10 @@ data_clean_main_wflow %>%
 data_clean_main_fit %>% 
   extract_fit_parsnip() %>% 
   tidy()
+
+# Saving the above coefficients table
+table8 <- data_clean_main_fit
+saveRDS(table8, file = (here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_full_model.rds")))
 ```
 
 **FULL MODEL: USING TRAINED WORKFLOW TO PREDICT**
@@ -145,6 +149,10 @@ data_clean_main_fit2 <-
 data_clean_main_fit2 %>% 
   extract_fit_parsnip() %>% 
   tidy()
+
+# Saving the above coefficients table
+table9 <- data_clean_main_fit2
+saveRDS(table9, file = (here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_outcome_mainpredictor.rds")))
 ```
 
 **ALTERNATIVE MODEL: USING TRAINED WORKFLOW TO PREDICT**

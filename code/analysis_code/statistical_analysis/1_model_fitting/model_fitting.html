@@ -818,7 +818,7 @@ table2</code></pre>
 ##  9 as.factor(age)6       1.52      0.0848    18.0   3.80e- 72
 ## 10 as.factor(age)7       1.50      0.0906    16.5   1.92e- 61
 ## # … with 20 more rows</code></pre>
-<pre class="r"><code>saveRDS(table2, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;model_fitting_result&quot;, &quot;full_model.rds&quot;)))</code></pre>
+<pre class="r"><code>saveRDS(table2, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;full_model.rds&quot;)))</code></pre>
 <p>Fitting model using some predictors</p>
 <pre class="r"><code># Using `mammogram_status` as the outcome and year, age, &amp; hispanic_status as predictors
 log_fit_year_age_hispanic &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(year) + as.factor(age) + as.factor(hispanic_status), data = data_clean_main)
@@ -849,7 +849,7 @@ log_fit_year_age_hispanic</code></pre>
 ## Residual Deviance: 18360     AIC: 18390</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_year_age_hispanic
 table3 &lt;- tidy(log_fit_year_age_hispanic)
-saveRDS(table3, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;model_fitting_result&quot;, &quot;year_age_hispanic_model.rds&quot;)))</code></pre>
+saveRDS(table3, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;year_age_hispanic_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and demographic characteristics variables as predictors
 log_fit_demographic &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence), data = data_clean_main)
 log_fit_demographic</code></pre>
@@ -888,7 +888,7 @@ log_fit_demographic</code></pre>
 ## Residual Deviance: 17730     AIC: 17760</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_demographic
 table4 &lt;- tidy(log_fit_demographic)
-saveRDS(table4, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;model_fitting_result&quot;, &quot;demographic_model.rds&quot;)))</code></pre>
+saveRDS(table4, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;demographic_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and the medical characteristics as the predictors
 log_fit_medical &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(diabetes_status), data = data_clean_main)
 log_fit_medical</code></pre>
@@ -912,7 +912,7 @@ log_fit_medical</code></pre>
 ## Residual Deviance: 18630     AIC: 18640</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_medical
 table5 &lt;- tidy(log_fit_medical)
-saveRDS(table5, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;model_fitting_result&quot;, &quot;medical_model.rds&quot;)))</code></pre>
+saveRDS(table5, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;medical_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome, and smoking &amp; alcohol characteristics as the predictors
 log_fit_smoking_alcohol &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(smoking_status) + as.factor(alcohol_status), data = data_clean_main)
 log_fit_smoking_alcohol</code></pre>
@@ -935,14 +935,14 @@ log_fit_smoking_alcohol</code></pre>
 ## Residual Deviance: 19370     AIC: 19380</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_smoking_alcohol
 table6 &lt;- tidy(log_fit_smoking_alcohol)
-saveRDS(table6, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;model_fitting_result&quot;, &quot;smoking_alcohol_model.rds&quot;)))</code></pre>
+saveRDS(table6, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;smoking_alcohol_model.rds&quot;)))</code></pre>
 <p>MODEL PERFORMANCE COMPARISON</p>
 <pre class="r"><code># Comparing all the above models on the basis of model performance
 model_performance &lt;- compare_performance(log_fit_year, log_fit_hispanicstatus, log_fit_age, log_fit_income, log_fit_education, log_fit_maritalstatus, log_fit_regionresidence, log_fit_insurancestatus, log_fit_healthstatus, log_fit_usualmedicalcarestatus, log_fit_smokingstatus, log_fit_alcoholstatus, log_fit_diabetesstatus, log_fit_fullmodel, log_fit_year_age_hispanic, log_fit_demographic, log_fit_medical, log_fit_smoking_alcohol)
 table7 &lt;- model_performance
 
 # Saving model_performance result
-saveRDS(table7, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;model_fitting_result&quot;, &quot;model_performance_comparison.rds&quot;)))</code></pre>
+saveRDS(table7, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;model_performance_comparison.rds&quot;)))</code></pre>
 
 
 
