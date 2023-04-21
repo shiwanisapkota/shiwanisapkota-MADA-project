@@ -21,7 +21,6 @@ library(openxlsx)
 library(ggplot2)
 library(ggthemes)
 library(here)
-here()
 ```
 
 LOADING AND LOOKING AT THE DATA
@@ -62,7 +61,7 @@ CREATING DEMOGRAPHIC CHARACTERISTICS TABLE
 ```{r}
 # Recoding variables to work in making table
 data_clean_maint <- data_clean_main
-data_clean_maint$hispanic_status <- recode_factor(data_clean_maint$hispanic_status, '1' = 'Non-hispanic Female', '2' = 'Hispanic Female')
+data_clean_maint$hispanic_status <- recode_factor(data_clean_maint$hispanic_status, '1' = 'NH', '2' = 'H')
 data_clean_maint$mammogram_status <- recode_factor(data_clean_maint$mammogram_status, '0' = 'No', '1' = 'Yes')
 data_clean_maint$age <- recode_factor(data_clean_maint$age, '1' = '40-44 years', '2' = '45-49 years', '3' = '50-54 years', '4' = '55-59 years', '5' = '60-64 years', '6' = '65-69 years', '7' = '70-74 years')
 data_clean_maint$income <- recode_factor(data_clean_maint$income, '1' = 'At or above poverty threshold', '2' = 'Below poverty threshold')
@@ -162,36 +161,30 @@ table1 <- data_clean_maint %>%
         tbl_summary(
         missing = "no",
         by = c("hispanic_status"),
-        statistic = all_categorical() ~ "{n} ({p}%)"))
+        statistic = all_categorical() ~ "{n} ({p}%"))
 table1
 
-# Lets save the above generated table as a `demographic_table1.rds` table in results folder
+# Saving the table
 saveRDS(table1, file = (here("results", "exploratory_analysis_result", "demographic_table1.rds")))
 ```
 
 CREATING FIGURE
 
 ```{r}
-# Summarizing mammogram_status and Hispanic_status in the given years (Type I)
+# Recoding hispanic_status for the figure
 data_clean_main1 <- data_clean_main
 data_clean_main1$hispanic_status <- recode_factor(data_clean_main1$hispanic_status, '1' = 'Non-hispanic Female', '2' = 'Hispanic Female')
 
-# Lets save this figure
-figure1 <- ggplot(data = data_clean_main1, aes(x = mammogram_status)) +
-  geom_histogram(fill = "white", colour = "red", stat = "count", position = position_dodge()) +
-  facet_grid(hispanic_status ~ year) +
-  scale_x_discrete(labels = c("No", "Yes")) +
-  theme_bw()
-ggsave(filename = here("results","exploratory_analysis_result", "figure1_mammogram_ses.png"), plot = figure1)
-
-# Summarizing mammogram_status and Hispanic_status in the given years (Type II)
-figure1_optional<- ggplot(data_clean_main1, aes(x = mammogram_status))+
+# Summarizing mammogram_status and Hispanic_status in the given years
+figure1 <- ggplot(data_clean_main1, aes(x = mammogram_status))+
   geom_bar(aes(fill = hispanic_status), stat = "count", color = "white",
     position = position_dodge(0.9)) +
   facet_wrap(~year) +
-  scale_x_discrete(labels = c("No", "Yes"))
+  scale_x_discrete(labels = c("No", "Yes")) +
+  scale_y_continuous(breaks = c(1000, 2000, 3000, 4000, 5000, 6000))
+figure1
 
 # Saving this figure
-ggsave(filename = here("results","exploratory_analysis_result", "figure1optional_mammogram_ses.png"), plot = figure1_optional)
+ggsave(filename = here("results", "exploratory_analysis_result", "figure1_mammogram_ses.png"), plot = figure1)
 ```
 

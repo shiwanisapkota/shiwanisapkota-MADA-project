@@ -223,12 +223,22 @@ From the Lasso model, we got ROC AUC as 0.8.
 
 Based on the above results, lasso model performed the best as it had the highest ROC AUC compared to decision tree model. Hence, lasso model was selected.
 
+```{r}
+# Let's collect the ROC AUC metric values for different models
+final_lasso_test <- final_lasso_wf %>% last_fit(data_split) 
+final_lasso_test %>% collect_metrics()
+```
+
 FINAL EVALUATION
 
 ```{r}
 # Fitting the final lasso model on split data
-final_lasso_test <- final_lasso_wf %>% last_fit(data_split) 
-final_lasso_test %>% collect_metrics()
+ml_results <- data.frame(Model = c("Null", "Decision Tree", "Lasso"),
+                      ROC_AUC = c(0.5, 0.7, 0.8))
+ml_results
+
+# Saving the above data frame
+saveRDS(ml_results, file = (here("results", "statistical_analysis_result", "3_machine_learning_result", "machinelearning_results.rds")))
 ```
 
 From the above final model, we got ROC AUC as 0.8.

@@ -12,11 +12,11 @@ format:
     highlight-style: github
 ---
 
-# Summary/Abstract
+# 1. Summary/Abstract
 
 \[\*\*To be added\]
 
-# Introduction
+# 2. Introduction
 
 Breast cancer is one of the most common cancers and the second leading cause of cancer death among women in the US. Mammography screening is a screening process where an x-ray image of the breast is taken to detect irregularities in breast tissue which could be the sign of cancer (@gorina_patterns_2021). Mammography screening can help detect and treat breast cancer at early stages reducing the mortality rate (@tabar_reduction_1985, @kerlikowske_efficacy_1995, @shapiro_ten-_1982, @laara_trends_1987). Hence, mammography screening can play a great role in early breast cancer detection and treatment, and in reduction in the number of deaths related to breast cancer. The U.S. Preventive Services Task Force (USPSTF) recommends a biennial (every other year) mammography screening for women aged 50 to 74 years and advises to determine the need for mammography screening on an individual basis for women aged 40 to 49 years (@siu_screening_2016).
 
@@ -26,28 +26,36 @@ Little is known about the predictors of using cancer screening services among mi
 
 This study aims to explore the relationship trend among socioeconomic status and other predictive factors influencing the likelihood of using mammography screening services within Hispanic and non-Hispanic women aged 40 to 74 years during 2000, 2005, 2010, and 2015.
 
-# Methods
+# 3. Methods
 
-The study used the data from the National Health Interview Survey (NHIS). The NHIS survey collects information related to health, health care access, health behaviors of the civilian and non-institutionalized U.S. population and makes digital data files available for years 1963 to present (@blewett_lynn_a._ipums_2016). Users can create their own costumed NHIS data extracts for analysis from the NHIS website. For this study, data with the variables of interest for years: 2000, 2005, 2010, and 2015 were directly extracted from the NHIS website. Those specific 4 years were selected for the study as there were most data points available for those years and 5-years difference comparison could give great insights at the trends of mammogram screening over years. The study was restricted among Hispanic and non-Hispanic women aged 40-74 years as per the mammography screening recommendation by USPSTF and those age groups women fall under high-risk groups for developing breast cancer.
+The study used the data from the National Health Interview Survey (NHIS). The NHIS survey collects information related to health, health care access, health behaviors of the civilian and non-institutionalized US population and makes digital data files available for years 1963 to present (@blewett_lynn_a._ipums_2016). Users can create their own costumed NHIS data extracts for analysis from the NHIS website. For this study, data with the variables of interest for years: 2000, 2005, 2010, and 2015 were directly extracted from the NHIS website. Those specific 4 years were selected for the study as there were most data points available for those years and 5-years difference comparison could give great insights at the trends of mammogram screening over years. The study was restricted among Hispanic and non-Hispanic women aged 40-74 years as per the mammography screening recommendation by USPSTF and those age groups women fall under high-risk groups for developing breast cancer.
 
 Mammography screening status (yes or no) was defined as outcome variable of interest for the study. Similarly, the following variables were assessed as predictors of mammogram screening: (1) age (40-44, 45-49, 50-54, 55-59, 60-64, 65-69, or 70-74), (2) income (at or above poverty threshold, or below poverty threshold), (3) education (never attended/kindergarten only, less than high school, high school, some college or associate's degree, or bachelor's degree and higher), (4) marital status (never married, married, or single (separated/widowed/divorced)), (5) region of residence (Northeast, North Central/Midwest, South, or West), (6) insurance status (no coverage or coverage), (7) self-reported health status (excellent/very good/good or fair/poor), (8) having a usual place of medical care (no place or have usual place), (9) smoking status (never, current, or former), (10) alcohol status (never, current, or former), and (11) diabetic status (yes or no).
 
-The study was limited within 40-74 years Hispanic and non-Hispanic women with no report of cancer during the years 2000, 2005, 2010, and 2015. Exclusion of missing data points in 1 or more predictor variables yielded a final sample of 24848 subjects. \[\*\*References and Statistical analysis part to be added\]
+Data Cleaning:
 
-# Results
+Analysis:
 
-## Exploratory/Descriptive analysis
+
+The study was limited within 40-74 years Hispanic and non-Hispanic women with no report of cancer during the years 2000, 2005, 2010, and 2015. Exclusion of missing data points in 1 or more predictor variables yielded a final sample of 24848 subjects. 
+
+[** Statistical analysis part to be added]
+
+# 4. Results
+
+# 4.1 Exploratory/Descriptive analysis
 
 **Table 1: Demographic characteristics of study population**
 
-```{r, warning = FALSE, message = FALSE}
+```{r warning = FALSE, message = FALSE}
 #| echo: FALSE
 library(here)
 library(knitr)
 
 # Loading the `demographic_table1.rds` table which was created during the data exploratory process
+
 result_table1 <- readRDS(here("results", "exploratory_analysis_result", "demographic_table1.rds"))
-result_table1
+result_table1 
 ```
 
 Table 1 shows the summary of mammography screening status and demographic characteristics of the study population.
@@ -65,25 +73,73 @@ include_graphics(here("results", "exploratory_analysis_result", "figure1_mammogr
 
 Figure 1 shows the summary of mammography screening status and the Hispanic and non-Hispanic status of study population in different years (i.e. 2000, 2005, 2010, and 2015).
 
-## Statistical analysis
+# 4.2 Statistical Analysis
 
-**Table 2: Fitting full model using mammogram_status as outcome variable and other variables as predictor variables.**
+# 4.2.1 Model Fitting
+
+**Table 2: Full model fitting using mammogram_status as outcome variable and other variables as predictor variables.**
 
 ```{r, warning = FALSE, message = FALSE}
 #| echo: FALSE
 
-# Loading the `full_model.rds` table which was created during the statistical analysis process
+# Loading the `full_model.rds` table which was created during the model fitting analysis process
 result_table2 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "full_model.rds"))
 print(result_table2, n = Inf, width = Inf)
 ```
+**Table 3: Model Performance Comparisons.**
 
-# Discussion
+```{r, warning = FALSE, message = FALSE}
+#| echo: FALSE
+
+# Loading the `model_performance_comparison.rds` table which was created during the model fitting analysis process
+result_table2 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "model_performance_comparison.rds"))
+print(result_table2)
+```
+
+# 4.2.2 Model Evaluation
+
+
+**Figure 2: ROC Curve for the full model**
+
+```{r}
+#| label: Figure 2
+#| fig-cap: "ROC Curve for the full model."
+#| echo: FALSE
+
+# Loading the `figure2_roc_fullmodel.png` figure which was created during the model evaluation process
+include_graphics(here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure2_roc_fullmodel.png"))
+```
+
+**Figure 3: ROC Curve for the alternative model**
+
+```{r}
+#| label: Figure 3
+#| fig-cap: "ROC Curve for the alternative model."
+#| echo: FALSE
+
+# Loading the `figure3_roc_altmodel.png` figure which was created during the model evaluation process
+include_graphics(here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure3_roc_altmodel.png"))
+```
+
+# 4.2.3 Machine Learning
+
+**Table 4: Model Selection using Null, Decision tree and Lasso methods.**
+
+```{r, warning = FALSE, message = FALSE}
+#| echo: FALSE
+
+# Loading the `machinelearning_results.rds` table which was created during the machine learning analysis process
+result_table3 <- readRDS(here("results", "statistical_analysis_result", "3_machine_learning_result", "machinelearning_results.rds"))
+print(result_table3)
+```
+
+# 5 Discussion
 
 \[\*\*Summary, interpretation, strengths, and limitations of the study to be added\]
 
-# Conclusions
+# 6 Conclusions
 
 \[\*\*Main take-home messages from the study to be added\]
 
-# References
+# 7 References
 

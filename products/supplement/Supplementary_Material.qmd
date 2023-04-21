@@ -160,13 +160,6 @@ knitr::kable(additionaltable12)
 
 ```{r}
 #| label: Additional Figure 1
-#| fig-cap: "Decision tree model."
-#| echo: FALSE
-knitr::include_graphics("/results/statistical_analysis_result/3_machine_learning_result/figure2_decision_tree_model.png")
-```
-
-```{r}
-#| label: Additional Figure 2
 #| fig-cap: "Lasso model."
 #| echo: FALSE
 knitr::include_graphics("/results/statistical_analysis_result/3_machine_learning_result/figure3_lasso_model.png")

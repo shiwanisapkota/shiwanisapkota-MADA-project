@@ -381,7 +381,8 @@ library(ggthemes)
 library(here)
 library(tidymodels)
 library(performance)
-library(vip)</code></pre>
+library(vip)
+library(gt)</code></pre>
 <p>LOADING AND LOOKING AT THE DATA</p>
 <pre class="r"><code># Reading the cleaned rds file
 data_clean &lt;- readRDS(here(&quot;data&quot;, &quot;processed_cleaned_data&quot;, &quot;mammogram_ses_clean.rds&quot;))
@@ -940,8 +941,30 @@ saveRDS(table6, file = (here(&quot;results&quot;, &quot;statistical_analysis_res
 <pre class="r"><code># Comparing all the above models on the basis of model performance
 model_performance &lt;- compare_performance(log_fit_year, log_fit_hispanicstatus, log_fit_age, log_fit_income, log_fit_education, log_fit_maritalstatus, log_fit_regionresidence, log_fit_insurancestatus, log_fit_healthstatus, log_fit_usualmedicalcarestatus, log_fit_smokingstatus, log_fit_alcoholstatus, log_fit_diabetesstatus, log_fit_fullmodel, log_fit_year_age_hispanic, log_fit_demographic, log_fit_medical, log_fit_smoking_alcohol)
 table7 &lt;- model_performance
-
-# Saving model_performance result
+table7</code></pre>
+<pre><code>## # Comparison of Model Performance Indices
+## 
+## Name                           | Model |   AIC (weights) |  AICc (weights) |   BIC (weights) | Tjur&#39;s R2 |  RMSE | Sigma | Log_loss | Score_log |   PCP
+## -------------------------------------------------------------------------------------------------------------------------------------------------------
+## log_fit_year                   |  _glm | 19738.1 (&lt;.001) | 19738.1 (&lt;.001) | 19770.6 (&lt;.001) |     0.002 | 0.343 | 0.891 |    0.397 |      -Inf | 0.765
+## log_fit_hispanicstatus         |  _glm | 19633.3 (&lt;.001) | 19633.3 (&lt;.001) | 19649.6 (&lt;.001) |     0.006 | 0.342 | 0.889 |    0.395 |      -Inf | 0.766
+## log_fit_age                    |  _glm | 18480.9 (&lt;.001) | 18480.9 (&lt;.001) | 18537.7 (&lt;.001) |     0.060 | 0.332 | 0.862 |    0.372 |      -Inf | 0.779
+## log_fit_income                 |  _glm | 19516.6 (&lt;.001) | 19516.6 (&lt;.001) | 19532.8 (&lt;.001) |     0.012 | 0.341 | 0.886 |    0.393 |      -Inf | 0.768
+## log_fit_education              |  _glm | 19424.2 (&lt;.001) | 19424.2 (&lt;.001) | 19464.8 (&lt;.001) |     0.015 | 0.340 | 0.884 |    0.391 |      -Inf | 0.768
+## log_fit_maritalstatus          |  _glm | 19616.9 (&lt;.001) | 19617.0 (&lt;.001) | 19649.4 (&lt;.001) |     0.007 | 0.342 | 0.888 |    0.395 |      -Inf | 0.767
+## log_fit_regionresidence        |  _glm | 19728.8 (&lt;.001) | 19728.8 (&lt;.001) | 19761.3 (&lt;.001) |     0.002 | 0.343 | 0.891 |    0.397 |      -Inf | 0.765
+## log_fit_insurancestatus        |  _glm | 18957.5 (&lt;.001) | 18957.5 (&lt;.001) | 18973.7 (&lt;.001) |     0.041 | 0.336 | 0.873 |    0.381 |      -Inf | 0.774
+## log_fit_healthstatus           |  _glm | 19774.2 (&lt;.001) | 19774.2 (&lt;.001) | 19790.4 (&lt;.001) | 2.442e-05 | 0.343 | 0.892 |    0.398 |      -Inf | 0.765
+## log_fit_usualmedicalcarestatus |  _glm | 19022.0 (&lt;.001) | 19022.0 (&lt;.001) | 19038.3 (&lt;.001) |     0.040 | 0.336 | 0.875 |    0.383 |      -Inf | 0.774
+## log_fit_smokingstatus          |  _glm | 19549.1 (&lt;.001) | 19549.1 (&lt;.001) | 19573.4 (&lt;.001) |     0.009 | 0.341 | 0.887 |    0.393 |      -Inf | 0.767
+## log_fit_alcoholstatus          |  _glm | 19610.4 (&lt;.001) | 19610.4 (&lt;.001) | 19634.8 (&lt;.001) |     0.007 | 0.342 | 0.888 |    0.394 |      -Inf | 0.766
+## log_fit_diabetesstatus         |  _glm | 19732.2 (&lt;.001) | 19732.2 (&lt;.001) | 19748.4 (&lt;.001) |     0.002 | 0.343 | 0.891 |    0.397 |      -Inf | 0.765
+## log_fit_fullmodel              |  _glm | 16981.0 (&gt;.999) | 16981.0 (&gt;.999) | 17224.6 (&gt;.999) |     0.135 | 0.320 | 0.826 |    0.340 |      -Inf | 0.797
+## log_fit_year_age_hispanic      |  _glm | 18385.0 (&lt;.001) | 18385.0 (&lt;.001) | 18474.3 (&lt;.001) |     0.065 | 0.332 | 0.860 |    0.370 |      -Inf | 0.780
+## log_fit_demographic            |  _glm | 17764.1 (&lt;.001) | 17764.2 (&lt;.001) | 17918.4 (&lt;.001) |     0.094 | 0.327 | 0.845 |    0.357 |      -Inf | 0.787
+## log_fit_medical                |  _glm | 18638.9 (&lt;.001) | 18638.9 (&lt;.001) | 18679.5 (&lt;.001) |     0.059 | 0.333 | 0.866 |    0.375 |      -Inf | 0.779
+## log_fit_smoking_alcohol        |  _glm | 19380.9 (&lt;.001) | 19380.9 (&lt;.001) | 19421.5 (&lt;.001) |     0.016 | 0.340 | 0.883 |    0.390 |      -Inf | 0.769</code></pre>
+<pre class="r"><code># Saving model_performance result
 saveRDS(table7, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;model_performance_comparison.rds&quot;)))</code></pre>
 
 

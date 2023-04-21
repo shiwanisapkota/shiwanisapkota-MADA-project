@@ -399,7 +399,7 @@ pre code {
 ## ✖ dplyr::lag()      masks stats::lag()
 ## ✖ yardstick::spec() masks readr::spec()
 ## ✖ recipes::step()   masks stats::step()
-## • Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
+## • Learn how to get started at https://www.tidymodels.org/start/</code></pre>
 <pre class="r"><code>library(ggplot2)
 library(ranger)
 library(rpart)</code></pre>
@@ -719,8 +719,7 @@ saveRDS(table10, file = (here(&quot;results&quot;, &quot;statistical_analysis_re
 <p>Based on the above results, lasso model performed the best as it had
 the highest ROC AUC compared to decision tree model. Hence, lasso model
 was selected.</p>
-<p>FINAL EVALUATION</p>
-<pre class="r"><code># Fitting the final lasso model on split data
+<pre class="r"><code># Let&#39;s collect the ROC AUC metric values for different models
 final_lasso_test &lt;- final_lasso_wf %&gt;% last_fit(data_split) 
 final_lasso_test %&gt;% collect_metrics()</code></pre>
 <pre><code>## # A tibble: 2 × 4
@@ -728,6 +727,17 @@ final_lasso_test %&gt;% collect_metrics()</code></pre>
 ##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
 ## 1 accuracy binary         0.865 Preprocessor1_Model1
 ## 2 roc_auc  binary         0.774 Preprocessor1_Model1</code></pre>
+<p>FINAL EVALUATION</p>
+<pre class="r"><code># Fitting the final lasso model on split data
+ml_results &lt;- data.frame(Model = c(&quot;Null&quot;, &quot;Decision Tree&quot;, &quot;Lasso&quot;),
+                      ROC_AUC = c(0.5, 0.7, 0.8))
+ml_results</code></pre>
+<pre><code>##           Model ROC_AUC
+## 1          Null     0.5
+## 2 Decision Tree     0.7
+## 3         Lasso     0.8</code></pre>
+<pre class="r"><code># Saving the above data frame
+saveRDS(ml_results, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;3_machine_learning_result&quot;, &quot;machinelearning_results.rds&quot;)))</code></pre>
 <p>From the above final model, we got ROC AUC as 0.8.</p>
 
 

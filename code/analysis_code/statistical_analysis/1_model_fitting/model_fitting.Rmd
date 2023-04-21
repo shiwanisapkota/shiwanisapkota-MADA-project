@@ -19,6 +19,7 @@ library(here)
 library(tidymodels)
 library(performance)
 library(vip)
+library(gt)
 ```
 
 LOADING AND LOOKING AT THE DATA
@@ -228,6 +229,7 @@ MODEL PERFORMANCE COMPARISON
 # Comparing all the above models on the basis of model performance
 model_performance <- compare_performance(log_fit_year, log_fit_hispanicstatus, log_fit_age, log_fit_income, log_fit_education, log_fit_maritalstatus, log_fit_regionresidence, log_fit_insurancestatus, log_fit_healthstatus, log_fit_usualmedicalcarestatus, log_fit_smokingstatus, log_fit_alcoholstatus, log_fit_diabetesstatus, log_fit_fullmodel, log_fit_year_age_hispanic, log_fit_demographic, log_fit_medical, log_fit_smoking_alcohol)
 table7 <- model_performance
+table7
 
 # Saving model_performance result
 saveRDS(table7, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "model_performance_comparison.rds")))

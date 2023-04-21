@@ -115,13 +115,19 @@ data_clean_main_aug %>%
   select(mammogram_status, .pred_0, .pred_1)
   
 # Creating ROC curve and piping to the autoplot() method
-data_clean_main_aug %>% 
+roc_fullmodel <- data_clean_main_aug %>% 
   roc_curve(truth = mammogram_status, .pred_0) %>% 
   autoplot()
+roc_fullmodel
+
+# Saving the 'roc_fullmodel' figure
+ggsave(filename = here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure2_roc_fullmodel.png"), plot = roc_fullmodel)
 
 # Using roc_auc() for estimating the area under the curve 
 data_clean_main_aug %>% 
   roc_auc(truth = mammogram_status, .pred_0)
+
+
 ```
 
 **ALTERNATIVE MODEL: USING MAMMOGRAM STATUS AS OUTCOME OF INTEREST AND HISPANIC STATUS AS MAIN PREDICTOR**
@@ -155,7 +161,7 @@ table9 <- data_clean_main_fit2
 saveRDS(table9, file = (here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_outcome_mainpredictor.rds")))
 ```
 
-**ALTERNATIVE MODEL: USING TRAINED WORKFLOW TO PREDICT**
+**ALTERNATIVE MODEL: USING TRAINED WORKFLOW FOR PREDICTION**
 
 ```{r, warning = FALSE}
 # Using the trained workflow (data_clean_main_fit) to predict with the unseen test data
@@ -169,9 +175,13 @@ data_clean_main_aug2 %>%
   select(mammogram_status, .pred_0, .pred_1)
   
 # Creating ROC curve and piping to the autoplot() method
-data_clean_main_aug2 %>% 
+roc_altmodel <- data_clean_main_aug2 %>% 
   roc_curve(truth = mammogram_status, .pred_0) %>% 
   autoplot()
+roc_altmodel
+
+# Saving the 'roc_altmodel' figure
+ggsave(filename = here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure3_roc_altmodel.png"), plot = roc_altmodel)
 
 # Using roc_auc() for estimating the area under the curve 
 data_clean_main_aug2 %>% 
