@@ -75,8 +75,44 @@ data_clean_maint$smoking_status <- recode_factor(data_clean_maint$smoking_status
 data_clean_maint$alcohol_status <- recode_factor(data_clean_maint$alcohol_status, '0' = 'Never', '1' = 'Current', '2' = 'Former')
 data_clean_maint$diabetes_status <- recode_factor(data_clean_maint$diabetes_status, '0' = 'No', '1' = 'Yes')
 
-# Lets look at the distribution of hipanic and non-hispanic women during the given years
-CrossTable(data_clean_maint$year, data_clean_maint$hispanic_status)
+# Lets look at the summary
+summary(data_clean_maint)
+
+# Lets look at the distribution of hipanic and mammogram status
+CrossTable(data_clean_maint$year, data_clean_maint$mammogram_status)
+
+# Lets look at the hispanic status and mammogram status
+CrossTable(data_clean_maint$hispanic_status, data_clean_maint$mammogram_status)
+
+# Lets look at the income and mammogram status
+CrossTable(data_clean_maint$income, data_clean_maint$mammogram_status)
+
+# Lets look at the education and mammogram status
+CrossTable(data_clean_maint$education, data_clean_maint$mammogram_status)
+
+# Lets look at the marital status and mammogram status
+CrossTable(data_clean_maint$marital_status, data_clean_maint$mammogram_status)
+
+# Lets look at the region of residence and mammogram status
+CrossTable(data_clean_maint$region_residence, data_clean_maint$mammogram_status)
+
+# Lets look at the insurance status and mammogram status
+CrossTable(data_clean_maint$insurance_status, data_clean_maint$mammogram_status)
+
+# Lets look at the health status and mammogram status
+CrossTable(data_clean_maint$health_status, data_clean_maint$mammogram_status)
+
+# Lets look at the usual medical care status and mammogram status
+CrossTable(data_clean_maint$usual_medicalcare_status, data_clean_maint$mammogram_status)
+
+# Lets look at the smoking status and mammogram status
+CrossTable(data_clean_maint$smoking_status, data_clean_maint$mammogram_status)
+
+# Lets look at the alcohol status and mammogram status
+CrossTable(data_clean_maint$alcohol_status, data_clean_maint$mammogram_status)
+
+# Lets look at the diabetes status and mammogram status
+CrossTable(data_clean_maint$diabetes_status, data_clean_maint$mammogram_status)
 
 # Lets look at the mammogram status among hipanic and non-hispanic women during the given years
 CrossTable(data_clean_maint$mammogram_status, data_clean_maint$hispanic_status)
@@ -151,8 +187,20 @@ mytable11 <- xtabs(~year+diabetes_status+hispanic_status, data = year_diabetes_h
 ftable(mytable11)
 ftable(addmargins(prop.table(mytable11, c(1, 2)), 3))*100
 
-# Lets create a single complete demographic characteristics table by year and hispanic_status of women
+# Creating a demographic characteristics table on the basis of mammogram screening status
 table1 <- data_clean_maint %>% 
+    select(mammogram_status, hispanic_status, year, age, income, education, marital_status, region_residence, insurance_status, health_status, usual_medicalcare_status, smoking_status, alcohol_status, diabetes_status) %>%
+    tbl_strata(
+      strata = mammogram_status,
+      .tbl_fun = 
+        ~ .x %>%
+        tbl_summary(
+           missing = "no"),
+        statistic = all_categorical() ~ "{n} ({p}%)")
+table1
+
+# Lets create a single complete demographic characteristics table by year and hispanic_status of women
+table2 <- data_clean_maint %>% 
     select(mammogram_status, age, income, education, marital_status, region_residence, insurance_status, health_status, usual_medicalcare_status, smoking_status, alcohol_status, diabetes_status, year, hispanic_status) %>%
     tbl_strata(
       strata = year,
@@ -161,11 +209,26 @@ table1 <- data_clean_maint %>%
         tbl_summary(
         missing = "no",
         by = c("hispanic_status"),
-        statistic = all_categorical() ~ "{n} ({p}%"))
-table1
+        statistic = all_categorical() ~ "{n} ({p}%)"))
+table2
 
-# Saving the table
+# Lets create a single complete demographic characteristics table by mammogram_status and hispanic_status of women
+table3 <- data_clean_maint %>% 
+    select(mammogram_status, year, age, income, education, marital_status, region_residence, insurance_status, health_status, usual_medicalcare_status, smoking_status, alcohol_status, diabetes_status, hispanic_status) %>%
+    tbl_strata(
+      strata = mammogram_status,
+      .tbl_fun = 
+        ~ .x %>%
+        tbl_summary(
+           missing = "no",
+        by = c("hispanic_status"),
+        statistic = all_categorical() ~ "{n} ({p}%)"))
+table3
+
+# Saving the above 3 tables
 saveRDS(table1, file = (here("results", "exploratory_analysis_result", "demographic_table1.rds")))
+saveRDS(table2, file = (here("results", "exploratory_analysis_result", "demographic_table2.rds")))
+saveRDS(table3, file = (here("results", "exploratory_analysis_result", "demographic_table3.rds")))
 ```
 
 CREATING FIGURE

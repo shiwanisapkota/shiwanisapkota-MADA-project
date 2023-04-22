@@ -472,6 +472,8 @@ tidy(log_fit_hispanicstatus)</code></pre>
 ##   &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)                    1.95     0.0209      93.4 0       
 ## 2 as.factor(hispanic_status)2   -0.562    0.0457     -12.3 7.09e-35</code></pre>
+<pre class="r"><code>exp(-0.5624346)</code></pre>
+<pre><code>## [1] 0.5698201</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `age` as the predictor
 log_fit_age &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(age), data = data_clean_main)
 log_fit_age</code></pre>
@@ -850,7 +852,22 @@ log_fit_year_age_hispanic</code></pre>
 ## Residual Deviance: 18360     AIC: 18390</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_year_age_hispanic
 table3 &lt;- tidy(log_fit_year_age_hispanic)
-saveRDS(table3, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;year_age_hispanic_model.rds&quot;)))</code></pre>
+table3</code></pre>
+<pre><code>## # A tibble: 11 × 5
+##    term                        estimate std.error statistic   p.value
+##    &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)                   0.857     0.0458    18.7   4.02e- 78
+##  2 as.factor(year)2005           0.0161    0.0540     0.298 7.65e-  1
+##  3 as.factor(year)2010           0.198     0.0562     3.52  4.30e-  4
+##  4 as.factor(year)2015           0.0865    0.0525     1.65  9.95e-  2
+##  5 as.factor(age)2               0.959     0.0534    18.0   4.66e- 72
+##  6 as.factor(age)3               1.38      0.0616    22.4   1.74e-111
+##  7 as.factor(age)4               1.54      0.0681    22.6   2.31e-113
+##  8 as.factor(age)5               1.69      0.0765    22.1   7.59e-108
+##  9 as.factor(age)6               1.57      0.0793    19.8   3.33e- 87
+## 10 as.factor(age)7               1.51      0.0839    18.0   8.09e- 73
+## 11 as.factor(hispanic_status)2  -0.466     0.0475    -9.81  9.86e- 23</code></pre>
+<pre class="r"><code>saveRDS(table3, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;year_age_hispanic_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and demographic characteristics variables as predictors
 log_fit_demographic &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence), data = data_clean_main)
 log_fit_demographic</code></pre>
@@ -889,7 +906,30 @@ log_fit_demographic</code></pre>
 ## Residual Deviance: 17730     AIC: 17760</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_demographic
 table4 &lt;- tidy(log_fit_demographic)
-saveRDS(table4, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;demographic_model.rds&quot;)))</code></pre>
+table4</code></pre>
+<pre><code>## # A tibble: 19 × 5
+##    term                         estimate std.error statistic   p.value
+##    &lt;chr&gt;                           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)                   -0.601     0.212      -2.83 4.65e-  3
+##  2 as.factor(age)2                1.02      0.0547     18.7  2.74e- 78
+##  3 as.factor(age)3                1.47      0.0629     23.3  3.62e-120
+##  4 as.factor(age)4                1.68      0.0697     24.1  8.27e-128
+##  5 as.factor(age)5                1.85      0.0783     23.6  1.54e-123
+##  6 as.factor(age)6                1.77      0.0817     21.6  1.20e-103
+##  7 as.factor(age)7                1.77      0.0874     20.3  2.66e- 91
+##  8 as.factor(hispanic_status)2   -0.0676    0.0539     -1.25 2.10e-  1
+##  9 as.factor(income)2            -0.411     0.0525     -7.83 4.86e- 15
+## 10 as.factor(education)2          0.779     0.199       3.91 9.19e-  5
+## 11 as.factor(education)3          1.11      0.199       5.57 2.59e-  8
+## 12 as.factor(education)4          1.55      0.201       7.74 9.92e- 15
+## 13 as.factor(education)5          1.78      0.203       8.79 1.56e- 18
+## 14 as.factor(marital_status)1     0.527     0.0594      8.87 7.29e- 19
+## 15 as.factor(marital_status)2     0.356     0.0612      5.83 5.63e-  9
+## 16 as.factor(marital_status)3     0.219     0.108       2.04 4.17e-  2
+## 17 as.factor(region_residence)2  -0.251     0.0669     -3.75 1.76e-  4
+## 18 as.factor(region_residence)3  -0.351     0.0595     -5.90 3.70e-  9
+## 19 as.factor(region_residence)4  -0.345     0.0644     -5.36 8.30e-  8</code></pre>
+<pre class="r"><code>saveRDS(table4, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;demographic_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and the medical characteristics as the predictors
 log_fit_medical &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(diabetes_status), data = data_clean_main)
 log_fit_medical</code></pre>
@@ -913,7 +953,16 @@ log_fit_medical</code></pre>
 ## Residual Deviance: 18630     AIC: 18640</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_medical
 table5 &lt;- tidy(log_fit_medical)
-saveRDS(table5, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;medical_model.rds&quot;)))</code></pre>
+table5</code></pre>
+<pre><code>## # A tibble: 5 × 5
+##   term                                 estimate std.error statistic  p.value
+##   &lt;chr&gt;                                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                            1.13      0.0563     20.1  5.24e-90
+## 2 as.factor(insurance_status)1          -0.990     0.0501    -19.8  7.19e-87
+## 3 as.factor(health_status)2             -0.0928    0.0522     -1.78 7.56e- 2
+## 4 as.factor(usual_medicalcare_status)1   0.994     0.0566     17.6  4.27e-69
+## 5 as.factor(diabetes_status)1            0.313     0.0643      4.86 1.16e- 6</code></pre>
+<pre class="r"><code>saveRDS(table5, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;medical_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome, and smoking &amp; alcohol characteristics as the predictors
 log_fit_smoking_alcohol &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(smoking_status) + as.factor(alcohol_status), data = data_clean_main)
 log_fit_smoking_alcohol</code></pre>
@@ -936,7 +985,16 @@ log_fit_smoking_alcohol</code></pre>
 ## Residual Deviance: 19370     AIC: 19380</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_smoking_alcohol
 table6 &lt;- tidy(log_fit_smoking_alcohol)
-saveRDS(table6, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;smoking_alcohol_model.rds&quot;)))</code></pre>
+table6</code></pre>
+<pre><code>## # A tibble: 5 × 5
+##   term                       estimate std.error statistic  p.value
+##   &lt;chr&gt;                         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                   1.53     0.0334     45.6  0       
+## 2 as.factor(smoking_status)1   -0.553    0.0459    -12.1  1.56e-33
+## 3 as.factor(smoking_status)2    0.310    0.0538      5.77 8.04e- 9
+## 4 as.factor(alcohol_status)1    0.565    0.0430     13.1  1.99e-39
+## 5 as.factor(alcohol_status)2    0.475    0.0586      8.11 5.12e-16</code></pre>
+<pre class="r"><code>saveRDS(table6, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;smoking_alcohol_model.rds&quot;)))</code></pre>
 <p>MODEL PERFORMANCE COMPARISON</p>
 <pre class="r"><code># Comparing all the above models on the basis of model performance
 model_performance &lt;- compare_performance(log_fit_year, log_fit_hispanicstatus, log_fit_age, log_fit_income, log_fit_education, log_fit_maritalstatus, log_fit_regionresidence, log_fit_insurancestatus, log_fit_healthstatus, log_fit_usualmedicalcarestatus, log_fit_smokingstatus, log_fit_alcoholstatus, log_fit_diabetesstatus, log_fit_fullmodel, log_fit_year_age_hispanic, log_fit_demographic, log_fit_medical, log_fit_smoking_alcohol)

@@ -463,8 +463,58 @@ data_clean_maint$smoking_status &lt;- recode_factor(data_clean_maint$smoking_sta
 data_clean_maint$alcohol_status &lt;- recode_factor(data_clean_maint$alcohol_status, &#39;0&#39; = &#39;Never&#39;, &#39;1&#39; = &#39;Current&#39;, &#39;2&#39; = &#39;Former&#39;)
 data_clean_maint$diabetes_status &lt;- recode_factor(data_clean_maint$diabetes_status, &#39;0&#39; = &#39;No&#39;, &#39;1&#39; = &#39;Yes&#39;)
 
-# Lets look at the distribution of hipanic and non-hispanic women during the given years
-CrossTable(data_clean_maint$year, data_clean_maint$hispanic_status)</code></pre>
+# Lets look at the summary
+summary(data_clean_maint)</code></pre>
+<pre><code>##       year           sex             age       hispanic_status
+##  Min.   :2000   Min.   :2   40-44 years:4664   NH:21056       
+##  1st Qu.:2005   1st Qu.:2   45-49 years:4491   H : 3792       
+##  Median :2010   Median :2   50-54 years:4133                  
+##  Mean   :2008   Mean   :2   55-59 years:3668                  
+##  3rd Qu.:2015   3rd Qu.:2   60-64 years:3144                  
+##  Max.   :2015   Max.   :2   65-69 years:2589                  
+##                             70-74 years:2159                  
+##                            income                                 education   
+##  At or above poverty threshold:21295   Never attended/kindergarten only: 126  
+##  Below poverty threshold      : 3553   Less than high school           :3428  
+##                                        High school                     :7250  
+##                                        Some college or Associate degree:7400  
+##                                        Bachelor degree and higher      :6644  
+##                                                                               
+##                                                                               
+##                              marital_status               region_residence
+##  Never married                      : 2682   Northeast            :4361   
+##  Married                            :12226   North Central/Midwest:5394   
+##  Single (separated/widowed/divorced): 9103   South                :9103   
+##  Living with partner                :  837   West                 :5990   
+##                                                                           
+##                                                                           
+##                                                                           
+##     insurance_status privateinsurance_status medicaid_status medicare_status
+##  No Coverage:21834   1: 8355                 1:22302         1:19293        
+##  Coverage   : 3014   2:16493                 2: 2546         2: 5555        
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##                   health_status   mammogram_status cancer_status
+##  Excellent/very good/good:20593   No : 3382        Min.   :0    
+##  Fair/poor               : 4255   Yes:21466        1st Qu.:0    
+##                                                    Median :0    
+##                                                    Mean   :0    
+##                                                    3rd Qu.:0    
+##                                                    Max.   :0    
+##                                                                 
+##  usual_medicalcare_status smoking_status  alcohol_status  diabetes_status
+##  No place   : 2079        Never  :14582   Never  : 6406   No :21527      
+##  Usual place:22769        Current: 4625   Current:14275   Yes: 3321      
+##                           Former : 5641   Former : 4167                  
+##                                                                          
+##                                                                          
+##                                                                          
+## </code></pre>
+<pre class="r"><code># Lets look at the distribution of hipanic and mammogram status
+CrossTable(data_clean_maint$year, data_clean_maint$mammogram_status)</code></pre>
 <pre><code>## 
 ##  
 ##    Cell Contents
@@ -480,36 +530,497 @@ CrossTable(data_clean_maint$year, data_clean_maint$hispanic_status)</code></pre>
 ## Total Observations in Table:  24848 
 ## 
 ##  
-##                       | data_clean_maint$hispanic_status 
-## data_clean_maint$year |        NH |         H | Row Total | 
+##                       | data_clean_maint$mammogram_status 
+## data_clean_maint$year |        No |       Yes | Row Total | 
 ## ----------------------|-----------|-----------|-----------|
-##                  2000 |      4883 |       839 |      5722 | 
-##                       |     0.242 |     1.341 |           | 
-##                       |     0.853 |     0.147 |     0.230 | 
-##                       |     0.232 |     0.221 |           | 
-##                       |     0.197 |     0.034 |           | 
+##                  2000 |       885 |      4837 |      5722 | 
+##                       |    14.480 |     2.281 |           | 
+##                       |     0.155 |     0.845 |     0.230 | 
+##                       |     0.262 |     0.225 |           | 
+##                       |     0.036 |     0.195 |           | 
 ## ----------------------|-----------|-----------|-----------|
-##                  2005 |      4953 |       819 |      5772 | 
-##                       |     0.782 |     4.343 |           | 
-##                       |     0.858 |     0.142 |     0.232 | 
-##                       |     0.235 |     0.216 |           | 
-##                       |     0.199 |     0.033 |           | 
+##                  2005 |       848 |      4924 |      5772 | 
+##                       |     4.954 |     0.781 |           | 
+##                       |     0.147 |     0.853 |     0.232 | 
+##                       |     0.251 |     0.229 |           | 
+##                       |     0.034 |     0.198 |           | 
 ## ----------------------|-----------|-----------|-----------|
-##                  2010 |      4819 |       979 |      5798 | 
-##                       |     1.805 |    10.024 |           | 
-##                       |     0.831 |     0.169 |     0.233 | 
-##                       |     0.229 |     0.258 |           | 
-##                       |     0.194 |     0.039 |           | 
+##                  2010 |       706 |      5092 |      5798 | 
+##                       |     8.762 |     1.380 |           | 
+##                       |     0.122 |     0.878 |     0.233 | 
+##                       |     0.209 |     0.237 |           | 
+##                       |     0.028 |     0.205 |           | 
 ## ----------------------|-----------|-----------|-----------|
-##                  2015 |      6401 |      1155 |      7556 | 
-##                       |     0.001 |     0.003 |           | 
-##                       |     0.847 |     0.153 |     0.304 | 
-##                       |     0.304 |     0.305 |           | 
-##                       |     0.258 |     0.046 |           | 
+##                  2015 |       943 |      6613 |      7556 | 
+##                       |     7.096 |     1.118 |           | 
+##                       |     0.125 |     0.875 |     0.304 | 
+##                       |     0.279 |     0.308 |           | 
+##                       |     0.038 |     0.266 |           | 
 ## ----------------------|-----------|-----------|-----------|
-##          Column Total |     21056 |      3792 |     24848 | 
-##                       |     0.847 |     0.153 |           | 
+##          Column Total |      3382 |     21466 |     24848 | 
+##                       |     0.136 |     0.864 |           | 
 ## ----------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the hispanic status and mammogram status
+CrossTable(data_clean_maint$hispanic_status, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                  | data_clean_maint$mammogram_status 
+## data_clean_maint$hispanic_status |        No |       Yes | Row Total | 
+## ---------------------------------|-----------|-----------|-----------|
+##                               NH |      2624 |     18432 |     21056 | 
+##                                  |    20.415 |     3.216 |           | 
+##                                  |     0.125 |     0.875 |     0.847 | 
+##                                  |     0.776 |     0.859 |           | 
+##                                  |     0.106 |     0.742 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+##                                H |       758 |      3034 |      3792 | 
+##                                  |   113.357 |    17.860 |           | 
+##                                  |     0.200 |     0.800 |     0.153 | 
+##                                  |     0.224 |     0.141 |           | 
+##                                  |     0.031 |     0.122 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+##                     Column Total |      3382 |     21466 |     24848 | 
+##                                  |     0.136 |     0.864 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the income and mammogram status
+CrossTable(data_clean_maint$income, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                               | data_clean_maint$mammogram_status 
+##       data_clean_maint$income |        No |       Yes | Row Total | 
+## ------------------------------|-----------|-----------|-----------|
+## At or above poverty threshold |      2575 |     18720 |     21295 | 
+##                               |    36.087 |     5.686 |           | 
+##                               |     0.121 |     0.879 |     0.857 | 
+##                               |     0.761 |     0.872 |           | 
+##                               |     0.104 |     0.753 |           | 
+## ------------------------------|-----------|-----------|-----------|
+##       Below poverty threshold |       807 |      2746 |      3553 | 
+##                               |   216.286 |    34.076 |           | 
+##                               |     0.227 |     0.773 |     0.143 | 
+##                               |     0.239 |     0.128 |           | 
+##                               |     0.032 |     0.111 |           | 
+## ------------------------------|-----------|-----------|-----------|
+##                  Column Total |      3382 |     21466 |     24848 | 
+##                               |     0.136 |     0.864 |           | 
+## ------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the education and mammogram status
+CrossTable(data_clean_maint$education, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                  | data_clean_maint$mammogram_status 
+##       data_clean_maint$education |        No |       Yes | Row Total | 
+## ---------------------------------|-----------|-----------|-----------|
+## Never attended/kindergarten only |        46 |        80 |       126 | 
+##                                  |    48.535 |     7.647 |           | 
+##                                  |     0.365 |     0.635 |     0.005 | 
+##                                  |     0.014 |     0.004 |           | 
+##                                  |     0.002 |     0.003 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+##            Less than high school |       737 |      2691 |      3428 | 
+##                                  |   156.735 |    24.694 |           | 
+##                                  |     0.215 |     0.785 |     0.138 | 
+##                                  |     0.218 |     0.125 |           | 
+##                                  |     0.030 |     0.108 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+##                      High school |      1121 |      6129 |      7250 | 
+##                                  |    18.256 |     2.876 |           | 
+##                                  |     0.155 |     0.845 |     0.292 | 
+##                                  |     0.331 |     0.286 |           | 
+##                                  |     0.045 |     0.247 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+## Some college or Associate degree |       847 |      6553 |      7400 | 
+##                                  |    25.479 |     4.014 |           | 
+##                                  |     0.114 |     0.886 |     0.298 | 
+##                                  |     0.250 |     0.305 |           | 
+##                                  |     0.034 |     0.264 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+##       Bachelor degree and higher |       631 |      6013 |      6644 | 
+##                                  |    82.597 |    13.013 |           | 
+##                                  |     0.095 |     0.905 |     0.267 | 
+##                                  |     0.187 |     0.280 |           | 
+##                                  |     0.025 |     0.242 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+##                     Column Total |      3382 |     21466 |     24848 | 
+##                                  |     0.136 |     0.864 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the marital status and mammogram status
+CrossTable(data_clean_maint$marital_status, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                     | data_clean_maint$mammogram_status 
+##     data_clean_maint$marital_status |        No |       Yes | Row Total | 
+## ------------------------------------|-----------|-----------|-----------|
+##                       Never married |       571 |      2111 |      2682 | 
+##                                     |   116.205 |    18.308 |           | 
+##                                     |     0.213 |     0.787 |     0.108 | 
+##                                     |     0.169 |     0.098 |           | 
+##                                     |     0.023 |     0.085 |           | 
+## ------------------------------------|-----------|-----------|-----------|
+##                             Married |      1485 |     10741 |     12226 | 
+##                                     |    19.266 |     3.035 |           | 
+##                                     |     0.121 |     0.879 |     0.492 | 
+##                                     |     0.439 |     0.500 |           | 
+##                                     |     0.060 |     0.432 |           | 
+## ------------------------------------|-----------|-----------|-----------|
+## Single (separated/widowed/divorced) |      1170 |      7933 |      9103 | 
+##                                     |     3.841 |     0.605 |           | 
+##                                     |     0.129 |     0.871 |     0.366 | 
+##                                     |     0.346 |     0.370 |           | 
+##                                     |     0.047 |     0.319 |           | 
+## ------------------------------------|-----------|-----------|-----------|
+##                 Living with partner |       156 |       681 |       837 | 
+##                                     |    15.542 |     2.449 |           | 
+##                                     |     0.186 |     0.814 |     0.034 | 
+##                                     |     0.046 |     0.032 |           | 
+##                                     |     0.006 |     0.027 |           | 
+## ------------------------------------|-----------|-----------|-----------|
+##                        Column Total |      3382 |     21466 |     24848 | 
+##                                     |     0.136 |     0.864 |           | 
+## ------------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the region of residence and mammogram status
+CrossTable(data_clean_maint$region_residence, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                   | data_clean_maint$mammogram_status 
+## data_clean_maint$region_residence |        No |       Yes | Row Total | 
+## ----------------------------------|-----------|-----------|-----------|
+##                         Northeast |       477 |      3884 |      4361 | 
+##                                   |    22.891 |     3.607 |           | 
+##                                   |     0.109 |     0.891 |     0.176 | 
+##                                   |     0.141 |     0.181 |           | 
+##                                   |     0.019 |     0.156 |           | 
+## ----------------------------------|-----------|-----------|-----------|
+##             North Central/Midwest |       678 |      4716 |      5394 | 
+##                                   |     4.297 |     0.677 |           | 
+##                                   |     0.126 |     0.874 |     0.217 | 
+##                                   |     0.200 |     0.220 |           | 
+##                                   |     0.027 |     0.190 |           | 
+## ----------------------------------|-----------|-----------|-----------|
+##                             South |      1355 |      7748 |      9103 | 
+##                                   |    10.863 |     1.711 |           | 
+##                                   |     0.149 |     0.851 |     0.366 | 
+##                                   |     0.401 |     0.361 |           | 
+##                                   |     0.055 |     0.312 |           | 
+## ----------------------------------|-----------|-----------|-----------|
+##                              West |       872 |      5118 |      5990 | 
+##                                   |     3.945 |     0.622 |           | 
+##                                   |     0.146 |     0.854 |     0.241 | 
+##                                   |     0.258 |     0.238 |           | 
+##                                   |     0.035 |     0.206 |           | 
+## ----------------------------------|-----------|-----------|-----------|
+##                      Column Total |      3382 |     21466 |     24848 | 
+##                                   |     0.136 |     0.864 |           | 
+## ----------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the insurance status and mammogram status
+CrossTable(data_clean_maint$insurance_status, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                   | data_clean_maint$mammogram_status 
+## data_clean_maint$insurance_status |        No |       Yes | Row Total | 
+## ----------------------------------|-----------|-----------|-----------|
+##                       No Coverage |      2409 |     19425 |     21834 | 
+##                                   |   106.574 |    16.791 |           | 
+##                                   |     0.110 |     0.890 |     0.879 | 
+##                                   |     0.712 |     0.905 |           | 
+##                                   |     0.097 |     0.782 |           | 
+## ----------------------------------|-----------|-----------|-----------|
+##                          Coverage |       973 |      2041 |      3014 | 
+##                                   |   772.039 |   121.636 |           | 
+##                                   |     0.323 |     0.677 |     0.121 | 
+##                                   |     0.288 |     0.095 |           | 
+##                                   |     0.039 |     0.082 |           | 
+## ----------------------------------|-----------|-----------|-----------|
+##                      Column Total |      3382 |     21466 |     24848 | 
+##                                   |     0.136 |     0.864 |           | 
+## ----------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the health status and mammogram status
+CrossTable(data_clean_maint$health_status, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                | data_clean_maint$mammogram_status 
+## data_clean_maint$health_status |        No |       Yes | Row Total | 
+## -------------------------------|-----------|-----------|-----------|
+##       Excellent/very good/good |      2787 |     17806 |     20593 | 
+##                                |     0.090 |     0.014 |           | 
+##                                |     0.135 |     0.865 |     0.829 | 
+##                                |     0.824 |     0.829 |           | 
+##                                |     0.112 |     0.717 |           | 
+## -------------------------------|-----------|-----------|-----------|
+##                      Fair/poor |       595 |      3660 |      4255 | 
+##                                |     0.434 |     0.068 |           | 
+##                                |     0.140 |     0.860 |     0.171 | 
+##                                |     0.176 |     0.171 |           | 
+##                                |     0.024 |     0.147 |           | 
+## -------------------------------|-----------|-----------|-----------|
+##                   Column Total |      3382 |     21466 |     24848 | 
+##                                |     0.136 |     0.864 |           | 
+## -------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the usual medical care status and mammogram status
+CrossTable(data_clean_maint$usual_medicalcare_status, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                           | data_clean_maint$mammogram_status 
+## data_clean_maint$usual_medicalcare_status |        No |       Yes | Row Total | 
+## ------------------------------------------|-----------|-----------|-----------|
+##                                  No place |       752 |      1327 |      2079 | 
+##                                           |   777.444 |   122.487 |           | 
+##                                           |     0.362 |     0.638 |     0.084 | 
+##                                           |     0.222 |     0.062 |           | 
+##                                           |     0.030 |     0.053 |           | 
+## ------------------------------------------|-----------|-----------|-----------|
+##                               Usual place |      2630 |     20139 |     22769 | 
+##                                           |    70.987 |    11.184 |           | 
+##                                           |     0.116 |     0.884 |     0.916 | 
+##                                           |     0.778 |     0.938 |           | 
+##                                           |     0.106 |     0.810 |           | 
+## ------------------------------------------|-----------|-----------|-----------|
+##                              Column Total |      3382 |     21466 |     24848 | 
+##                                           |     0.136 |     0.864 |           | 
+## ------------------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the smoking status and mammogram status
+CrossTable(data_clean_maint$smoking_status, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                 | data_clean_maint$mammogram_status 
+## data_clean_maint$smoking_status |        No |       Yes | Row Total | 
+## --------------------------------|-----------|-----------|-----------|
+##                           Never |      1974 |     12608 |     14582 | 
+##                                 |     0.058 |     0.009 |           | 
+##                                 |     0.135 |     0.865 |     0.587 | 
+##                                 |     0.584 |     0.587 |           | 
+##                                 |     0.079 |     0.507 |           | 
+## --------------------------------|-----------|-----------|-----------|
+##                         Current |       896 |      3729 |      4625 | 
+##                                 |   112.826 |    17.776 |           | 
+##                                 |     0.194 |     0.806 |     0.186 | 
+##                                 |     0.265 |     0.174 |           | 
+##                                 |     0.036 |     0.150 |           | 
+## --------------------------------|-----------|-----------|-----------|
+##                          Former |       512 |      5129 |      5641 | 
+##                                 |    85.213 |    13.425 |           | 
+##                                 |     0.091 |     0.909 |     0.227 | 
+##                                 |     0.151 |     0.239 |           | 
+##                                 |     0.021 |     0.206 |           | 
+## --------------------------------|-----------|-----------|-----------|
+##                    Column Total |      3382 |     21466 |     24848 | 
+##                                 |     0.136 |     0.864 |           | 
+## --------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the alcohol status and mammogram status
+CrossTable(data_clean_maint$alcohol_status, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                 | data_clean_maint$mammogram_status 
+## data_clean_maint$alcohol_status |        No |       Yes | Row Total | 
+## --------------------------------|-----------|-----------|-----------|
+##                           Never |      1183 |      5223 |      6406 | 
+##                                 |   110.999 |    17.488 |           | 
+##                                 |     0.185 |     0.815 |     0.258 | 
+##                                 |     0.350 |     0.243 |           | 
+##                                 |     0.048 |     0.210 |           | 
+## --------------------------------|-----------|-----------|-----------|
+##                         Current |      1673 |     12602 |     14275 | 
+##                                 |    37.503 |     5.909 |           | 
+##                                 |     0.117 |     0.883 |     0.574 | 
+##                                 |     0.495 |     0.587 |           | 
+##                                 |     0.067 |     0.507 |           | 
+## --------------------------------|-----------|-----------|-----------|
+##                          Former |       526 |      3641 |      4167 | 
+##                                 |     2.987 |     0.471 |           | 
+##                                 |     0.126 |     0.874 |     0.168 | 
+##                                 |     0.156 |     0.170 |           | 
+##                                 |     0.021 |     0.147 |           | 
+## --------------------------------|-----------|-----------|-----------|
+##                    Column Total |      3382 |     21466 |     24848 | 
+##                                 |     0.136 |     0.864 |           | 
+## --------------------------------|-----------|-----------|-----------|
+## 
+## </code></pre>
+<pre class="r"><code># Lets look at the diabetes status and mammogram status
+CrossTable(data_clean_maint$diabetes_status, data_clean_maint$mammogram_status)</code></pre>
+<pre><code>## 
+##  
+##    Cell Contents
+## |-------------------------|
+## |                       N |
+## | Chi-square contribution |
+## |           N / Row Total |
+## |           N / Col Total |
+## |         N / Table Total |
+## |-------------------------|
+## 
+##  
+## Total Observations in Table:  24848 
+## 
+##  
+##                                  | data_clean_maint$mammogram_status 
+## data_clean_maint$diabetes_status |        No |       Yes | Row Total | 
+## ---------------------------------|-----------|-----------|-----------|
+##                               No |      3046 |     18481 |     21527 | 
+##                                  |     4.594 |     0.724 |           | 
+##                                  |     0.141 |     0.859 |     0.866 | 
+##                                  |     0.901 |     0.861 |           | 
+##                                  |     0.123 |     0.744 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+##                              Yes |       336 |      2985 |      3321 | 
+##                                  |    29.776 |     4.691 |           | 
+##                                  |     0.101 |     0.899 |     0.134 | 
+##                                  |     0.099 |     0.139 |           | 
+##                                  |     0.014 |     0.120 |           | 
+## ---------------------------------|-----------|-----------|-----------|
+##                     Column Total |      3382 |     21466 |     24848 | 
+##                                  |     0.136 |     0.864 |           | 
+## ---------------------------------|-----------|-----------|-----------|
 ## 
 ## </code></pre>
 <pre class="r"><code># Lets look at the mammogram status among hipanic and non-hispanic women during the given years
@@ -986,24 +1497,23 @@ ftable(mytable11)</code></pre>
 ##      Yes                              75.89389  24.10611 100.00000
 ## 2015 No                               85.63137  14.36863 100.00000
 ##      Yes                              79.76291  20.23709 100.00000</code></pre>
-<pre class="r"><code># Lets create a single complete demographic characteristics table by year and hispanic_status of women
+<pre class="r"><code># Creating a demographic characteristics table on the basis of mammogram screening status
 table1 &lt;- data_clean_maint %&gt;% 
-    select(mammogram_status, age, income, education, marital_status, region_residence, insurance_status, health_status, usual_medicalcare_status, smoking_status, alcohol_status, diabetes_status, year, hispanic_status) %&gt;%
+    select(mammogram_status, hispanic_status, year, age, income, education, marital_status, region_residence, insurance_status, health_status, usual_medicalcare_status, smoking_status, alcohol_status, diabetes_status) %&gt;%
     tbl_strata(
-      strata = year,
+      strata = mammogram_status,
       .tbl_fun = 
         ~ .x %&gt;%
         tbl_summary(
-        missing = &quot;no&quot;,
-        by = c(&quot;hispanic_status&quot;),
-        statistic = all_categorical() ~ &quot;{n} ({p}%&quot;))
+           missing = &quot;no&quot;),
+        statistic = all_categorical() ~ &quot;{n} ({p}%)&quot;)
 table1</code></pre>
-<div id="kidptqnzna" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="vmjcrnizok" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#kidptqnzna .gt_table {
+#vmjcrnizok .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1028,7 +1538,7 @@ table1</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_heading {
+#vmjcrnizok .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1040,12 +1550,12 @@ table1</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_caption {
+#vmjcrnizok .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kidptqnzna .gt_title {
+#vmjcrnizok .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1057,7 +1567,7 @@ table1</code></pre>
   border-bottom-width: 0;
 }
 
-#kidptqnzna .gt_subtitle {
+#vmjcrnizok .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1069,13 +1579,13 @@ table1</code></pre>
   border-top-width: 0;
 }
 
-#kidptqnzna .gt_bottom_border {
+#vmjcrnizok .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_col_headings {
+#vmjcrnizok .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1090,7 +1600,7 @@ table1</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_col_heading {
+#vmjcrnizok .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1110,7 +1620,7 @@ table1</code></pre>
   overflow-x: hidden;
 }
 
-#kidptqnzna .gt_column_spanner_outer {
+#vmjcrnizok .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1122,15 +1632,15 @@ table1</code></pre>
   padding-right: 4px;
 }
 
-#kidptqnzna .gt_column_spanner_outer:first-child {
+#vmjcrnizok .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kidptqnzna .gt_column_spanner_outer:last-child {
+#vmjcrnizok .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kidptqnzna .gt_column_spanner {
+#vmjcrnizok .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1142,7 +1652,7 @@ table1</code></pre>
   width: 100%;
 }
 
-#kidptqnzna .gt_group_heading {
+#vmjcrnizok .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1168,7 +1678,7 @@ table1</code></pre>
   text-align: left;
 }
 
-#kidptqnzna .gt_empty_group_heading {
+#vmjcrnizok .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1183,15 +1693,15 @@ table1</code></pre>
   vertical-align: middle;
 }
 
-#kidptqnzna .gt_from_md > :first-child {
+#vmjcrnizok .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kidptqnzna .gt_from_md > :last-child {
+#vmjcrnizok .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kidptqnzna .gt_row {
+#vmjcrnizok .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1210,7 +1720,7 @@ table1</code></pre>
   overflow-x: hidden;
 }
 
-#kidptqnzna .gt_stub {
+#vmjcrnizok .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1223,7 +1733,7 @@ table1</code></pre>
   padding-right: 5px;
 }
 
-#kidptqnzna .gt_stub_row_group {
+#vmjcrnizok .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1237,11 +1747,11 @@ table1</code></pre>
   vertical-align: top;
 }
 
-#kidptqnzna .gt_row_group_first td {
+#vmjcrnizok .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kidptqnzna .gt_summary_row {
+#vmjcrnizok .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1251,16 +1761,16 @@ table1</code></pre>
   padding-right: 5px;
 }
 
-#kidptqnzna .gt_first_summary_row {
+#vmjcrnizok .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_first_summary_row.thick {
+#vmjcrnizok .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kidptqnzna .gt_last_summary_row {
+#vmjcrnizok .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1270,7 +1780,7 @@ table1</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_grand_summary_row {
+#vmjcrnizok .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1280,7 +1790,7 @@ table1</code></pre>
   padding-right: 5px;
 }
 
-#kidptqnzna .gt_first_grand_summary_row {
+#vmjcrnizok .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1290,11 +1800,11 @@ table1</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_striped {
+#vmjcrnizok .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kidptqnzna .gt_table_body {
+#vmjcrnizok .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1303,7 +1813,7 @@ table1</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_footnotes {
+#vmjcrnizok .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1317,7 +1827,7 @@ table1</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_footnote {
+#vmjcrnizok .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -1326,7 +1836,7 @@ table1</code></pre>
   padding-right: 5px;
 }
 
-#kidptqnzna .gt_sourcenotes {
+#vmjcrnizok .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1340,7 +1850,7 @@ table1</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#kidptqnzna .gt_sourcenote {
+#vmjcrnizok .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1348,64 +1858,673 @@ table1</code></pre>
   padding-right: 5px;
 }
 
-#kidptqnzna .gt_left {
+#vmjcrnizok .gt_left {
   text-align: left;
 }
 
-#kidptqnzna .gt_center {
+#vmjcrnizok .gt_center {
   text-align: center;
 }
 
-#kidptqnzna .gt_right {
+#vmjcrnizok .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kidptqnzna .gt_font_normal {
+#vmjcrnizok .gt_font_normal {
   font-weight: normal;
 }
 
-#kidptqnzna .gt_font_bold {
+#vmjcrnizok .gt_font_bold {
   font-weight: bold;
 }
 
-#kidptqnzna .gt_font_italic {
+#vmjcrnizok .gt_font_italic {
   font-style: italic;
 }
 
-#kidptqnzna .gt_super {
+#vmjcrnizok .gt_super {
   font-size: 65%;
 }
 
-#kidptqnzna .gt_footnote_marks {
+#vmjcrnizok .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#kidptqnzna .gt_asterisk {
+#vmjcrnizok .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kidptqnzna .gt_indent_1 {
+#vmjcrnizok .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kidptqnzna .gt_indent_2 {
+#vmjcrnizok .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kidptqnzna .gt_indent_3 {
+#vmjcrnizok .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kidptqnzna .gt_indent_4 {
+#vmjcrnizok .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kidptqnzna .gt_indent_5 {
+#vmjcrnizok .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;No&lt;/strong&gt;">
+        <span class="gt_column_spanner"><strong>No</strong></span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Yes&lt;/strong&gt;">
+        <span class="gt_column_spanner"><strong>Yes</strong></span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;N = 3,382&lt;/strong&gt;&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>N = 3,382</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;N = 21,466&lt;/strong&gt;&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>N = 21,466</strong><sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">hispanic_status</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    NH</td>
+<td headers="stat_0_1" class="gt_row gt_center">2,624 (78%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">18,432 (86%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    H</td>
+<td headers="stat_0_1" class="gt_row gt_center">758 (22%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,034 (14%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">year</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    2000</td>
+<td headers="stat_0_1" class="gt_row gt_center">885 (26%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">4,837 (23%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    2005</td>
+<td headers="stat_0_1" class="gt_row gt_center">848 (25%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">4,924 (23%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    2010</td>
+<td headers="stat_0_1" class="gt_row gt_center">706 (21%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">5,092 (24%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    2015</td>
+<td headers="stat_0_1" class="gt_row gt_center">943 (28%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">6,613 (31%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">age</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    40-44 years</td>
+<td headers="stat_0_1" class="gt_row gt_center">1,420 (42%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,244 (15%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    45-49 years</td>
+<td headers="stat_0_1" class="gt_row gt_center">639 (19%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,852 (18%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    50-54 years</td>
+<td headers="stat_0_1" class="gt_row gt_center">402 (12%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,731 (17%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    55-59 years</td>
+<td headers="stat_0_1" class="gt_row gt_center">304 (9.0%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,364 (16%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    60-64 years</td>
+<td headers="stat_0_1" class="gt_row gt_center">225 (6.7%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">2,919 (14%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    65-69 years</td>
+<td headers="stat_0_1" class="gt_row gt_center">209 (6.2%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">2,380 (11%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    70-74 years</td>
+<td headers="stat_0_1" class="gt_row gt_center">183 (5.4%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">1,976 (9.2%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">income</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    At or above poverty threshold</td>
+<td headers="stat_0_1" class="gt_row gt_center">2,575 (76%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">18,720 (87%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Below poverty threshold</td>
+<td headers="stat_0_1" class="gt_row gt_center">807 (24%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">2,746 (13%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">education</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Never attended/kindergarten only</td>
+<td headers="stat_0_1" class="gt_row gt_center">46 (1.4%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">80 (0.4%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Less than high school</td>
+<td headers="stat_0_1" class="gt_row gt_center">737 (22%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">2,691 (13%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    High school</td>
+<td headers="stat_0_1" class="gt_row gt_center">1,121 (33%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">6,129 (29%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Some college or Associate degree</td>
+<td headers="stat_0_1" class="gt_row gt_center">847 (25%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">6,553 (31%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Bachelor degree and higher</td>
+<td headers="stat_0_1" class="gt_row gt_center">631 (19%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">6,013 (28%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">marital_status</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Never married</td>
+<td headers="stat_0_1" class="gt_row gt_center">571 (17%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">2,111 (9.8%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Married</td>
+<td headers="stat_0_1" class="gt_row gt_center">1,485 (44%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">10,741 (50%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Single (separated/widowed/divorced)</td>
+<td headers="stat_0_1" class="gt_row gt_center">1,170 (35%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">7,933 (37%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Living with partner</td>
+<td headers="stat_0_1" class="gt_row gt_center">156 (4.6%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">681 (3.2%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">region_residence</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Northeast</td>
+<td headers="stat_0_1" class="gt_row gt_center">477 (14%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,884 (18%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    North Central/Midwest</td>
+<td headers="stat_0_1" class="gt_row gt_center">678 (20%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">4,716 (22%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    South</td>
+<td headers="stat_0_1" class="gt_row gt_center">1,355 (40%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">7,748 (36%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    West</td>
+<td headers="stat_0_1" class="gt_row gt_center">872 (26%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">5,118 (24%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">insurance_status</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    No Coverage</td>
+<td headers="stat_0_1" class="gt_row gt_center">2,409 (71%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">19,425 (90%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Coverage</td>
+<td headers="stat_0_1" class="gt_row gt_center">973 (29%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">2,041 (9.5%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">health_status</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Excellent/very good/good</td>
+<td headers="stat_0_1" class="gt_row gt_center">2,787 (82%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">17,806 (83%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Fair/poor</td>
+<td headers="stat_0_1" class="gt_row gt_center">595 (18%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,660 (17%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">usual_medicalcare_status</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    No place</td>
+<td headers="stat_0_1" class="gt_row gt_center">752 (22%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">1,327 (6.2%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Usual place</td>
+<td headers="stat_0_1" class="gt_row gt_center">2,630 (78%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">20,139 (94%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">smoking_status</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Never</td>
+<td headers="stat_0_1" class="gt_row gt_center">1,974 (58%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">12,608 (59%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Current</td>
+<td headers="stat_0_1" class="gt_row gt_center">896 (26%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,729 (17%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Former</td>
+<td headers="stat_0_1" class="gt_row gt_center">512 (15%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">5,129 (24%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">alcohol_status</td>
+<td headers="stat_0_1" class="gt_row gt_center"></td>
+<td headers="stat_0_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Never</td>
+<td headers="stat_0_1" class="gt_row gt_center">1,183 (35%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">5,223 (24%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Current</td>
+<td headers="stat_0_1" class="gt_row gt_center">1,673 (49%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">12,602 (59%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Former</td>
+<td headers="stat_0_1" class="gt_row gt_center">526 (16%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">3,641 (17%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">diabetes_status</td>
+<td headers="stat_0_1" class="gt_row gt_center">336 (9.9%)</td>
+<td headers="stat_0_2" class="gt_row gt_center">2,985 (14%)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> n (%)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<pre class="r"><code># Lets create a single complete demographic characteristics table by year and hispanic_status of women
+table2 &lt;- data_clean_maint %&gt;% 
+    select(mammogram_status, age, income, education, marital_status, region_residence, insurance_status, health_status, usual_medicalcare_status, smoking_status, alcohol_status, diabetes_status, year, hispanic_status) %&gt;%
+    tbl_strata(
+      strata = year,
+      .tbl_fun = 
+        ~ .x %&gt;%
+        tbl_summary(
+        missing = &quot;no&quot;,
+        by = c(&quot;hispanic_status&quot;),
+        statistic = all_categorical() ~ &quot;{n} ({p}%)&quot;))
+table2</code></pre>
+<div id="vpkhyxwxbi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#vpkhyxwxbi .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#vpkhyxwxbi .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vpkhyxwxbi .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vpkhyxwxbi .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#vpkhyxwxbi .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vpkhyxwxbi .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vpkhyxwxbi .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vpkhyxwxbi .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vpkhyxwxbi .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#vpkhyxwxbi .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vpkhyxwxbi .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vpkhyxwxbi .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vpkhyxwxbi .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vpkhyxwxbi .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vpkhyxwxbi .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#vpkhyxwxbi .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#vpkhyxwxbi .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vpkhyxwxbi .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#vpkhyxwxbi .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vpkhyxwxbi .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vpkhyxwxbi .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vpkhyxwxbi .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vpkhyxwxbi .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vpkhyxwxbi .gt_left {
+  text-align: left;
+}
+
+#vpkhyxwxbi .gt_center {
+  text-align: center;
+}
+
+#vpkhyxwxbi .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vpkhyxwxbi .gt_font_normal {
+  font-weight: normal;
+}
+
+#vpkhyxwxbi .gt_font_bold {
+  font-weight: bold;
+}
+
+#vpkhyxwxbi .gt_font_italic {
+  font-style: italic;
+}
+
+#vpkhyxwxbi .gt_super {
+  font-size: 65%;
+}
+
+#vpkhyxwxbi .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#vpkhyxwxbi .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#vpkhyxwxbi .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#vpkhyxwxbi .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#vpkhyxwxbi .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#vpkhyxwxbi .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#vpkhyxwxbi .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1440,14 +2559,14 @@ table1</code></pre>
   </thead>
   <tbody class="gt_table_body">
     <tr><td headers="label" class="gt_row gt_left">mammogram_status</td>
-<td headers="stat_1_1" class="gt_row gt_center">4,191 (86%</td>
-<td headers="stat_2_1" class="gt_row gt_center">646 (77%</td>
-<td headers="stat_1_2" class="gt_row gt_center">4,291 (87%</td>
-<td headers="stat_2_2" class="gt_row gt_center">633 (77%</td>
-<td headers="stat_1_3" class="gt_row gt_center">4,271 (89%</td>
-<td headers="stat_2_3" class="gt_row gt_center">821 (84%</td>
-<td headers="stat_1_4" class="gt_row gt_center">5,679 (89%</td>
-<td headers="stat_2_4" class="gt_row gt_center">934 (81%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">4,191 (86%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">646 (77%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,291 (87%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">633 (77%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">4,271 (89%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">821 (84%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">5,679 (89%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">934 (81%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">age</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1458,68 +2577,68 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    40-44 years</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,101 (23%</td>
-<td headers="stat_2_1" class="gt_row gt_center">218 (26%</td>
-<td headers="stat_1_2" class="gt_row gt_center">969 (20%</td>
-<td headers="stat_2_2" class="gt_row gt_center">217 (26%</td>
-<td headers="stat_1_3" class="gt_row gt_center">798 (17%</td>
-<td headers="stat_2_3" class="gt_row gt_center">231 (24%</td>
-<td headers="stat_1_4" class="gt_row gt_center">871 (14%</td>
-<td headers="stat_2_4" class="gt_row gt_center">259 (22%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,101 (23%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">218 (26%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">969 (20%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">217 (26%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">798 (17%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">231 (24%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">871 (14%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">259 (22%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    45-49 years</td>
-<td headers="stat_1_1" class="gt_row gt_center">959 (20%</td>
-<td headers="stat_2_1" class="gt_row gt_center">176 (21%</td>
-<td headers="stat_1_2" class="gt_row gt_center">959 (19%</td>
-<td headers="stat_2_2" class="gt_row gt_center">173 (21%</td>
-<td headers="stat_1_3" class="gt_row gt_center">848 (18%</td>
-<td headers="stat_2_3" class="gt_row gt_center">209 (21%</td>
-<td headers="stat_1_4" class="gt_row gt_center">953 (15%</td>
-<td headers="stat_2_4" class="gt_row gt_center">214 (19%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">959 (20%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">176 (21%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">959 (19%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">173 (21%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">848 (18%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">209 (21%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">953 (15%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">214 (19%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    50-54 years</td>
-<td headers="stat_1_1" class="gt_row gt_center">857 (18%</td>
-<td headers="stat_2_1" class="gt_row gt_center">137 (16%</td>
-<td headers="stat_1_2" class="gt_row gt_center">846 (17%</td>
-<td headers="stat_2_2" class="gt_row gt_center">157 (19%</td>
-<td headers="stat_1_3" class="gt_row gt_center">829 (17%</td>
-<td headers="stat_2_3" class="gt_row gt_center">157 (16%</td>
-<td headers="stat_1_4" class="gt_row gt_center">967 (15%</td>
-<td headers="stat_2_4" class="gt_row gt_center">183 (16%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">857 (18%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">137 (16%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">846 (17%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">157 (19%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">829 (17%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">157 (16%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">967 (15%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">183 (16%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    55-59 years</td>
-<td headers="stat_1_1" class="gt_row gt_center">624 (13%</td>
-<td headers="stat_2_1" class="gt_row gt_center">94 (11%</td>
-<td headers="stat_1_2" class="gt_row gt_center">763 (15%</td>
-<td headers="stat_2_2" class="gt_row gt_center">103 (13%</td>
-<td headers="stat_1_3" class="gt_row gt_center">749 (16%</td>
-<td headers="stat_2_3" class="gt_row gt_center">131 (13%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,049 (16%</td>
-<td headers="stat_2_4" class="gt_row gt_center">155 (13%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">624 (13%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">94 (11%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">763 (15%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">103 (13%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">749 (16%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">131 (13%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,049 (16%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">155 (13%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    60-64 years</td>
-<td headers="stat_1_1" class="gt_row gt_center">507 (10%</td>
-<td headers="stat_2_1" class="gt_row gt_center">75 (8.9%</td>
-<td headers="stat_1_2" class="gt_row gt_center">579 (12%</td>
-<td headers="stat_2_2" class="gt_row gt_center">69 (8.4%</td>
-<td headers="stat_1_3" class="gt_row gt_center">707 (15%</td>
-<td headers="stat_2_3" class="gt_row gt_center">108 (11%</td>
-<td headers="stat_1_4" class="gt_row gt_center">981 (15%</td>
-<td headers="stat_2_4" class="gt_row gt_center">118 (10%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">507 (10%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">75 (8.9%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">579 (12%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">69 (8.4%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">707 (15%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">108 (11%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">981 (15%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">118 (10%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    65-69 years</td>
-<td headers="stat_1_1" class="gt_row gt_center">419 (8.6%</td>
-<td headers="stat_2_1" class="gt_row gt_center">70 (8.3%</td>
-<td headers="stat_1_2" class="gt_row gt_center">423 (8.5%</td>
-<td headers="stat_2_2" class="gt_row gt_center">60 (7.3%</td>
-<td headers="stat_1_3" class="gt_row gt_center">503 (10%</td>
-<td headers="stat_2_3" class="gt_row gt_center">81 (8.3%</td>
-<td headers="stat_1_4" class="gt_row gt_center">892 (14%</td>
-<td headers="stat_2_4" class="gt_row gt_center">141 (12%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">419 (8.6%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">70 (8.3%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">423 (8.5%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">60 (7.3%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">503 (10%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">81 (8.3%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">892 (14%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">141 (12%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    70-74 years</td>
-<td headers="stat_1_1" class="gt_row gt_center">416 (8.5%</td>
-<td headers="stat_2_1" class="gt_row gt_center">69 (8.2%</td>
-<td headers="stat_1_2" class="gt_row gt_center">414 (8.4%</td>
-<td headers="stat_2_2" class="gt_row gt_center">40 (4.9%</td>
-<td headers="stat_1_3" class="gt_row gt_center">385 (8.0%</td>
-<td headers="stat_2_3" class="gt_row gt_center">62 (6.3%</td>
-<td headers="stat_1_4" class="gt_row gt_center">688 (11%</td>
-<td headers="stat_2_4" class="gt_row gt_center">85 (7.4%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">416 (8.5%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">69 (8.2%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">414 (8.4%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">40 (4.9%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">385 (8.0%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">62 (6.3%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">688 (11%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">85 (7.4%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">income</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1530,23 +2649,23 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    At or above poverty threshold</td>
-<td headers="stat_1_1" class="gt_row gt_center">4,341 (89%</td>
-<td headers="stat_2_1" class="gt_row gt_center">594 (71%</td>
-<td headers="stat_1_2" class="gt_row gt_center">4,431 (89%</td>
-<td headers="stat_2_2" class="gt_row gt_center">614 (75%</td>
-<td headers="stat_1_3" class="gt_row gt_center">4,177 (87%</td>
-<td headers="stat_2_3" class="gt_row gt_center">700 (72%</td>
-<td headers="stat_1_4" class="gt_row gt_center">5,596 (87%</td>
-<td headers="stat_2_4" class="gt_row gt_center">842 (73%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">4,341 (89%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">594 (71%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,431 (89%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">614 (75%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">4,177 (87%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">700 (72%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">5,596 (87%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">842 (73%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Below poverty threshold</td>
-<td headers="stat_1_1" class="gt_row gt_center">542 (11%</td>
-<td headers="stat_2_1" class="gt_row gt_center">245 (29%</td>
-<td headers="stat_1_2" class="gt_row gt_center">522 (11%</td>
-<td headers="stat_2_2" class="gt_row gt_center">205 (25%</td>
-<td headers="stat_1_3" class="gt_row gt_center">642 (13%</td>
-<td headers="stat_2_3" class="gt_row gt_center">279 (28%</td>
-<td headers="stat_1_4" class="gt_row gt_center">805 (13%</td>
-<td headers="stat_2_4" class="gt_row gt_center">313 (27%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">542 (11%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">245 (29%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">522 (11%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">205 (25%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">642 (13%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">279 (28%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">805 (13%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">313 (27%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">education</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1557,50 +2676,50 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Never attended/kindergarten only</td>
-<td headers="stat_1_1" class="gt_row gt_center">7 (0.1%</td>
-<td headers="stat_2_1" class="gt_row gt_center">23 (2.7%</td>
-<td headers="stat_1_2" class="gt_row gt_center">12 (0.2%</td>
-<td headers="stat_2_2" class="gt_row gt_center">15 (1.8%</td>
-<td headers="stat_1_3" class="gt_row gt_center">14 (0.3%</td>
-<td headers="stat_2_3" class="gt_row gt_center">24 (2.5%</td>
-<td headers="stat_1_4" class="gt_row gt_center">12 (0.2%</td>
-<td headers="stat_2_4" class="gt_row gt_center">19 (1.6%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">7 (0.1%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">23 (2.7%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">12 (0.2%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">15 (1.8%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">14 (0.3%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">24 (2.5%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">12 (0.2%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">19 (1.6%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Less than high school</td>
-<td headers="stat_1_1" class="gt_row gt_center">617 (13%</td>
-<td headers="stat_2_1" class="gt_row gt_center">386 (46%</td>
-<td headers="stat_1_2" class="gt_row gt_center">512 (10%</td>
-<td headers="stat_2_2" class="gt_row gt_center">331 (40%</td>
-<td headers="stat_1_3" class="gt_row gt_center">408 (8.5%</td>
-<td headers="stat_2_3" class="gt_row gt_center">357 (36%</td>
-<td headers="stat_1_4" class="gt_row gt_center">415 (6.5%</td>
-<td headers="stat_2_4" class="gt_row gt_center">402 (35%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">617 (13%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">386 (46%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">512 (10%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">331 (40%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">408 (8.5%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">357 (36%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">415 (6.5%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">402 (35%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    High school</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,686 (35%</td>
-<td headers="stat_2_1" class="gt_row gt_center">202 (24%</td>
-<td headers="stat_1_2" class="gt_row gt_center">1,549 (31%</td>
-<td headers="stat_2_2" class="gt_row gt_center">224 (27%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,378 (29%</td>
-<td headers="stat_2_3" class="gt_row gt_center">264 (27%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,653 (26%</td>
-<td headers="stat_2_4" class="gt_row gt_center">294 (25%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,686 (35%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">202 (24%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,549 (31%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">224 (27%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,378 (29%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">264 (27%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,653 (26%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">294 (25%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Some college or Associate degree</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,399 (29%</td>
-<td headers="stat_2_1" class="gt_row gt_center">147 (18%</td>
-<td headers="stat_1_2" class="gt_row gt_center">1,511 (31%</td>
-<td headers="stat_2_2" class="gt_row gt_center">153 (19%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,575 (33%</td>
-<td headers="stat_2_3" class="gt_row gt_center">213 (22%</td>
-<td headers="stat_1_4" class="gt_row gt_center">2,117 (33%</td>
-<td headers="stat_2_4" class="gt_row gt_center">285 (25%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,399 (29%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">147 (18%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,511 (31%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">153 (19%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,575 (33%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">213 (22%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">2,117 (33%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">285 (25%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Bachelor degree and higher</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,174 (24%</td>
-<td headers="stat_2_1" class="gt_row gt_center">81 (9.7%</td>
-<td headers="stat_1_2" class="gt_row gt_center">1,369 (28%</td>
-<td headers="stat_2_2" class="gt_row gt_center">96 (12%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,444 (30%</td>
-<td headers="stat_2_3" class="gt_row gt_center">121 (12%</td>
-<td headers="stat_1_4" class="gt_row gt_center">2,204 (34%</td>
-<td headers="stat_2_4" class="gt_row gt_center">155 (13%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,174 (24%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">81 (9.7%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,369 (28%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">96 (12%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,444 (30%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">121 (12%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">2,204 (34%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">155 (13%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">marital_status</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1611,41 +2730,41 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Never married</td>
-<td headers="stat_1_1" class="gt_row gt_center">461 (9.4%</td>
-<td headers="stat_2_1" class="gt_row gt_center">90 (11%</td>
-<td headers="stat_1_2" class="gt_row gt_center">480 (9.7%</td>
-<td headers="stat_2_2" class="gt_row gt_center">90 (11%</td>
-<td headers="stat_1_3" class="gt_row gt_center">550 (11%</td>
-<td headers="stat_2_3" class="gt_row gt_center">126 (13%</td>
-<td headers="stat_1_4" class="gt_row gt_center">735 (11%</td>
-<td headers="stat_2_4" class="gt_row gt_center">150 (13%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">461 (9.4%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">90 (11%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">480 (9.7%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">90 (11%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">550 (11%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">126 (13%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">735 (11%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">150 (13%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Married</td>
-<td headers="stat_1_1" class="gt_row gt_center">2,446 (50%</td>
-<td headers="stat_2_1" class="gt_row gt_center">407 (49%</td>
-<td headers="stat_1_2" class="gt_row gt_center">2,486 (50%</td>
-<td headers="stat_2_2" class="gt_row gt_center">380 (46%</td>
-<td headers="stat_1_3" class="gt_row gt_center">2,366 (49%</td>
-<td headers="stat_2_3" class="gt_row gt_center">488 (50%</td>
-<td headers="stat_1_4" class="gt_row gt_center">3,086 (48%</td>
-<td headers="stat_2_4" class="gt_row gt_center">567 (49%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">2,446 (50%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">407 (49%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,486 (50%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">380 (46%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">2,366 (49%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">488 (50%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">3,086 (48%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">567 (49%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Single (separated/widowed/divorced)</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,839 (38%</td>
-<td headers="stat_2_1" class="gt_row gt_center">313 (37%</td>
-<td headers="stat_1_2" class="gt_row gt_center">1,846 (37%</td>
-<td headers="stat_2_2" class="gt_row gt_center">315 (38%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,724 (36%</td>
-<td headers="stat_2_3" class="gt_row gt_center">334 (34%</td>
-<td headers="stat_1_4" class="gt_row gt_center">2,337 (37%</td>
-<td headers="stat_2_4" class="gt_row gt_center">395 (34%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,839 (38%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">313 (37%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,846 (37%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">315 (38%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,724 (36%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">334 (34%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">2,337 (37%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">395 (34%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Living with partner</td>
-<td headers="stat_1_1" class="gt_row gt_center">137 (2.8%</td>
-<td headers="stat_2_1" class="gt_row gt_center">29 (3.5%</td>
-<td headers="stat_1_2" class="gt_row gt_center">141 (2.8%</td>
-<td headers="stat_2_2" class="gt_row gt_center">34 (4.2%</td>
-<td headers="stat_1_3" class="gt_row gt_center">179 (3.7%</td>
-<td headers="stat_2_3" class="gt_row gt_center">31 (3.2%</td>
-<td headers="stat_1_4" class="gt_row gt_center">243 (3.8%</td>
-<td headers="stat_2_4" class="gt_row gt_center">43 (3.7%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">137 (2.8%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">29 (3.5%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">141 (2.8%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">34 (4.2%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">179 (3.7%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">31 (3.2%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">243 (3.8%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">43 (3.7%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">region_residence</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1656,41 +2775,41 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Northeast</td>
-<td headers="stat_1_1" class="gt_row gt_center">937 (19%</td>
-<td headers="stat_2_1" class="gt_row gt_center">159 (19%</td>
-<td headers="stat_1_2" class="gt_row gt_center">855 (17%</td>
-<td headers="stat_2_2" class="gt_row gt_center">117 (14%</td>
-<td headers="stat_1_3" class="gt_row gt_center">830 (17%</td>
-<td headers="stat_2_3" class="gt_row gt_center">150 (15%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,138 (18%</td>
-<td headers="stat_2_4" class="gt_row gt_center">175 (15%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">937 (19%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">159 (19%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">855 (17%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">117 (14%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">830 (17%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">150 (15%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,138 (18%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">175 (15%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    North Central/Midwest</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,235 (25%</td>
-<td headers="stat_2_1" class="gt_row gt_center">37 (4.4%</td>
-<td headers="stat_1_2" class="gt_row gt_center">1,318 (27%</td>
-<td headers="stat_2_2" class="gt_row gt_center">52 (6.3%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,166 (24%</td>
-<td headers="stat_2_3" class="gt_row gt_center">54 (5.5%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,455 (23%</td>
-<td headers="stat_2_4" class="gt_row gt_center">77 (6.7%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,235 (25%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">37 (4.4%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,318 (27%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">52 (6.3%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,166 (24%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">54 (5.5%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,455 (23%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">77 (6.7%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    South</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,822 (37%</td>
-<td headers="stat_2_1" class="gt_row gt_center">321 (38%</td>
-<td headers="stat_1_2" class="gt_row gt_center">1,829 (37%</td>
-<td headers="stat_2_2" class="gt_row gt_center">342 (42%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,775 (37%</td>
-<td headers="stat_2_3" class="gt_row gt_center">363 (37%</td>
-<td headers="stat_1_4" class="gt_row gt_center">2,252 (35%</td>
-<td headers="stat_2_4" class="gt_row gt_center">399 (35%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,822 (37%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">321 (38%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,829 (37%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">342 (42%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,775 (37%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">363 (37%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">2,252 (35%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">399 (35%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    West</td>
-<td headers="stat_1_1" class="gt_row gt_center">889 (18%</td>
-<td headers="stat_2_1" class="gt_row gt_center">322 (38%</td>
-<td headers="stat_1_2" class="gt_row gt_center">951 (19%</td>
-<td headers="stat_2_2" class="gt_row gt_center">308 (38%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,048 (22%</td>
-<td headers="stat_2_3" class="gt_row gt_center">412 (42%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,556 (24%</td>
-<td headers="stat_2_4" class="gt_row gt_center">504 (44%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">889 (18%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">322 (38%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">951 (19%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">308 (38%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,048 (22%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">412 (42%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,556 (24%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">504 (44%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">insurance_status</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1701,23 +2820,23 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    No Coverage</td>
-<td headers="stat_1_1" class="gt_row gt_center">4,370 (89%</td>
-<td headers="stat_2_1" class="gt_row gt_center">614 (73%</td>
-<td headers="stat_1_2" class="gt_row gt_center">4,441 (90%</td>
-<td headers="stat_2_2" class="gt_row gt_center">582 (71%</td>
-<td headers="stat_1_3" class="gt_row gt_center">4,224 (88%</td>
-<td headers="stat_2_3" class="gt_row gt_center">683 (70%</td>
-<td headers="stat_1_4" class="gt_row gt_center">6,002 (94%</td>
-<td headers="stat_2_4" class="gt_row gt_center">918 (79%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">4,370 (89%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">614 (73%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,441 (90%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">582 (71%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">4,224 (88%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">683 (70%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">6,002 (94%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">918 (79%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Coverage</td>
-<td headers="stat_1_1" class="gt_row gt_center">513 (11%</td>
-<td headers="stat_2_1" class="gt_row gt_center">225 (27%</td>
-<td headers="stat_1_2" class="gt_row gt_center">512 (10%</td>
-<td headers="stat_2_2" class="gt_row gt_center">237 (29%</td>
-<td headers="stat_1_3" class="gt_row gt_center">595 (12%</td>
-<td headers="stat_2_3" class="gt_row gt_center">296 (30%</td>
-<td headers="stat_1_4" class="gt_row gt_center">399 (6.2%</td>
-<td headers="stat_2_4" class="gt_row gt_center">237 (21%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">513 (11%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">225 (27%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">512 (10%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">237 (29%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">595 (12%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">296 (30%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">399 (6.2%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">237 (21%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">health_status</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1728,23 +2847,23 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Excellent/very good/good</td>
-<td headers="stat_1_1" class="gt_row gt_center">4,161 (85%</td>
-<td headers="stat_2_1" class="gt_row gt_center">621 (74%</td>
-<td headers="stat_1_2" class="gt_row gt_center">4,166 (84%</td>
-<td headers="stat_2_2" class="gt_row gt_center">615 (75%</td>
-<td headers="stat_1_3" class="gt_row gt_center">4,017 (83%</td>
-<td headers="stat_2_3" class="gt_row gt_center">752 (77%</td>
-<td headers="stat_1_4" class="gt_row gt_center">5,391 (84%</td>
-<td headers="stat_2_4" class="gt_row gt_center">870 (75%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">4,161 (85%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">621 (74%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,166 (84%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">615 (75%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">4,017 (83%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">752 (77%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">5,391 (84%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">870 (75%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Fair/poor</td>
-<td headers="stat_1_1" class="gt_row gt_center">722 (15%</td>
-<td headers="stat_2_1" class="gt_row gt_center">218 (26%</td>
-<td headers="stat_1_2" class="gt_row gt_center">787 (16%</td>
-<td headers="stat_2_2" class="gt_row gt_center">204 (25%</td>
-<td headers="stat_1_3" class="gt_row gt_center">802 (17%</td>
-<td headers="stat_2_3" class="gt_row gt_center">227 (23%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,010 (16%</td>
-<td headers="stat_2_4" class="gt_row gt_center">285 (25%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">722 (15%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">218 (26%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">787 (16%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">204 (25%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">802 (17%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">227 (23%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,010 (16%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">285 (25%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">usual_medicalcare_status</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1755,23 +2874,23 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    No place</td>
-<td headers="stat_1_1" class="gt_row gt_center">355 (7.3%</td>
-<td headers="stat_2_1" class="gt_row gt_center">120 (14%</td>
-<td headers="stat_1_2" class="gt_row gt_center">343 (6.9%</td>
-<td headers="stat_2_2" class="gt_row gt_center">147 (18%</td>
-<td headers="stat_1_3" class="gt_row gt_center">409 (8.5%</td>
-<td headers="stat_2_3" class="gt_row gt_center">178 (18%</td>
-<td headers="stat_1_4" class="gt_row gt_center">389 (6.1%</td>
-<td headers="stat_2_4" class="gt_row gt_center">138 (12%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">355 (7.3%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">120 (14%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">343 (6.9%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">147 (18%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">409 (8.5%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">178 (18%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">389 (6.1%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">138 (12%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Usual place</td>
-<td headers="stat_1_1" class="gt_row gt_center">4,528 (93%</td>
-<td headers="stat_2_1" class="gt_row gt_center">719 (86%</td>
-<td headers="stat_1_2" class="gt_row gt_center">4,610 (93%</td>
-<td headers="stat_2_2" class="gt_row gt_center">672 (82%</td>
-<td headers="stat_1_3" class="gt_row gt_center">4,410 (92%</td>
-<td headers="stat_2_3" class="gt_row gt_center">801 (82%</td>
-<td headers="stat_1_4" class="gt_row gt_center">6,012 (94%</td>
-<td headers="stat_2_4" class="gt_row gt_center">1,017 (88%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">4,528 (93%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">719 (86%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,610 (93%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">672 (82%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">4,410 (92%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">801 (82%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">6,012 (94%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">1,017 (88%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">smoking_status</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1782,32 +2901,32 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Never</td>
-<td headers="stat_1_1" class="gt_row gt_center">2,511 (51%</td>
-<td headers="stat_2_1" class="gt_row gt_center">579 (69%</td>
-<td headers="stat_1_2" class="gt_row gt_center">2,740 (55%</td>
-<td headers="stat_2_2" class="gt_row gt_center">607 (74%</td>
-<td headers="stat_1_3" class="gt_row gt_center">2,775 (58%</td>
-<td headers="stat_2_3" class="gt_row gt_center">736 (75%</td>
-<td headers="stat_1_4" class="gt_row gt_center">3,758 (59%</td>
-<td headers="stat_2_4" class="gt_row gt_center">876 (76%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">2,511 (51%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">579 (69%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,740 (55%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">607 (74%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">2,775 (58%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">736 (75%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">3,758 (59%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">876 (76%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Current</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,137 (23%</td>
-<td headers="stat_2_1" class="gt_row gt_center">118 (14%</td>
-<td headers="stat_1_2" class="gt_row gt_center">980 (20%</td>
-<td headers="stat_2_2" class="gt_row gt_center">110 (13%</td>
-<td headers="stat_1_3" class="gt_row gt_center">938 (19%</td>
-<td headers="stat_2_3" class="gt_row gt_center">112 (11%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,115 (17%</td>
-<td headers="stat_2_4" class="gt_row gt_center">115 (10.0%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,137 (23%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">118 (14%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">980 (20%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">110 (13%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">938 (19%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">112 (11%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,115 (17%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">115 (10.0%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Former</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,235 (25%</td>
-<td headers="stat_2_1" class="gt_row gt_center">142 (17%</td>
-<td headers="stat_1_2" class="gt_row gt_center">1,233 (25%</td>
-<td headers="stat_2_2" class="gt_row gt_center">102 (12%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,106 (23%</td>
-<td headers="stat_2_3" class="gt_row gt_center">131 (13%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,528 (24%</td>
-<td headers="stat_2_4" class="gt_row gt_center">164 (14%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,235 (25%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">142 (17%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,233 (25%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">102 (12%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,106 (23%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">131 (13%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,528 (24%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">164 (14%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">alcohol_status</td>
 <td headers="stat_1_1" class="gt_row gt_center"></td>
 <td headers="stat_2_1" class="gt_row gt_center"></td>
@@ -1818,52 +2937,756 @@ table1</code></pre>
 <td headers="stat_1_4" class="gt_row gt_center"></td>
 <td headers="stat_2_4" class="gt_row gt_center"></td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Never</td>
-<td headers="stat_1_1" class="gt_row gt_center">1,219 (25%</td>
-<td headers="stat_2_1" class="gt_row gt_center">377 (45%</td>
-<td headers="stat_1_2" class="gt_row gt_center">1,215 (25%</td>
-<td headers="stat_2_2" class="gt_row gt_center">352 (43%</td>
-<td headers="stat_1_3" class="gt_row gt_center">1,103 (23%</td>
-<td headers="stat_2_3" class="gt_row gt_center">411 (42%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,280 (20%</td>
-<td headers="stat_2_4" class="gt_row gt_center">449 (39%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">1,219 (25%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">377 (45%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,215 (25%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">352 (43%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">1,103 (23%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">411 (42%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,280 (20%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">449 (39%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Current</td>
-<td headers="stat_1_1" class="gt_row gt_center">2,834 (58%</td>
-<td headers="stat_2_1" class="gt_row gt_center">335 (40%</td>
-<td headers="stat_1_2" class="gt_row gt_center">2,901 (59%</td>
-<td headers="stat_2_2" class="gt_row gt_center">342 (42%</td>
-<td headers="stat_1_3" class="gt_row gt_center">2,906 (60%</td>
-<td headers="stat_2_3" class="gt_row gt_center">420 (43%</td>
-<td headers="stat_1_4" class="gt_row gt_center">4,005 (63%</td>
-<td headers="stat_2_4" class="gt_row gt_center">532 (46%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">2,834 (58%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">335 (40%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,901 (59%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">342 (42%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">2,906 (60%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">420 (43%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">4,005 (63%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">532 (46%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">    Former</td>
-<td headers="stat_1_1" class="gt_row gt_center">830 (17%</td>
-<td headers="stat_2_1" class="gt_row gt_center">127 (15%</td>
-<td headers="stat_1_2" class="gt_row gt_center">837 (17%</td>
-<td headers="stat_2_2" class="gt_row gt_center">125 (15%</td>
-<td headers="stat_1_3" class="gt_row gt_center">810 (17%</td>
-<td headers="stat_2_3" class="gt_row gt_center">148 (15%</td>
-<td headers="stat_1_4" class="gt_row gt_center">1,116 (17%</td>
-<td headers="stat_2_4" class="gt_row gt_center">174 (15%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">830 (17%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">127 (15%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">837 (17%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">125 (15%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">810 (17%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">148 (15%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">1,116 (17%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">174 (15%)</td></tr>
     <tr><td headers="label" class="gt_row gt_left">diabetes_status</td>
-<td headers="stat_1_1" class="gt_row gt_center">436 (8.9%</td>
-<td headers="stat_2_1" class="gt_row gt_center">108 (13%</td>
-<td headers="stat_1_2" class="gt_row gt_center">596 (12%</td>
-<td headers="stat_2_2" class="gt_row gt_center">133 (16%</td>
-<td headers="stat_1_3" class="gt_row gt_center">658 (14%</td>
-<td headers="stat_2_3" class="gt_row gt_center">209 (21%</td>
-<td headers="stat_1_4" class="gt_row gt_center">942 (15%</td>
-<td headers="stat_2_4" class="gt_row gt_center">239 (21%</td></tr>
+<td headers="stat_1_1" class="gt_row gt_center">436 (8.9%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">108 (13%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">596 (12%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">133 (16%)</td>
+<td headers="stat_1_3" class="gt_row gt_center">658 (14%)</td>
+<td headers="stat_2_3" class="gt_row gt_center">209 (21%)</td>
+<td headers="stat_1_4" class="gt_row gt_center">942 (15%)</td>
+<td headers="stat_2_4" class="gt_row gt_center">239 (21%)</td></tr>
   </tbody>
   
   <tfoot class="gt_footnotes">
     <tr>
-      <td class="gt_footnote" colspan="9"><sup class="gt_footnote_marks">1</sup> n (%</td>
+      <td class="gt_footnote" colspan="9"><sup class="gt_footnote_marks">1</sup> n (%)</td>
     </tr>
   </tfoot>
 </table>
 </div>
-<pre class="r"><code># Saving the table
-saveRDS(table1, file = (here(&quot;results&quot;, &quot;exploratory_analysis_result&quot;, &quot;demographic_table1.rds&quot;)))</code></pre>
+<pre class="r"><code># Lets create a single complete demographic characteristics table by mammogram_status and hispanic_status of women
+table3 &lt;- data_clean_maint %&gt;% 
+    select(mammogram_status, year, age, income, education, marital_status, region_residence, insurance_status, health_status, usual_medicalcare_status, smoking_status, alcohol_status, diabetes_status, hispanic_status) %&gt;%
+    tbl_strata(
+      strata = mammogram_status,
+      .tbl_fun = 
+        ~ .x %&gt;%
+        tbl_summary(
+           missing = &quot;no&quot;,
+        by = c(&quot;hispanic_status&quot;),
+        statistic = all_categorical() ~ &quot;{n} ({p}%)&quot;))
+table3</code></pre>
+<div id="ujpoespnqh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#ujpoespnqh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ujpoespnqh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ujpoespnqh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ujpoespnqh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ujpoespnqh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ujpoespnqh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ujpoespnqh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ujpoespnqh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ujpoespnqh .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ujpoespnqh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ujpoespnqh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ujpoespnqh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ujpoespnqh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ujpoespnqh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ujpoespnqh .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ujpoespnqh .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ujpoespnqh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ujpoespnqh .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ujpoespnqh .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ujpoespnqh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ujpoespnqh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ujpoespnqh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ujpoespnqh .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ujpoespnqh .gt_left {
+  text-align: left;
+}
+
+#ujpoespnqh .gt_center {
+  text-align: center;
+}
+
+#ujpoespnqh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ujpoespnqh .gt_font_normal {
+  font-weight: normal;
+}
+
+#ujpoespnqh .gt_font_bold {
+  font-weight: bold;
+}
+
+#ujpoespnqh .gt_font_italic {
+  font-style: italic;
+}
+
+#ujpoespnqh .gt_super {
+  font-size: 65%;
+}
+
+#ujpoespnqh .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#ujpoespnqh .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ujpoespnqh .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ujpoespnqh .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ujpoespnqh .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ujpoespnqh .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ujpoespnqh .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="&lt;strong&gt;No&lt;/strong&gt;">
+        <span class="gt_column_spanner"><strong>No</strong></span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="&lt;strong&gt;Yes&lt;/strong&gt;">
+        <span class="gt_column_spanner"><strong>Yes</strong></span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;NH&lt;/strong&gt;, N = 2,624&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>NH</strong>, N = 2,624<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;H&lt;/strong&gt;, N = 758&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>H</strong>, N = 758<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;NH&lt;/strong&gt;, N = 18,432&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>NH</strong>, N = 18,432<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;H&lt;/strong&gt;, N = 3,034&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>H</strong>, N = 3,034<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">year</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    2000</td>
+<td headers="stat_1_1" class="gt_row gt_center">692 (26%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">193 (25%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,191 (23%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">646 (21%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    2005</td>
+<td headers="stat_1_1" class="gt_row gt_center">662 (25%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">186 (25%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,291 (23%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">633 (21%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    2010</td>
+<td headers="stat_1_1" class="gt_row gt_center">548 (21%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">158 (21%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,271 (23%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">821 (27%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    2015</td>
+<td headers="stat_1_1" class="gt_row gt_center">722 (28%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">221 (29%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">5,679 (31%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">934 (31%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">age</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    40-44 years</td>
+<td headers="stat_1_1" class="gt_row gt_center">1,076 (41%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">344 (45%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,663 (14%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">581 (19%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    45-49 years</td>
+<td headers="stat_1_1" class="gt_row gt_center">483 (18%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">156 (21%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">3,236 (18%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">616 (20%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    50-54 years</td>
+<td headers="stat_1_1" class="gt_row gt_center">314 (12%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">88 (12%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">3,185 (17%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">546 (18%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    55-59 years</td>
+<td headers="stat_1_1" class="gt_row gt_center">242 (9.2%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">62 (8.2%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,943 (16%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">421 (14%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    60-64 years</td>
+<td headers="stat_1_1" class="gt_row gt_center">179 (6.8%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">46 (6.1%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,595 (14%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">324 (11%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    65-69 years</td>
+<td headers="stat_1_1" class="gt_row gt_center">173 (6.6%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">36 (4.7%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,064 (11%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">316 (10%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    70-74 years</td>
+<td headers="stat_1_1" class="gt_row gt_center">157 (6.0%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">26 (3.4%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,746 (9.5%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">230 (7.6%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">income</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    At or above poverty threshold</td>
+<td headers="stat_1_1" class="gt_row gt_center">2,075 (79%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">500 (66%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">16,470 (89%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">2,250 (74%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Below poverty threshold</td>
+<td headers="stat_1_1" class="gt_row gt_center">549 (21%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">258 (34%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,962 (11%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">784 (26%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">education</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Never attended/kindergarten only</td>
+<td headers="stat_1_1" class="gt_row gt_center">16 (0.6%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">30 (4.0%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">29 (0.2%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">51 (1.7%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Less than high school</td>
+<td headers="stat_1_1" class="gt_row gt_center">391 (15%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">346 (46%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,561 (8.5%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">1,130 (37%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    High school</td>
+<td headers="stat_1_1" class="gt_row gt_center">928 (35%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">193 (25%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">5,338 (29%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">791 (26%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Some college or Associate degree</td>
+<td headers="stat_1_1" class="gt_row gt_center">726 (28%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">121 (16%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">5,876 (32%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">677 (22%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Bachelor degree and higher</td>
+<td headers="stat_1_1" class="gt_row gt_center">563 (21%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">68 (9.0%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">5,628 (31%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">385 (13%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">marital_status</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Never married</td>
+<td headers="stat_1_1" class="gt_row gt_center">458 (17%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">113 (15%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,768 (9.6%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">343 (11%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Married</td>
+<td headers="stat_1_1" class="gt_row gt_center">1,119 (43%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">366 (48%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">9,265 (50%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">1,476 (49%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Single (separated/widowed/divorced)</td>
+<td headers="stat_1_1" class="gt_row gt_center">932 (36%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">238 (31%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">6,814 (37%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">1,119 (37%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Living with partner</td>
+<td headers="stat_1_1" class="gt_row gt_center">115 (4.4%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">41 (5.4%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">585 (3.2%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">96 (3.2%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">region_residence</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Northeast</td>
+<td headers="stat_1_1" class="gt_row gt_center">393 (15%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">84 (11%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">3,367 (18%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">517 (17%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    North Central/Midwest</td>
+<td headers="stat_1_1" class="gt_row gt_center">618 (24%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">60 (7.9%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,556 (25%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">160 (5.3%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    South</td>
+<td headers="stat_1_1" class="gt_row gt_center">1,037 (40%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">318 (42%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">6,641 (36%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">1,107 (36%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    West</td>
+<td headers="stat_1_1" class="gt_row gt_center">576 (22%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">296 (39%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">3,868 (21%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">1,250 (41%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">insurance_status</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    No Coverage</td>
+<td headers="stat_1_1" class="gt_row gt_center">2,004 (76%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">405 (53%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">17,033 (92%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">2,392 (79%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Coverage</td>
+<td headers="stat_1_1" class="gt_row gt_center">620 (24%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">353 (47%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">1,399 (7.6%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">642 (21%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">health_status</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Excellent/very good/good</td>
+<td headers="stat_1_1" class="gt_row gt_center">2,187 (83%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">600 (79%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">15,548 (84%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">2,258 (74%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Fair/poor</td>
+<td headers="stat_1_1" class="gt_row gt_center">437 (17%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">158 (21%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,884 (16%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">776 (26%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">usual_medicalcare_status</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    No place</td>
+<td headers="stat_1_1" class="gt_row gt_center">510 (19%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">242 (32%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">986 (5.3%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">341 (11%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Usual place</td>
+<td headers="stat_1_1" class="gt_row gt_center">2,114 (81%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">516 (68%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">17,446 (95%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">2,693 (89%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">smoking_status</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Never</td>
+<td headers="stat_1_1" class="gt_row gt_center">1,384 (53%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">590 (78%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">10,400 (56%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">2,208 (73%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Current</td>
+<td headers="stat_1_1" class="gt_row gt_center">793 (30%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">103 (14%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">3,377 (18%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">352 (12%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Former</td>
+<td headers="stat_1_1" class="gt_row gt_center">447 (17%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">65 (8.6%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,655 (25%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">474 (16%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">alcohol_status</td>
+<td headers="stat_1_1" class="gt_row gt_center"></td>
+<td headers="stat_2_1" class="gt_row gt_center"></td>
+<td headers="stat_1_2" class="gt_row gt_center"></td>
+<td headers="stat_2_2" class="gt_row gt_center"></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Never</td>
+<td headers="stat_1_1" class="gt_row gt_center">787 (30%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">396 (52%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">4,030 (22%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">1,193 (39%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Current</td>
+<td headers="stat_1_1" class="gt_row gt_center">1,397 (53%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">276 (36%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">11,249 (61%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">1,353 (45%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Former</td>
+<td headers="stat_1_1" class="gt_row gt_center">440 (17%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">86 (11%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">3,153 (17%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">488 (16%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">diabetes_status</td>
+<td headers="stat_1_1" class="gt_row gt_center">246 (9.4%)</td>
+<td headers="stat_2_1" class="gt_row gt_center">90 (12%)</td>
+<td headers="stat_1_2" class="gt_row gt_center">2,386 (13%)</td>
+<td headers="stat_2_2" class="gt_row gt_center">599 (20%)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">1</sup> n (%)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<pre class="r"><code># Saving the above 3 tables
+saveRDS(table1, file = (here(&quot;results&quot;, &quot;exploratory_analysis_result&quot;, &quot;demographic_table1.rds&quot;)))
+saveRDS(table2, file = (here(&quot;results&quot;, &quot;exploratory_analysis_result&quot;, &quot;demographic_table2.rds&quot;)))
+saveRDS(table3, file = (here(&quot;results&quot;, &quot;exploratory_analysis_result&quot;, &quot;demographic_table3.rds&quot;)))</code></pre>
 <p>CREATING FIGURE</p>
 <pre class="r"><code># Recoding hispanic_status for the figure
 data_clean_main1 &lt;- data_clean_main

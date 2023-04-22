@@ -126,8 +126,6 @@ ggsave(filename = here("results", "statistical_analysis_result", "2_model_evalua
 # Using roc_auc() for estimating the area under the curve 
 data_clean_main_aug %>% 
   roc_auc(truth = mammogram_status, .pred_0)
-
-
 ```
 
 **ALTERNATIVE MODEL: USING MAMMOGRAM STATUS AS OUTCOME OF INTEREST AND HISPANIC STATUS AS MAIN PREDICTOR**

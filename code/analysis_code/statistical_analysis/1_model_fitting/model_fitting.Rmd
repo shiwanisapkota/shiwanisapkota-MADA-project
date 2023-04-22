@@ -64,6 +64,7 @@ log_fit_hispanicstatus
 
 # Looking at the summary of log_fit_hispanicstatus
 tidy(log_fit_hispanicstatus)
+exp(-0.5624346)
 ```
 
 ```{r}
@@ -189,6 +190,7 @@ log_fit_year_age_hispanic
 
 # Looking at the summary of log_fit_year_age_hispanic
 table3 <- tidy(log_fit_year_age_hispanic)
+table3
 saveRDS(table3, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "year_age_hispanic_model.rds")))
 ```
 
@@ -200,6 +202,7 @@ log_fit_demographic
 
 # Looking at the summary of log_fit_demographic
 table4 <- tidy(log_fit_demographic)
+table4
 saveRDS(table4, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "demographic_model.rds")))
 ```
 
@@ -210,6 +213,7 @@ log_fit_medical
 
 # Looking at the summary of log_fit_medical
 table5 <- tidy(log_fit_medical)
+table5
 saveRDS(table5, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "medical_model.rds")))
 ```
 
@@ -220,6 +224,7 @@ log_fit_smoking_alcohol
 
 # Looking at the summary of log_fit_smoking_alcohol
 table6 <- tidy(log_fit_smoking_alcohol)
+table6
 saveRDS(table6, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "smoking_alcohol_model.rds")))
 ```
 

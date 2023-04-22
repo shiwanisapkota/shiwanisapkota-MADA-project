@@ -163,6 +163,7 @@ knitr::kable(additionaltable12)
 #| fig-cap: "Lasso model."
 #| echo: FALSE
 knitr::include_graphics("/results/statistical_analysis_result/3_machine_learning_result/figure3_lasso_model.png")
+version
 ```
 
 
