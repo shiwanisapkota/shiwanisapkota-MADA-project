@@ -200,11 +200,10 @@ final_lasso_wf <- wf_lasso %>%
 # Fitting to the training data with the final workflow
 final_lasso_fit <- final_lasso_wf %>% fit(train_data) 
 
-# Plotting and saving the final fit
+# Plotting the final fit
 plot_lasso <- extract_fit_engine(final_lasso_fit)
 lasso_model_figure <- plot(plot_lasso, "lambda")
 lasso_model_figure
-ggsave(filename = here("results","statistical_analysis_result", "3_machine_learning_result", "figure3_lasso_model.png"), plot = lasso_model_figure)
 
 # Predicted outcomes
 predicted_lasso_fit <- predict(final_lasso_fit, train_data)

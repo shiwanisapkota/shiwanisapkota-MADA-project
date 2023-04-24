@@ -5,6 +5,7 @@ author: Shiwani Sapkota
 date: "`r Sys.Date()`"
 bibliography: citations.bib
 csl: jama.csl
+prefer-html: true
 format:
   docx:
     toc: false
@@ -12,7 +13,21 @@ format:
     highlight-style: github
 ---
 
-# 1. Summary/Abstract
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# load R packages
+library(here) 
+library(knitr)
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(gt)
+library(skimr) 
+library(ggpubr)
+library(kableExtra)
+library(gridExtra)
+```
+
+# Summary/Abstract
 
 There exists racial differences in mammography screening and breast cancer incidence rates. Hispanic and Black women mostly have later stage cancer diagnosis and lower survival rates compared to White women. Mammography screening could be of great importance in reducing such later stage breast cancer diagnosis among minority women. In that case, it is essential to understand the association between breast cancer screening (mammogram) and socio-economic status of Hispanic and non-Hispanic women. This study was conducted to fill up that knowledge gap with the aim of exploring the relationship trend among socioeconomic status and other predictive factors influencing the likelihood of using mammography screening services within Hispanic and non-Hispanic women. 
 
@@ -22,7 +37,7 @@ Women aged 40-74 years were reported having mammogram as 84.5%, 85.3%, 87.8%, an
 
 This study findings could be of great importance as health practitioners could identify high risk behavior individuals and recommend appropriate cancer screening services. Given the lower overall breast cancer screening rates among Hispanic women, increased education and awareness should be among top priorities for developing appropriate population-based interventions for increasing the use of mammography screening. Furthermore, intervention programs should emphasize on educating women and on making uneducated women aware of such cancer screening services.
 
-# 2. Introduction
+# Introduction
 
 Breast cancer is one of the most common cancers and the second leading cause of cancer death among women in the US. Mammography screening is a screening process where an x-ray image of the breast is taken to detect irregularities in breast tissue which could be the sign of cancer (@gorina_patterns_2021). Mammography screening can help detect and treat breast cancer at early stages reducing the mortality rate (@tabar_reduction_1985, @kerlikowske_efficacy_1995, @shapiro_ten-_1982, @laara_trends_1987). Hence, mammography screening can play a great role in early breast cancer detection and treatment, and in reduction in the number of deaths related to breast cancer. The U.S. Preventive Services Task Force (USPSTF) recommends a biennial (every other year) mammography screening for women aged 50 to 74 years and advises to determine the need for mammography screening on an individual basis for women aged 40 to 49 years (@siu_screening_2016).
 
@@ -32,7 +47,7 @@ Little is known about the predictors of using cancer screening services among mi
 
 This study aims to explore the relationship trend among socioeconomic status and other predictive factors influencing the likelihood of using mammography screening services within Hispanic and non-Hispanic women aged 40 to 74 years during 2000, 2005, 2010, and 2015.
 
-# 3. Methods
+# Methods
 
 The study used the data from the National Health Interview Survey (NHIS). The NHIS survey collects information related to health, health care access, health behaviors of the civilian and non-institutionalized US population and makes digital data files available for years 1963 to present (@blewett_lynn_a._ipums_2016). Users can create their own costumed NHIS data extracts for analysis from the NHIS website. For this study, data with the variables of interest for years: 2000, 2005, 2010, and 2015 were directly extracted from the NHIS website. Those specific 4 years were selected for the study as there were most data points available for those years and 5-years difference comparison could give great insights at the trends of mammogram screening over years. The study was restricted among Hispanic and non-Hispanic women aged 40-74 years as per the mammography screening recommendation by USPSTF and those age groups women fall under high-risk groups for developing breast cancer. Hence, the study was limited within 40-74 years Hispanic and non-Hispanic women with no report of cancer during the years 2000, 2005, 2010, and 2015. Exclusion of missing data points in 1 or more predictor variables yielded a final sample of 24,848 subjects. 
 
@@ -40,97 +55,87 @@ Mammography screening status (yes or no) was defined as outcome variable of inte
 
 The univariate relationship between the mammogram screening and each hypothesized predictors was assessed using logistic regression. Multiple logistic regression was also performed for determining the multivariate effect on mammogram screening. Model selection process was performed and the final model model was selected based on ROC AUC (Area under the Receiver Operating Characteristic curve) value. The model evaluation was performed using 5-fold cross-validation process repeated for 5 times. All analysis were performed using R (version 4.2.1) and cross-validation was performed using the tidymodels package. The code and data for reproducing results are available on [Github](https://github.com/shiwanisapkota/shiwanisapkota-MADA-project).
 
-# 4. Results
+# Results
 
-# 4.1. Exploratory/Descriptive analysis
+## Exploratory/Descriptive analysis
 
-Table 1 shows the demographic characteristics of the study population on the basis of mammogram screening status. Out of 24,848 subjects, there were 21,466 (86.4%) women doing mammogram screening while there were 3,382 (13.6%) women who did not do mammogram screening. Similarly, there were 21,056 (84.7%) non-Hispanic women and 3,792 (15.3%) Hispanic women. Larger proportion of women aged 40-44 years did not  go for mammogram screening compared to other aged women. Similarly, women with education level of some college or associate degree had higher proportion of mammogram screening. Majority of our participants (58.7%) were never smokers. Out of 21,056 non-Hispanic women, 18,432 (87.6%) had mammogram screening while out of 3,792 Hispanic women, 3,034 (80%) had mammogram screening. Figure 1 shows increasing trend in mammogram screening among women going through 2000 to 2015. 
+Table 1 shows the demographic characteristics of the study population on the basis of mammogram screening status (Yes/No). Out of 24,848 subjects, there were 21,466 (86.4%) women doing mammogram screening while there were 3,382 (13.6%) women who did not do mammogram screening. Similarly, there were 21,056 (84.7%) non-Hispanic women and 3,792 (15.3%) Hispanic women. Larger proportion of women aged 40-44 years did not  go for mammogram screening compared to other aged women. Similarly, women with education level of some college or associate degree had higher proportion of mammogram screening. Majority of our participants (58.7%) were never smokers. Out of 21,056 non-Hispanic women, 18,432 (87.6%) had mammogram screening while out of 3,792 Hispanic women, 3,034 (80%) had mammogram screening. Figure 1 shows increasing trend in mammogram screening among women going through 2000 to 2015. 
 
-**Table 1: Demographic characteristics of study population**
-```{r warning = FALSE, message = FALSE}
+**Table 1: Demographic characteristics of study population by mammogram screening status**
+```{r, message = FALSE}
 #| echo: FALSE
-library(here)
-library(knitr)
 
 # Loading the `demographic_table1.rds` table which was created during the data exploratory process
-
 result_table1 <- readRDS(here("results", "exploratory_analysis_result", "demographic_table1.rds"))
-result_table1 
+result_table1
 ```
 
+
 ```{r}
-#| label: Figure 1
-#| fig-cap: "Summary of mammography screening status and the Hispanic status of study population in 2000, 2005, 2010, and 2015."
 #| echo: FALSE
 
 # Loading the `figure1_mammogram_ses.png` figure which was created during the data exploratory process
-include_graphics(here("results", "exploratory_analysis_result", "figure1_mammogram_ses.png"))
+knitr::include_graphics(here("results", "exploratory_analysis_result", "figure1_mammogram_ses.png"))
 ```
-**Figure 1: Summary of mammography screening status and the Hispanic status of study population in 2000, 2005, 2010, and 2015**
+**Figure 1: Summary of mammography screening status and the Hispanic status of study population in 2000, 2005, 2010, and 2015.**
 
-# 4.2. Statistical Analysis
-# 4.2.1. Model Fitting
+## Statistical Analysis
+### Model Fitting
 
-We aimed to explore the bivariate and multivariate relationship between mammogram screening and other hypothesized predictors i.e., year, hispanic status, age, income, education, marital status, region of residence, insurance status, health status, usual medical care status, smoking status, alcohol status, and diabetes status. Logistic regression was used for examining such relationships. In bivariate relationship (Table 2), we found statistically significant relationship between mammogram screening and hispanic status of women and found the log odds of having mammogram screening for Hispanic women as -0.56 compared to non-Hispanic women. The log odds of having mammogram was found as 0.25 in year 2015 compared to that of 2000. We also found that the log odds of having mammogram increased with age, and education. We found the log odds of having mammogram screening for women with income below the poverty threshold as -0.76 compared to women with income at or above the poverty threshold. The log odds of having mammogram for married was 0.67 compared to never married women. Women having the usual medical place had the log odds of having mammogram of 1.47 compared to those having no usual medical place. ***add bivariate relation table 2. Similarly, Table 3 shows the multivariate relationship between mammogram screening and all other predictors of interests. All predictors of interests were found to be significant predictors of mammogram.
+We aimed to explore the bivariate and multivariate relationship between mammogram screening and other hypothesized predictors i.e., year, hispanic status, age, income, education, marital status, region of residence, insurance status, health status, usual medical care status, smoking status, alcohol status, and diabetes status. Logistic regression was used for examining such relationships. In bivariate relationship (Supplementary Tables 3-12), we found statistically significant relationship between mammogram screening and hispanic status of women and found the log odds of having mammogram screening for Hispanic women as -0.56 compared to non-Hispanic women. The log odds of having mammogram was found as 0.25 in year 2015 compared to that of 2000. We also found that the log odds of having mammogram increased with age, and education. We found the log odds of having mammogram screening for women with income below the poverty threshold as -0.76 compared to women with income at or above the poverty threshold. The log odds of having mammogram for married was 0.67 compared to never married women. Women having the usual medical place had the log odds of having mammogram of 1.47 compared to those having no usual medical place. Similarly, Table 2 shows the multivariate relationship between mammogram screening and all other predictors of interests. All predictors of interests were found to be significant predictors of mammogram.
 
-Table 4 shows the model performance comparison which compared the models' performance including various numbers of predictors. The best model performance was found for the full model including all predictors of interests (AIC: 16981 and RMSE: 0.32). Similarly, based on model performance comparison, second best model was identified as the model including demographic predictors (age, hispanic status, income, education, marital status, and region of residence) that had AIC of 17764.1 and RMSE of 0.33.
+Table 3 shows the model performance comparison which compared the models' performance including various numbers of predictors. The best model performance was found for the full model including all predictors of interests (AIC: 16981 and RMSE: 0.32). Similarly, based on model performance comparison, second best model was identified as the model including demographic predictors (age, hispanic status, income, education, marital status, and region of residence) that had AIC of 17764.1 and RMSE of 0.33.
 
-**Table 3: Full model fitting using mammogram_status as outcome variable and other variables as predictor variables.**
+**Table 2: Full model fitting using mammogram_status as outcome variable and other variables as predictor variables.**
 ```{r, warning = FALSE, message = FALSE}
 #| echo: FALSE
 
 # Loading the `full_model.rds` table which was created during the model fitting analysis process
 result_table2 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "full_model.rds"))
-print(result_table2, n = Inf, width = Inf)
+kable(result_table2 %>% mutate(term = gsub("as\\.factor", "", term)),  align = "c", format.args = list(digits = 3)) %>%
+  row_spec(row = 0, color = "white") %>% kable_styling(full_width = T, bootstrap_options = "striped", font_size = 10)
 ```
 
-**Table 4: Model Performance Comparisons.**
+
+**Table 3: Model Performance Comparisons.**
 ```{r, warning = FALSE, message = FALSE}
 #| echo: FALSE
 
 # Loading the `model_performance_comparison.rds` table which was created during the model fitting analysis process
-result_table4 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "model_performance_comparison.rds"))
-print(result_table4)
+result_table3 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "model_performance_comparison.rds"))
+kable(result_table3 %>% select(Name, AIC, BIC, RMSE),  align = "c", format.args = list(digits = 3)) %>%
+  row_spec(row = 0, color = "white") %>% kable_styling(full_width = T, bootstrap_options = "striped", font_size = 10)
 ```
 
-# 4.2.2. Model Evaluation
+### Model Evaluation
 
-Model evaluation was performed for the full model including all predictors of interest and the alternative model including only hispanic status of women as the main predictor for mammogram. Data splitting was done by putting 3/4 of the data into the training set and recipe was created accordingly for fitting the full and alternative logistic models. Figure 2 shows the ROC curve for the full model (using mammogram status as the main outcome of interest and other variables as predictors) having ROC-AUC as 0.76 while Figure 3 shows the ROC curve for the alternative model (using mammogram status as the main outcome of interest and hispanic status as the main predictor) having ROC-AUC as 0.54. The larger the area under the curve, better the model is at distinguishing those with the outcomes from those without the outcomes. Hence, from the given 2 figures, we can say that for mammogram status, the full model with all the predictors of interest is better than the alternative model having only Hispanic status as the main predictor.
+Model evaluation was performed for the full model including all predictors of interest and the alternative model including only hispanic status of women as the main predictor for mammogram. Data splitting was done by putting 3/4 of the data into the training set and recipe was created accordingly for fitting the full and alternative logistic models. Figure 2 shows the ROC curve for the full model (using mammogram status as the main outcome of interest and other variables as predictors) having ROC-AUC as 0.76 and the ROC curve for the alternative model (using mammogram status as the main outcome of interest and hispanic status as the main predictor) having ROC-AUC as 0.54. The larger the area under the curve, better the model is at distinguishing those with the outcomes from those without the outcomes. Hence, from the given figure, we can say that for mammogram status, the full model with all the predictors of interest is better than the alternative model having only Hispanic status as the main predictor.
 
 ```{r}
 #| label: Figure 2
-#| fig-cap: "ROC Curve for the full model."
 #| echo: FALSE
 
-# Loading the `figure2_roc_fullmodel.png` figure which was created during the model evaluation process
-include_graphics(here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure2_roc_fullmodel.png"))
+# Loading the `"figure4_roc_combined.png"l.png` figure which was created during the model evaluation process
+include_graphics(here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure4_roc_combined.png"))
 ```
-**Figure 2: ROC Curve for the full model**
 
-```{r}
-#| label: Figure 3
-#| fig-cap: "ROC Curve for the alternative model."
-#| echo: FALSE
+**Figure 3: ROC Curve for the full model and alternative model.**
 
-# Loading the `figure3_roc_altmodel.png` figure which was created during the model evaluation process
-include_graphics(here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure3_roc_altmodel.png"))
-```
-**Figure 3: ROC Curve for the alternative model**
-
-# 4.2.3. Machine Learning
+### Machine Learning
 
 Different modeling techniques were performed for multivariate analysis using Decision-tree method and Lasso method. The data was split into 70% training and 30% testing using mammogram status (outcome) as stratification. Five-fold cross-validation was also performed which was repeated for 5 times. A null model was used for comparing the model performance and for interpreting the predictors' importance. The ROC_AUC value for null model was found as 0.5 and this value was used as a basis for comparing Decision tree and Lasso models. The Decision tree model had the ROC_AUC value of 0.7 while Lasso model had the ROC_AUC value of 0.8. Both models performed better than the null model. But out of all the models, Lasso model performed the best and hence, Lasso model was chosen as the best performing model.
 
 **Table 4: Model Selection using Null method, Decision tree method, and Lasso method.**
-```{r, warning = FALSE, message = FALSE}
+```{r, warning = FALSE, out.width = "100%", message = FALSE}
 #| echo: FALSE
 
 # Loading the `machinelearning_results.rds` table which was created during the machine learning analysis process
-result_table3 <- readRDS(here("results", "statistical_analysis_result", "3_machine_learning_result", "machinelearning_results.rds"))
-print(result_table3)
+result_table4 <- readRDS(here("results", "statistical_analysis_result", "3_machine_learning_result", "machinelearning_results.rds"))
+kable(result_table4 %>% select(Model, ROC_AUC),  align = "c") %>%
+  row_spec(row = 0, color = "white") %>% kable_styling(full_width = T, bootstrap_options = "striped", font_size = 14, position = "center")
 ```
 
-# 5. Discussion
+# Discussion
 
 This study aimed to explore the relationship trend among socioeconomic status and other predictive factors influencing the likelihood of using mammography screening services within Hispanic and non-Hispanic women aged 40 to 74 years during 2000, 2005, 2010, and 2015. There are very few studies relating to ethnicity and socio-economic characteristics of women for mammogram screening so this study helps to  identify and understand the association and interaction between the use of mammography screening and demographic/socio-economic characteristics of women.
 
@@ -140,9 +145,9 @@ This study has several strengths, including the large national women sample size
 
 Nevertheless, there are some limitations of the study. There could be some form of bias resulting from the use of self-reported data. The study was limited to only 4 years study (2000, 2005, 2010, and 2015) as most of the data points for other years were missing so this study might not have captured the potential confounding variables that might have changed over time. 
 
-# 6. Conclusions
+# Conclusions
 
 This study confirms that there exists some association between mammogram screening and socio-economic status of Hispanic/non-Hispanic women during different years as all the hypothesized predictors were found to be significantly associated with mammogram status. We found age, education, income, and smoking/alcohol behavior as the great predictors for having mammogram screening. Further research needs to be done to dive more into these hypothesized predictors to see their absolute and relative effects on mammogram screening. Furthermore, given the lower overall breast cancer screening rates among Hispanic women, increased education and awareness should be among top priorities for developing appropriate population-based interventions for increasing the use of mammography screening.
 
-# 7. References
+# References
 

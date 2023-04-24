@@ -414,6 +414,38 @@ data_clean_main &lt;- data_clean
 # Making sure there are no missing values in any variables
 any(is.na(data_clean_main))</code></pre>
 <pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code># Lets convert the variables to factor variables just to make sure that they are not treated as continuous variables in our analysis
+data_clean_main$age &lt;- as.factor(data_clean_main$age)
+data_clean_main$hispanic_status &lt;- as.factor(data_clean_main$hispanic_status)
+data_clean_main$income &lt;- as.factor(data_clean_main$income)
+data_clean_main$education &lt;- as.factor(data_clean_main$education)
+data_clean_main$marital_status &lt;- as.factor(data_clean_main$marital_status)
+data_clean_main$region_residence &lt;- as.factor(data_clean_main$region_residence)
+data_clean_main$insurance_status &lt;- as.factor(data_clean_main$insurance_status)
+data_clean_main$privateinsurance_status &lt;- as.factor(data_clean_main$privateinsurance_status)
+data_clean_main$medicaid_status &lt;- as.factor(data_clean_main$medicaid_status)
+data_clean_main$medicare_status &lt;- as.factor(data_clean_main$medicare_status)
+data_clean_main$health_status &lt;- as.factor(data_clean_main$health_status)
+data_clean_main$mammogram_status &lt;- as.factor(data_clean_main$mammogram_status)
+data_clean_main$usual_medicalcare_status &lt;- as.factor(data_clean_main$usual_medicalcare_status)
+data_clean_main$smoking_status &lt;- as.factor(data_clean_main$smoking_status)
+data_clean_main$alcohol_status &lt;- as.factor(data_clean_main$alcohol_status)
+data_clean_main$diabetes_status &lt;- as.factor(data_clean_main$diabetes_status)
+
+# Recoding the variables
+data_clean_main$hispanic_status &lt;- recode_factor(data_clean_main$hispanic_status, &#39;1&#39; = &#39;Non-Hispanic&#39;, &#39;2&#39; = &#39;Hispanic&#39;)
+data_clean_main$mammogram_status &lt;- recode_factor(data_clean_main$mammogram_status, &#39;0&#39; = &#39;No&#39;, &#39;1&#39; = &#39;Yes&#39;)
+data_clean_main$age &lt;- recode_factor(data_clean_main$age, &#39;1&#39; = &#39;40-44 years&#39;, &#39;2&#39; = &#39;45-49 years&#39;, &#39;3&#39; = &#39;50-54 years&#39;, &#39;4&#39; = &#39;55-59 years&#39;, &#39;5&#39; = &#39;60-64 years&#39;, &#39;6&#39; = &#39;65-69 years&#39;, &#39;7&#39; = &#39;70-74 years&#39;)
+data_clean_main$income &lt;- recode_factor(data_clean_main$income, &#39;1&#39; = &#39;At or above poverty threshold&#39;, &#39;2&#39; = &#39;Below poverty threshold&#39;)
+data_clean_main$education &lt;- recode_factor(data_clean_main$education, &#39;1&#39; = &#39;Never attended/kindergarten only&#39;, &#39;2&#39; = &#39;Less than high school&#39;, &#39;3&#39; = &#39;High school&#39;, &#39;4&#39; = &#39;Some college or Associate degree&#39;, &#39;5&#39; = &#39;Bachelor degree and higher&#39;)
+data_clean_main$marital_status &lt;- recode_factor(data_clean_main$marital_status, &#39;0&#39; = &#39;Never married&#39;, &#39;1&#39; = &#39;Married&#39;, &#39;2&#39; = &#39;Single (separated/widowed/divorced)&#39;, &#39;3&#39; = &#39;Living with partner&#39;)
+data_clean_main$region_residence &lt;- recode_factor(data_clean_main$region_residence, &#39;1&#39; = &#39;Northeast&#39;, &#39;2&#39; = &#39;North Central/Midwest&#39;, &#39;3&#39; = &#39;South&#39;, &#39;4&#39; = &#39;West&#39;)
+data_clean_main$insurance_status &lt;- recode_factor(data_clean_main$insurance_status, &#39;0&#39; = &#39;No Coverage&#39;, &#39;1&#39; = &#39;Coverage&#39;)
+data_clean_main$health_status &lt;- recode_factor(data_clean_main$health_status, &#39;1&#39; = &#39;Excellent/very good/good&#39;, &#39;2&#39; = &#39;Fair/poor&#39;)
+data_clean_main$usual_medicalcare_status &lt;- recode_factor(data_clean_main$usual_medicalcare_status, &#39;0&#39; = &#39;No place&#39;, &#39;1&#39; = &#39;Usual place&#39;)
+data_clean_main$smoking_status &lt;- recode_factor(data_clean_main$smoking_status, &#39;0&#39; = &#39;Never&#39;, &#39;1&#39; = &#39;Current&#39;, &#39;2&#39; = &#39;Former&#39;)
+data_clean_main$alcohol_status &lt;- recode_factor(data_clean_main$alcohol_status, &#39;0&#39; = &#39;Never&#39;, &#39;1&#39; = &#39;Current&#39;, &#39;2&#39; = &#39;Former&#39;)
+data_clean_main$diabetes_status &lt;- recode_factor(data_clean_main$diabetes_status, &#39;0&#39; = &#39;No&#39;, &#39;1&#39; = &#39;Yes&#39;)</code></pre>
 <p>FITTING LOGISTIC REGRESSION</p>
 <p>Since our outcome variable <code>mammogram_status</code> is of binary
 type, we will be using bivariate and multivariate logistic regression
@@ -441,14 +473,8 @@ log_fit_year</code></pre>
 ## Null Deviance:       19770 
 ## Residual Deviance: 19730     AIC: 19740</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_year
-tidy(log_fit_year)</code></pre>
-<pre><code>## # A tibble: 4 × 5
-##   term                estimate std.error statistic     p.value
-##   &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
-## 1 (Intercept)           1.70      0.0366     46.5  0          
-## 2 as.factor(year)2005   0.0605    0.0521      1.16 0.246      
-## 3 as.factor(year)2010   0.277     0.0543      5.11 0.000000328
-## 4 as.factor(year)2015   0.249     0.0505      4.94 0.000000790</code></pre>
+bivariate_year &lt;- tidy(log_fit_year)
+saveRDS(bivariate_year, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_year.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `hispanic_status` as the predictor
 log_fit_hispanicstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(hispanic_status), data = data_clean_main)
 log_fit_hispanicstatus</code></pre>
@@ -459,21 +485,15 @@ log_fit_hispanicstatus</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                 (Intercept)  as.factor(hispanic_status)2  
-##                      1.9494                      -0.5624  
+##                        (Intercept)  as.factor(hispanic_status)Hispanic  
+##                             1.9494                             -0.5624  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
 ## Null Deviance:       19770 
 ## Residual Deviance: 19630     AIC: 19630</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_hispanicstatus
-tidy(log_fit_hispanicstatus)</code></pre>
-<pre><code>## # A tibble: 2 × 5
-##   term                        estimate std.error statistic  p.value
-##   &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)                    1.95     0.0209      93.4 0       
-## 2 as.factor(hispanic_status)2   -0.562    0.0457     -12.3 7.09e-35</code></pre>
-<pre class="r"><code>exp(-0.5624346)</code></pre>
-<pre><code>## [1] 0.5698201</code></pre>
+<pre class="r"><code># Looking and saving the summary of log_fit_hispanicstatus
+bivariate_hispanic &lt;- tidy(log_fit_hispanicstatus)
+saveRDS(bivariate_hispanic, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_hispanic.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `age` as the predictor
 log_fit_age &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(age), data = data_clean_main)
 log_fit_age</code></pre>
@@ -484,10 +504,14 @@ log_fit_age</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##     (Intercept)  as.factor(age)2  as.factor(age)3  as.factor(age)4  
-##          0.8262           0.9703           1.4018           1.5777  
-## as.factor(age)5  as.factor(age)6  as.factor(age)7  
-##          1.7367           1.6064           1.5532  
+##               (Intercept)  as.factor(age)45-49 years  
+##                    0.8262                     0.9703  
+## as.factor(age)50-54 years  as.factor(age)55-59 years  
+##                    1.4018                     1.5777  
+## as.factor(age)60-64 years  as.factor(age)65-69 years  
+##                    1.7367                     1.6064  
+## as.factor(age)70-74 years  
+##                    1.5532  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24841 Residual
 ## Null Deviance:       19770 
@@ -495,15 +519,17 @@ log_fit_age</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_age
 tidy(log_fit_age)</code></pre>
 <pre><code>## # A tibble: 7 × 5
-##   term            estimate std.error statistic   p.value
-##   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)        0.826    0.0318      26.0 1.28e-148
-## 2 as.factor(age)2    0.970    0.0533      18.2 3.80e- 74
-## 3 as.factor(age)3    1.40     0.0614      22.8 1.98e-115
-## 4 as.factor(age)4    1.58     0.0678      23.3 1.03e-119
-## 5 as.factor(age)5    1.74     0.0762      22.8 4.04e-115
-## 6 as.factor(age)6    1.61     0.0789      20.4 2.94e- 92
-## 7 as.factor(age)7    1.55     0.0836      18.6 4.11e- 77</code></pre>
+##   term                      estimate std.error statistic   p.value
+##   &lt;chr&gt;                        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                  0.826    0.0318      26.0 1.28e-148
+## 2 as.factor(age)45-49 years    0.970    0.0533      18.2 3.80e- 74
+## 3 as.factor(age)50-54 years    1.40     0.0614      22.8 1.98e-115
+## 4 as.factor(age)55-59 years    1.58     0.0678      23.3 1.03e-119
+## 5 as.factor(age)60-64 years    1.74     0.0762      22.8 4.04e-115
+## 6 as.factor(age)65-69 years    1.61     0.0789      20.4 2.94e- 92
+## 7 as.factor(age)70-74 years    1.55     0.0836      18.6 4.11e- 77</code></pre>
+<pre class="r"><code>bivariate_age &lt;- tidy(log_fit_age)
+saveRDS(bivariate_age, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_age.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `income` as the predictor
 log_fit_income &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(income), data = data_clean_main)
 log_fit_income</code></pre>
@@ -514,8 +540,10 @@ log_fit_income</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##        (Intercept)  as.factor(income)2  
-##             1.9837             -0.7592  
+##                              (Intercept)  
+##                                   1.9837  
+## as.factor(income)Below poverty threshold  
+##                                  -0.7592  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
 ## Null Deviance:       19770 
@@ -523,10 +551,12 @@ log_fit_income</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_income
 tidy(log_fit_income)</code></pre>
 <pre><code>## # A tibble: 2 × 5
-##   term               estimate std.error statistic  p.value
-##   &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)           1.98     0.0210      94.4 0       
-## 2 as.factor(income)2   -0.759    0.0452     -16.8 3.02e-63</code></pre>
+##   term                                     estimate std.error statistic  p.value
+##   &lt;chr&gt;                                       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                 1.98     0.0210      94.4 0       
+## 2 as.factor(income)Below poverty threshold   -0.759    0.0452     -16.8 3.02e-63</code></pre>
+<pre class="r"><code>bivariate_income &lt;- tidy(log_fit_income)
+saveRDS(bivariate_income, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_income.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `education` as the predictor
 log_fit_education &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(education), data = data_clean_main)
 log_fit_education</code></pre>
@@ -537,10 +567,16 @@ log_fit_education</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##           (Intercept)  as.factor(education)2  as.factor(education)3  
-##                0.5534                 0.7417                 1.1454  
-## as.factor(education)4  as.factor(education)5  
-##                1.4926                 1.7010  
+##                                          (Intercept)  
+##                                               0.5534  
+##            as.factor(education)Less than high school  
+##                                               0.7417  
+##                      as.factor(education)High school  
+##                                               1.1454  
+## as.factor(education)Some college or Associate degree  
+##                                               1.4926  
+##       as.factor(education)Bachelor degree and higher  
+##                                               1.7010  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24843 Residual
 ## Null Deviance:       19770 
@@ -548,13 +584,16 @@ log_fit_education</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_education
 tidy(log_fit_education)</code></pre>
 <pre><code>## # A tibble: 5 × 5
-##   term                  estimate std.error statistic  p.value
-##   &lt;chr&gt;                    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)              0.553     0.185      2.99 2.78e- 3
-## 2 as.factor(education)2    0.742     0.190      3.91 9.20e- 5
-## 3 as.factor(education)3    1.15      0.188      6.10 1.08e- 9
-## 4 as.factor(education)4    1.49      0.189      7.91 2.50e-15
-## 5 as.factor(education)5    1.70      0.190      8.97 3.07e-19</code></pre>
+##   term                                          estim…¹ std.e…² stati…³  p.value
+##   &lt;chr&gt;                                           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                     0.553   0.185    2.99 2.78e- 3
+## 2 as.factor(education)Less than high school       0.742   0.190    3.91 9.20e- 5
+## 3 as.factor(education)High school                 1.15    0.188    6.10 1.08e- 9
+## 4 as.factor(education)Some college or Associat…   1.49    0.189    7.91 2.50e-15
+## 5 as.factor(education)Bachelor degree and high…   1.70    0.190    8.97 3.07e-19
+## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
+<pre class="r"><code>bivariate_education &lt;- tidy(log_fit_education)
+saveRDS(bivariate_education, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_education.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `marital_status` as the predictor
 log_fit_maritalstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(marital_status), data = data_clean_main)
 log_fit_maritalstatus</code></pre>
@@ -565,10 +604,14 @@ log_fit_maritalstatus</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                (Intercept)  as.factor(marital_status)1  
-##                     1.3075                      0.6711  
-## as.factor(marital_status)2  as.factor(marital_status)3  
-##                     0.6065                      0.1662  
+##                                                  (Intercept)  
+##                                                       1.3075  
+##                             as.factor(marital_status)Married  
+##                                                       0.6711  
+## as.factor(marital_status)Single (separated/widowed/divorced)  
+##                                                       0.6065  
+##                 as.factor(marital_status)Living with partner  
+##                                                       0.1662  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24844 Residual
 ## Null Deviance:       19770 
@@ -576,12 +619,15 @@ log_fit_maritalstatus</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_maritalstatus
 tidy(log_fit_maritalstatus)</code></pre>
 <pre><code>## # A tibble: 4 × 5
-##   term                       estimate std.error statistic   p.value
-##   &lt;chr&gt;                         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)                   1.31     0.0472     27.7  4.08e-169
-## 2 as.factor(marital_status)1    0.671    0.0547     12.3  1.31e- 34
-## 3 as.factor(marital_status)2    0.606    0.0566     10.7  8.96e- 27
-## 4 as.factor(marital_status)3    0.166    0.101       1.65 9.83e-  2</code></pre>
+##   term                                         estim…¹ std.e…² stati…³   p.value
+##   &lt;chr&gt;                                          &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                                    1.31   0.0472   27.7  4.08e-169
+## 2 as.factor(marital_status)Married               0.671  0.0547   12.3  1.31e- 34
+## 3 as.factor(marital_status)Single (separated/…   0.606  0.0566   10.7  8.96e- 27
+## 4 as.factor(marital_status)Living with partner   0.166  0.101     1.65 9.83e-  2
+## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
+<pre class="r"><code>bivariate_maritalstatus &lt;- tidy(log_fit_maritalstatus)
+saveRDS(bivariate_maritalstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_maritalstatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `region_residence` as the predictor
 log_fit_regionresidence &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(region_residence), data = data_clean_main)
 log_fit_regionresidence</code></pre>
@@ -592,10 +638,14 @@ log_fit_regionresidence</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                  (Intercept)  as.factor(region_residence)2  
-##                       2.0971                       -0.1575  
-## as.factor(region_residence)3  as.factor(region_residence)4  
-##                      -0.3535                       -0.3274  
+##                                      (Intercept)  
+##                                           2.0971  
+## as.factor(region_residence)North Central/Midwest  
+##                                          -0.1575  
+##                 as.factor(region_residence)South  
+##                                          -0.3535  
+##                  as.factor(region_residence)West  
+##                                          -0.3274  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24844 Residual
 ## Null Deviance:       19770 
@@ -603,12 +653,15 @@ log_fit_regionresidence</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_regionresidence
 tidy(log_fit_regionresidence)</code></pre>
 <pre><code>## # A tibble: 4 × 5
-##   term                         estimate std.error statistic  p.value
-##   &lt;chr&gt;                           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)                     2.10     0.0485     43.2  0       
-## 2 as.factor(region_residence)2   -0.158    0.0636     -2.48 1.32e- 2
-## 3 as.factor(region_residence)3   -0.353    0.0568     -6.23 4.72e-10
-## 4 as.factor(region_residence)4   -0.327    0.0608     -5.38 7.25e- 8</code></pre>
+##   term                                          estim…¹ std.e…² stati…³  p.value
+##   &lt;chr&gt;                                           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                     2.10   0.0485   43.2  0       
+## 2 as.factor(region_residence)North Central/Mid…  -0.158  0.0636   -2.48 1.32e- 2
+## 3 as.factor(region_residence)South               -0.353  0.0568   -6.23 4.72e-10
+## 4 as.factor(region_residence)West                -0.327  0.0608   -5.38 7.25e- 8
+## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
+<pre class="r"><code>bivariate_regionresidence &lt;- tidy(log_fit_regionresidence)
+saveRDS(bivariate_regionresidence, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_regionresidence.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `insurance_status` as the predictor
 log_fit_insurancestatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(insurance_status), data = data_clean_main)
 log_fit_insurancestatus</code></pre>
@@ -619,8 +672,8 @@ log_fit_insurancestatus</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                  (Intercept)  as.factor(insurance_status)1  
-##                        2.087                        -1.347  
+##                         (Intercept)  as.factor(insurance_status)Coverage  
+##                               2.087                               -1.347  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
 ## Null Deviance:       19770 
@@ -628,10 +681,12 @@ log_fit_insurancestatus</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_insurancestatus
 tidy(log_fit_insurancestatus)</code></pre>
 <pre><code>## # A tibble: 2 × 5
-##   term                         estimate std.error statistic   p.value
-##   &lt;chr&gt;                           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)                      2.09    0.0216      96.6 0        
-## 2 as.factor(insurance_status)1    -1.35    0.0445     -30.2 9.97e-201</code></pre>
+##   term                                estimate std.error statistic   p.value
+##   &lt;chr&gt;                                  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                             2.09    0.0216      96.6 0        
+## 2 as.factor(insurance_status)Coverage    -1.35    0.0445     -30.2 9.97e-201</code></pre>
+<pre class="r"><code>bivariate_insurancestatus &lt;- tidy(log_fit_insurancestatus)
+saveRDS(bivariate_insurancestatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_insurancestatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `health_status` as the predictor
 log_fit_healthstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(health_status), data = data_clean_main)
 log_fit_healthstatus</code></pre>
@@ -642,8 +697,8 @@ log_fit_healthstatus</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##               (Intercept)  as.factor(health_status)2  
-##                   1.85457                   -0.03791  
+##                       (Intercept)  as.factor(health_status)Fair/poor  
+##                           1.85457                           -0.03791  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
 ## Null Deviance:       19770 
@@ -651,10 +706,12 @@ log_fit_healthstatus</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_healthstatus
 tidy(log_fit_healthstatus)</code></pre>
 <pre><code>## # A tibble: 2 × 5
-##   term                      estimate std.error statistic p.value
-##   &lt;chr&gt;                        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 (Intercept)                 1.85      0.0204    91.0     0    
-## 2 as.factor(health_status)2  -0.0379    0.0487    -0.779   0.436</code></pre>
+##   term                              estimate std.error statistic p.value
+##   &lt;chr&gt;                                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)                         1.85      0.0204    91.0     0    
+## 2 as.factor(health_status)Fair/poor  -0.0379    0.0487    -0.779   0.436</code></pre>
+<pre class="r"><code>bivariate_healthstatus &lt;- tidy(log_fit_healthstatus)
+saveRDS(bivariate_healthstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_healthstatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `usual_medicalcare_status` as the predictor
 log_fit_usualmedicalcarestatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(usual_medicalcare_status), data = data_clean_main)
 log_fit_usualmedicalcarestatus</code></pre>
@@ -665,8 +722,10 @@ log_fit_usualmedicalcarestatus</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                          (Intercept)  as.factor(usual_medicalcare_status)1  
-##                               0.5679                                1.4677  
+##                                    (Intercept)  
+##                                         0.5679  
+## as.factor(usual_medicalcare_status)Usual place  
+##                                         1.4677  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
 ## Null Deviance:       19770 
@@ -674,10 +733,13 @@ log_fit_usualmedicalcarestatus</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_usualmedicalcarestatus
 tidy(log_fit_usualmedicalcarestatus)</code></pre>
 <pre><code>## # A tibble: 2 × 5
-##   term                                 estimate std.error statistic   p.value
-##   &lt;chr&gt;                                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-## 1 (Intercept)                             0.568    0.0456      12.4 1.53e- 35
-## 2 as.factor(usual_medicalcare_status)1    1.47     0.0501      29.3 2.02e-188</code></pre>
+##   term                                         estim…¹ std.e…² stati…³   p.value
+##   &lt;chr&gt;                                          &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                                    0.568  0.0456    12.4 1.53e- 35
+## 2 as.factor(usual_medicalcare_status)Usual pl…   1.47   0.0501    29.3 2.02e-188
+## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
+<pre class="r"><code>bivariate_usualmedicalcarestatus &lt;- tidy(log_fit_usualmedicalcarestatus)
+saveRDS(bivariate_usualmedicalcarestatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_usualmedicalcarestatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `smoking_status` as the predictor
 log_fit_smokingstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(smoking_status), data = data_clean_main)
 log_fit_smokingstatus</code></pre>
@@ -688,10 +750,10 @@ log_fit_smokingstatus</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                (Intercept)  as.factor(smoking_status)1  
-##                     1.8543                     -0.4283  
-## as.factor(smoking_status)2  
-##                     0.4501  
+##                      (Intercept)  as.factor(smoking_status)Current  
+##                           1.8543                           -0.4283  
+##  as.factor(smoking_status)Former  
+##                           0.4501  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24845 Residual
 ## Null Deviance:       19770 
@@ -699,11 +761,13 @@ log_fit_smokingstatus</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_smokingstatus
 tidy(log_fit_smokingstatus)</code></pre>
 <pre><code>## # A tibble: 3 × 5
-##   term                       estimate std.error statistic  p.value
-##   &lt;chr&gt;                         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)                   1.85     0.0242     76.6  0       
-## 2 as.factor(smoking_status)1   -0.428    0.0444     -9.65 4.93e-22
-## 3 as.factor(smoking_status)2    0.450    0.0523      8.61 7.37e-18</code></pre>
+##   term                             estimate std.error statistic  p.value
+##   &lt;chr&gt;                               &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                         1.85     0.0242     76.6  0       
+## 2 as.factor(smoking_status)Current   -0.428    0.0444     -9.65 4.93e-22
+## 3 as.factor(smoking_status)Former     0.450    0.0523      8.61 7.37e-18</code></pre>
+<pre class="r"><code>bivariate_smokingstatus &lt;- tidy(log_fit_smokingstatus)
+saveRDS(bivariate_smokingstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_smokingstatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `alcohol_status` as the predictor
 log_fit_alcoholstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(alcohol_status), data = data_clean_main)
 log_fit_alcoholstatus</code></pre>
@@ -714,10 +778,10 @@ log_fit_alcoholstatus</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                (Intercept)  as.factor(alcohol_status)1  
-##                     1.4850                      0.5342  
-## as.factor(alcohol_status)2  
-##                     0.4497  
+##                      (Intercept)  as.factor(alcohol_status)Current  
+##                           1.4850                            0.5342  
+##  as.factor(alcohol_status)Former  
+##                           0.4497  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24845 Residual
 ## Null Deviance:       19770 
@@ -725,11 +789,13 @@ log_fit_alcoholstatus</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_alcoholstatus
 tidy(log_fit_alcoholstatus)</code></pre>
 <pre><code>## # A tibble: 3 × 5
-##   term                       estimate std.error statistic  p.value
-##   &lt;chr&gt;                         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)                   1.49     0.0322     46.1  0       
-## 2 as.factor(alcohol_status)1    0.534    0.0414     12.9  4.26e-38
-## 3 as.factor(alcohol_status)2    0.450    0.0567      7.93 2.12e-15</code></pre>
+##   term                             estimate std.error statistic  p.value
+##   &lt;chr&gt;                               &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                         1.49     0.0322     46.1  0       
+## 2 as.factor(alcohol_status)Current    0.534    0.0414     12.9  4.26e-38
+## 3 as.factor(alcohol_status)Former     0.450    0.0567      7.93 2.12e-15</code></pre>
+<pre class="r"><code>bivariate_alcoholstatus &lt;- tidy(log_fit_alcoholstatus)
+saveRDS(bivariate_alcoholstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_alcoholstatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `diabetes_status` as the predictor
 log_fit_diabetesstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(diabetes_status), data = data_clean_main)
 log_fit_diabetesstatus</code></pre>
@@ -740,8 +806,8 @@ log_fit_diabetesstatus</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                 (Intercept)  as.factor(diabetes_status)1  
-##                      1.8029                       0.3813  
+##                   (Intercept)  as.factor(diabetes_status)Yes  
+##                        1.8029                         0.3813  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
 ## Null Deviance:       19770 
@@ -749,10 +815,12 @@ log_fit_diabetesstatus</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_diabetesstatus
 tidy(log_fit_diabetesstatus)</code></pre>
 <pre><code>## # A tibble: 2 × 5
-##   term                        estimate std.error statistic  p.value
-##   &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)                    1.80     0.0196     92.2  0       
-## 2 as.factor(diabetes_status)1    0.381    0.0608      6.27 3.50e-10</code></pre>
+##   term                          estimate std.error statistic  p.value
+##   &lt;chr&gt;                            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                      1.80     0.0196     92.2  0       
+## 2 as.factor(diabetes_status)Yes    0.381    0.0608      6.27 3.50e-10</code></pre>
+<pre class="r"><code>bivariate_diabetesstatus &lt;- tidy(log_fit_diabetesstatus)
+saveRDS(bivariate_diabetesstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_diabetesstatus.rds&quot;)))</code></pre>
 <p>MULTIVARIATE LOGISTIC REGRESSION</p>
 <p>Fitting full model</p>
 <pre class="r"><code># Using `mammogram_status` as the outcome and the remaining variables as the predictors
@@ -770,36 +838,66 @@ log_fit_fullmodel</code></pre>
 ##     data = data)
 ## 
 ## Coefficients:
-##                          (Intercept)                   as.factor(year)2005  
-##                             -1.54430                              -0.02165  
-##                  as.factor(year)2010                   as.factor(year)2015  
-##                              0.22120                              -0.06195  
-##                      as.factor(age)2                       as.factor(age)3  
-##                              1.04724                               1.47515  
-##                      as.factor(age)4                       as.factor(age)5  
-##                              1.63884                               1.77494  
-##                      as.factor(age)6                       as.factor(age)7  
-##                              1.52308                               1.49774  
-##          as.factor(hispanic_status)2                    as.factor(income)2  
-##                              0.10255                              -0.27226  
-##                as.factor(education)2                 as.factor(education)3  
-##                              0.76488                               0.99305  
-##                as.factor(education)4                 as.factor(education)5  
-##                              1.34735                               1.46890  
-##           as.factor(marital_status)1            as.factor(marital_status)2  
-##                              0.48419                               0.36203  
-##           as.factor(marital_status)3          as.factor(region_residence)2  
-##                              0.27423                              -0.20854  
-##         as.factor(region_residence)3          as.factor(region_residence)4  
-##                             -0.18061                              -0.25589  
-##         as.factor(insurance_status)1             as.factor(health_status)2  
-##                             -0.70572                               0.10541  
-## as.factor(usual_medicalcare_status)1            as.factor(smoking_status)1  
-##                              0.90632                              -0.34404  
-##           as.factor(smoking_status)2            as.factor(alcohol_status)1  
-##                              0.11728                               0.51735  
-##           as.factor(alcohol_status)2           as.factor(diabetes_status)1  
-##                              0.38452                               0.17290  
+##                                                  (Intercept)  
+##                                                     -1.54430  
+##                                          as.factor(year)2005  
+##                                                     -0.02165  
+##                                          as.factor(year)2010  
+##                                                      0.22120  
+##                                          as.factor(year)2015  
+##                                                     -0.06195  
+##                                    as.factor(age)45-49 years  
+##                                                      1.04724  
+##                                    as.factor(age)50-54 years  
+##                                                      1.47515  
+##                                    as.factor(age)55-59 years  
+##                                                      1.63884  
+##                                    as.factor(age)60-64 years  
+##                                                      1.77494  
+##                                    as.factor(age)65-69 years  
+##                                                      1.52308  
+##                                    as.factor(age)70-74 years  
+##                                                      1.49774  
+##                           as.factor(hispanic_status)Hispanic  
+##                                                      0.10255  
+##                     as.factor(income)Below poverty threshold  
+##                                                     -0.27226  
+##                    as.factor(education)Less than high school  
+##                                                      0.76488  
+##                              as.factor(education)High school  
+##                                                      0.99305  
+##         as.factor(education)Some college or Associate degree  
+##                                                      1.34735  
+##               as.factor(education)Bachelor degree and higher  
+##                                                      1.46890  
+##                             as.factor(marital_status)Married  
+##                                                      0.48419  
+## as.factor(marital_status)Single (separated/widowed/divorced)  
+##                                                      0.36203  
+##                 as.factor(marital_status)Living with partner  
+##                                                      0.27423  
+##             as.factor(region_residence)North Central/Midwest  
+##                                                     -0.20854  
+##                             as.factor(region_residence)South  
+##                                                     -0.18061  
+##                              as.factor(region_residence)West  
+##                                                     -0.25589  
+##                          as.factor(insurance_status)Coverage  
+##                                                     -0.70572  
+##                            as.factor(health_status)Fair/poor  
+##                                                      0.10541  
+##               as.factor(usual_medicalcare_status)Usual place  
+##                                                      0.90632  
+##                             as.factor(smoking_status)Current  
+##                                                     -0.34404  
+##                              as.factor(smoking_status)Former  
+##                                                      0.11728  
+##                             as.factor(alcohol_status)Current  
+##                                                      0.51735  
+##                              as.factor(alcohol_status)Former  
+##                                                      0.38452  
+##                                as.factor(diabetes_status)Yes  
+##                                                      0.17290  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24818 Residual
 ## Null Deviance:       19770 
@@ -808,18 +906,18 @@ log_fit_fullmodel</code></pre>
 table2 &lt;- tidy(log_fit_fullmodel)
 table2</code></pre>
 <pre><code>## # A tibble: 30 × 5
-##    term                estimate std.error statistic   p.value
-##    &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-##  1 (Intercept)          -1.54      0.232     -6.67  2.57e- 11
-##  2 as.factor(year)2005  -0.0216    0.0565    -0.383 7.01e-  1
-##  3 as.factor(year)2010   0.221     0.0594     3.72  1.98e-  4
-##  4 as.factor(year)2015  -0.0620    0.0556    -1.12  2.65e-  1
-##  5 as.factor(age)2       1.05      0.0567    18.5   3.35e- 76
-##  6 as.factor(age)3       1.48      0.0652    22.6   1.76e-113
-##  7 as.factor(age)4       1.64      0.0723    22.7   8.15e-114
-##  8 as.factor(age)5       1.77      0.0810    21.9   1.60e-106
-##  9 as.factor(age)6       1.52      0.0848    18.0   3.80e- 72
-## 10 as.factor(age)7       1.50      0.0906    16.5   1.92e- 61
+##    term                      estimate std.error statistic   p.value
+##    &lt;chr&gt;                        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)                -1.54      0.232     -6.67  2.57e- 11
+##  2 as.factor(year)2005        -0.0216    0.0565    -0.383 7.01e-  1
+##  3 as.factor(year)2010         0.221     0.0594     3.72  1.98e-  4
+##  4 as.factor(year)2015        -0.0620    0.0556    -1.12  2.65e-  1
+##  5 as.factor(age)45-49 years   1.05      0.0567    18.5   3.35e- 76
+##  6 as.factor(age)50-54 years   1.48      0.0652    22.6   1.76e-113
+##  7 as.factor(age)55-59 years   1.64      0.0723    22.7   8.15e-114
+##  8 as.factor(age)60-64 years   1.77      0.0810    21.9   1.60e-106
+##  9 as.factor(age)65-69 years   1.52      0.0848    18.0   3.80e- 72
+## 10 as.factor(age)70-74 years   1.50      0.0906    16.5   1.92e- 61
 ## # … with 20 more rows</code></pre>
 <pre class="r"><code>saveRDS(table2, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;full_model.rds&quot;)))</code></pre>
 <p>Fitting model using some predictors</p>
@@ -834,18 +932,18 @@ log_fit_year_age_hispanic</code></pre>
 ##     data = data)
 ## 
 ## Coefficients:
-##                 (Intercept)          as.factor(year)2005  
-##                     0.85696                      0.01612  
-##         as.factor(year)2010          as.factor(year)2015  
-##                     0.19802                      0.08652  
-##             as.factor(age)2              as.factor(age)3  
-##                     0.95948                      1.38148  
-##             as.factor(age)4              as.factor(age)5  
-##                     1.54168                      1.68856  
-##             as.factor(age)6              as.factor(age)7  
-##                     1.57030                      1.51435  
-## as.factor(hispanic_status)2  
-##                    -0.46613  
+##                        (Intercept)                 as.factor(year)2005  
+##                            0.85696                             0.01612  
+##                as.factor(year)2010                 as.factor(year)2015  
+##                            0.19802                             0.08652  
+##          as.factor(age)45-49 years           as.factor(age)50-54 years  
+##                            0.95948                             1.38148  
+##          as.factor(age)55-59 years           as.factor(age)60-64 years  
+##                            1.54168                             1.68856  
+##          as.factor(age)65-69 years           as.factor(age)70-74 years  
+##                            1.57030                             1.51435  
+## as.factor(hispanic_status)Hispanic  
+##                           -0.46613  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24837 Residual
 ## Null Deviance:       19770 
@@ -854,19 +952,19 @@ log_fit_year_age_hispanic</code></pre>
 table3 &lt;- tidy(log_fit_year_age_hispanic)
 table3</code></pre>
 <pre><code>## # A tibble: 11 × 5
-##    term                        estimate std.error statistic   p.value
-##    &lt;chr&gt;                          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-##  1 (Intercept)                   0.857     0.0458    18.7   4.02e- 78
-##  2 as.factor(year)2005           0.0161    0.0540     0.298 7.65e-  1
-##  3 as.factor(year)2010           0.198     0.0562     3.52  4.30e-  4
-##  4 as.factor(year)2015           0.0865    0.0525     1.65  9.95e-  2
-##  5 as.factor(age)2               0.959     0.0534    18.0   4.66e- 72
-##  6 as.factor(age)3               1.38      0.0616    22.4   1.74e-111
-##  7 as.factor(age)4               1.54      0.0681    22.6   2.31e-113
-##  8 as.factor(age)5               1.69      0.0765    22.1   7.59e-108
-##  9 as.factor(age)6               1.57      0.0793    19.8   3.33e- 87
-## 10 as.factor(age)7               1.51      0.0839    18.0   8.09e- 73
-## 11 as.factor(hispanic_status)2  -0.466     0.0475    -9.81  9.86e- 23</code></pre>
+##    term                               estimate std.error statistic   p.value
+##    &lt;chr&gt;                                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)                          0.857     0.0458    18.7   4.02e- 78
+##  2 as.factor(year)2005                  0.0161    0.0540     0.298 7.65e-  1
+##  3 as.factor(year)2010                  0.198     0.0562     3.52  4.30e-  4
+##  4 as.factor(year)2015                  0.0865    0.0525     1.65  9.95e-  2
+##  5 as.factor(age)45-49 years            0.959     0.0534    18.0   4.66e- 72
+##  6 as.factor(age)50-54 years            1.38      0.0616    22.4   1.74e-111
+##  7 as.factor(age)55-59 years            1.54      0.0681    22.6   2.31e-113
+##  8 as.factor(age)60-64 years            1.69      0.0765    22.1   7.59e-108
+##  9 as.factor(age)65-69 years            1.57      0.0793    19.8   3.33e- 87
+## 10 as.factor(age)70-74 years            1.51      0.0839    18.0   8.09e- 73
+## 11 as.factor(hispanic_status)Hispanic  -0.466     0.0475    -9.81  9.86e- 23</code></pre>
 <pre class="r"><code>saveRDS(table3, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;year_age_hispanic_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and demographic characteristics variables as predictors
 log_fit_demographic &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence), data = data_clean_main)
@@ -880,26 +978,44 @@ log_fit_demographic</code></pre>
 ##     family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                  (Intercept)               as.factor(age)2  
-##                     -0.60091                       1.02445  
-##              as.factor(age)3               as.factor(age)4  
-##                      1.46675                       1.67670  
-##              as.factor(age)5               as.factor(age)6  
-##                      1.85190                       1.76593  
-##              as.factor(age)7   as.factor(hispanic_status)2  
-##                      1.77194                      -0.06761  
-##           as.factor(income)2         as.factor(education)2  
-##                     -0.41125                       0.77915  
-##        as.factor(education)3         as.factor(education)4  
-##                      1.11001                       1.55488  
-##        as.factor(education)5    as.factor(marital_status)1  
-##                      1.78261                       0.52665  
-##   as.factor(marital_status)2    as.factor(marital_status)3  
-##                      0.35634                       0.21891  
-## as.factor(region_residence)2  as.factor(region_residence)3  
-##                     -0.25081                      -0.35112  
-## as.factor(region_residence)4  
-##                     -0.34533  
+##                                                  (Intercept)  
+##                                                     -0.60091  
+##                                    as.factor(age)45-49 years  
+##                                                      1.02445  
+##                                    as.factor(age)50-54 years  
+##                                                      1.46675  
+##                                    as.factor(age)55-59 years  
+##                                                      1.67670  
+##                                    as.factor(age)60-64 years  
+##                                                      1.85190  
+##                                    as.factor(age)65-69 years  
+##                                                      1.76593  
+##                                    as.factor(age)70-74 years  
+##                                                      1.77194  
+##                           as.factor(hispanic_status)Hispanic  
+##                                                     -0.06761  
+##                     as.factor(income)Below poverty threshold  
+##                                                     -0.41125  
+##                    as.factor(education)Less than high school  
+##                                                      0.77915  
+##                              as.factor(education)High school  
+##                                                      1.11001  
+##         as.factor(education)Some college or Associate degree  
+##                                                      1.55488  
+##               as.factor(education)Bachelor degree and higher  
+##                                                      1.78261  
+##                             as.factor(marital_status)Married  
+##                                                      0.52665  
+## as.factor(marital_status)Single (separated/widowed/divorced)  
+##                                                      0.35634  
+##                 as.factor(marital_status)Living with partner  
+##                                                      0.21891  
+##             as.factor(region_residence)North Central/Midwest  
+##                                                     -0.25081  
+##                             as.factor(region_residence)South  
+##                                                     -0.35112  
+##                              as.factor(region_residence)West  
+##                                                     -0.34533  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24829 Residual
 ## Null Deviance:       19770 
@@ -908,27 +1024,28 @@ log_fit_demographic</code></pre>
 table4 &lt;- tidy(log_fit_demographic)
 table4</code></pre>
 <pre><code>## # A tibble: 19 × 5
-##    term                         estimate std.error statistic   p.value
-##    &lt;chr&gt;                           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-##  1 (Intercept)                   -0.601     0.212      -2.83 4.65e-  3
-##  2 as.factor(age)2                1.02      0.0547     18.7  2.74e- 78
-##  3 as.factor(age)3                1.47      0.0629     23.3  3.62e-120
-##  4 as.factor(age)4                1.68      0.0697     24.1  8.27e-128
-##  5 as.factor(age)5                1.85      0.0783     23.6  1.54e-123
-##  6 as.factor(age)6                1.77      0.0817     21.6  1.20e-103
-##  7 as.factor(age)7                1.77      0.0874     20.3  2.66e- 91
-##  8 as.factor(hispanic_status)2   -0.0676    0.0539     -1.25 2.10e-  1
-##  9 as.factor(income)2            -0.411     0.0525     -7.83 4.86e- 15
-## 10 as.factor(education)2          0.779     0.199       3.91 9.19e-  5
-## 11 as.factor(education)3          1.11      0.199       5.57 2.59e-  8
-## 12 as.factor(education)4          1.55      0.201       7.74 9.92e- 15
-## 13 as.factor(education)5          1.78      0.203       8.79 1.56e- 18
-## 14 as.factor(marital_status)1     0.527     0.0594      8.87 7.29e- 19
-## 15 as.factor(marital_status)2     0.356     0.0612      5.83 5.63e-  9
-## 16 as.factor(marital_status)3     0.219     0.108       2.04 4.17e-  2
-## 17 as.factor(region_residence)2  -0.251     0.0669     -3.75 1.76e-  4
-## 18 as.factor(region_residence)3  -0.351     0.0595     -5.90 3.70e-  9
-## 19 as.factor(region_residence)4  -0.345     0.0644     -5.36 8.30e-  8</code></pre>
+##    term                                        estim…¹ std.e…² stati…³   p.value
+##    &lt;chr&gt;                                         &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)                                 -0.601   0.212    -2.83 4.65e-  3
+##  2 as.factor(age)45-49 years                    1.02    0.0547   18.7  2.74e- 78
+##  3 as.factor(age)50-54 years                    1.47    0.0629   23.3  3.62e-120
+##  4 as.factor(age)55-59 years                    1.68    0.0697   24.1  8.27e-128
+##  5 as.factor(age)60-64 years                    1.85    0.0783   23.6  1.54e-123
+##  6 as.factor(age)65-69 years                    1.77    0.0817   21.6  1.20e-103
+##  7 as.factor(age)70-74 years                    1.77    0.0874   20.3  2.66e- 91
+##  8 as.factor(hispanic_status)Hispanic          -0.0676  0.0539   -1.25 2.10e-  1
+##  9 as.factor(income)Below poverty threshold    -0.411   0.0525   -7.83 4.86e- 15
+## 10 as.factor(education)Less than high school    0.779   0.199     3.91 9.19e-  5
+## 11 as.factor(education)High school              1.11    0.199     5.57 2.59e-  8
+## 12 as.factor(education)Some college or Associ…  1.55    0.201     7.74 9.92e- 15
+## 13 as.factor(education)Bachelor degree and hi…  1.78    0.203     8.79 1.56e- 18
+## 14 as.factor(marital_status)Married             0.527   0.0594    8.87 7.29e- 19
+## 15 as.factor(marital_status)Single (separated…  0.356   0.0612    5.83 5.63e-  9
+## 16 as.factor(marital_status)Living with partn…  0.219   0.108     2.04 4.17e-  2
+## 17 as.factor(region_residence)North Central/M… -0.251   0.0669   -3.75 1.76e-  4
+## 18 as.factor(region_residence)South            -0.351   0.0595   -5.90 3.70e-  9
+## 19 as.factor(region_residence)West             -0.345   0.0644   -5.36 8.30e-  8
+## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
 <pre class="r"><code>saveRDS(table4, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;demographic_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and the medical characteristics as the predictors
 log_fit_medical &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(diabetes_status), data = data_clean_main)
@@ -941,12 +1058,16 @@ log_fit_medical</code></pre>
 ##     as.factor(diabetes_status), family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                          (Intercept)          as.factor(insurance_status)1  
-##                              1.13294                              -0.99026  
-##            as.factor(health_status)2  as.factor(usual_medicalcare_status)1  
-##                             -0.09278                               0.99354  
-##          as.factor(diabetes_status)1  
-##                              0.31271  
+##                                    (Intercept)  
+##                                        1.13294  
+##            as.factor(insurance_status)Coverage  
+##                                       -0.99026  
+##              as.factor(health_status)Fair/poor  
+##                                       -0.09278  
+## as.factor(usual_medicalcare_status)Usual place  
+##                                        0.99354  
+##                  as.factor(diabetes_status)Yes  
+##                                        0.31271  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24843 Residual
 ## Null Deviance:       19770 
@@ -955,13 +1076,14 @@ log_fit_medical</code></pre>
 table5 &lt;- tidy(log_fit_medical)
 table5</code></pre>
 <pre><code>## # A tibble: 5 × 5
-##   term                                 estimate std.error statistic  p.value
-##   &lt;chr&gt;                                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)                            1.13      0.0563     20.1  5.24e-90
-## 2 as.factor(insurance_status)1          -0.990     0.0501    -19.8  7.19e-87
-## 3 as.factor(health_status)2             -0.0928    0.0522     -1.78 7.56e- 2
-## 4 as.factor(usual_medicalcare_status)1   0.994     0.0566     17.6  4.27e-69
-## 5 as.factor(diabetes_status)1            0.313     0.0643      4.86 1.16e- 6</code></pre>
+##   term                                          estim…¹ std.e…² stati…³  p.value
+##   &lt;chr&gt;                                           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                    1.13    0.0563   20.1  5.24e-90
+## 2 as.factor(insurance_status)Coverage           -0.990   0.0501  -19.8  7.19e-87
+## 3 as.factor(health_status)Fair/poor             -0.0928  0.0522   -1.78 7.56e- 2
+## 4 as.factor(usual_medicalcare_status)Usual pla…  0.994   0.0566   17.6  4.27e-69
+## 5 as.factor(diabetes_status)Yes                  0.313   0.0643    4.86 1.16e- 6
+## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
 <pre class="r"><code>saveRDS(table5, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;medical_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome, and smoking &amp; alcohol characteristics as the predictors
 log_fit_smoking_alcohol &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(smoking_status) + as.factor(alcohol_status), data = data_clean_main)
@@ -973,12 +1095,12 @@ log_fit_smoking_alcohol</code></pre>
 ##     as.factor(alcohol_status), family = stats::binomial, data = data)
 ## 
 ## Coefficients:
-##                (Intercept)  as.factor(smoking_status)1  
-##                     1.5251                     -0.5534  
-## as.factor(smoking_status)2  as.factor(alcohol_status)1  
-##                     0.3102                      0.5652  
-## as.factor(alcohol_status)2  
-##                     0.4753  
+##                      (Intercept)  as.factor(smoking_status)Current  
+##                           1.5251                           -0.5534  
+##  as.factor(smoking_status)Former  as.factor(alcohol_status)Current  
+##                           0.3102                            0.5652  
+##  as.factor(alcohol_status)Former  
+##                           0.4753  
 ## 
 ## Degrees of Freedom: 24847 Total (i.e. Null);  24843 Residual
 ## Null Deviance:       19770 
@@ -987,13 +1109,13 @@ log_fit_smoking_alcohol</code></pre>
 table6 &lt;- tidy(log_fit_smoking_alcohol)
 table6</code></pre>
 <pre><code>## # A tibble: 5 × 5
-##   term                       estimate std.error statistic  p.value
-##   &lt;chr&gt;                         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)                   1.53     0.0334     45.6  0       
-## 2 as.factor(smoking_status)1   -0.553    0.0459    -12.1  1.56e-33
-## 3 as.factor(smoking_status)2    0.310    0.0538      5.77 8.04e- 9
-## 4 as.factor(alcohol_status)1    0.565    0.0430     13.1  1.99e-39
-## 5 as.factor(alcohol_status)2    0.475    0.0586      8.11 5.12e-16</code></pre>
+##   term                             estimate std.error statistic  p.value
+##   &lt;chr&gt;                               &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                         1.53     0.0334     45.6  0       
+## 2 as.factor(smoking_status)Current   -0.553    0.0459    -12.1  1.56e-33
+## 3 as.factor(smoking_status)Former     0.310    0.0538      5.77 8.04e- 9
+## 4 as.factor(alcohol_status)Current    0.565    0.0430     13.1  1.99e-39
+## 5 as.factor(alcohol_status)Former     0.475    0.0586      8.11 5.12e-16</code></pre>
 <pre class="r"><code>saveRDS(table6, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;smoking_alcohol_model.rds&quot;)))</code></pre>
 <p>MODEL PERFORMANCE COMPARISON</p>
 <pre class="r"><code># Comparing all the above models on the basis of model performance

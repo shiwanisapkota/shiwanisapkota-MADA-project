@@ -20,6 +20,8 @@ library(tidymodels)
 library(performance)
 library(vip)
 library(broom)
+library(gridExtra)
+library(cowplot)
 ```
 
 LOADING AND LOOKING AT THE DATA
@@ -184,6 +186,13 @@ ggsave(filename = here("results", "statistical_analysis_result", "2_model_evalua
 # Using roc_auc() for estimating the area under the curve 
 data_clean_main_aug2 %>% 
   roc_auc(truth = mammogram_status, .pred_0)
+
+# Combining and saving the above 2 ROC curves for full model and alternative model
+roc_combined <- plot_grid(roc_fullmodel, roc_altmodel, ncol = 2, align = "h", axis = "tb",
+                           labels = c("ROC Curve for the full model", "ROC Curve for the alternative model"),
+                           label_size = 10)
+roc_combined
+ggsave(filename = here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure4_roc_combined.png"), plot = roc_combined)
 ```
 
 From the above result, we see that the full model (using mammogram status as the main outcome of interest and other variables as predictors) has ROC-AUC as 0.76 while the alternative model (using mammogram status as the main outcome of interest and Hispanic status as the main predictor) has ROC-AUC as 0.54. So, we can say that for mammogram status, the full model with all the predictors of interest is better than the alternative model having only Hispanic status as the main predictor.

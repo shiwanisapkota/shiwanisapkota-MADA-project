@@ -8,8 +8,6 @@ format:
     toc: false
     number-sections: true
     highlight-style: github
-bibliography: ../../dataanalysis_template_references.bib
-csl: ../../vancouver.csl
 ---
 
 ```{r, echo=FALSE, message=FALSE}
@@ -22,7 +20,7 @@ library(tidyverse)
 library(dplyr)
 library(survey)
 library(naniar)
-library(gmodels) #for ch-sq frequency table
+library(gmodels) #for chi-sq frequency table
 library(vcd) # for three way frequency table
 library(gtsummary)
 library(openxlsx)
@@ -46,131 +44,230 @@ In this supplement file, you can find details about the data file extraction and
 # data <- read_ipums_micro(ddi)
 
 # Saving the raw data file as .csv file and commenting out this code so it does not get created everytime we run this code chunk
-# readr::write_csv(data, "mammogram_ses.csv")
+# readr::write_csv(here("data", "raw_data", "mammogram_ses.csv")
 
 # It seems the created csv file is very large (153 MB) and GitKraken won't like it so lets create an rds file so that could be of small size
 
 # Saving the raw data file as .rds file and commenting out this code so it does not get created everytime we run this code chunk
-# saveRDS(data, "mammogram_ses1.rds")
+# saveRDS(here("data", "raw_data", "mammogram_ses1.rds")
 
 # From here, you can follow general steps involved in data analysis and the
-# respective codes are documented in the respected folders of this project:
-# 1. Data cleaning
-# 2. Exploratory Data analysis
-# 3. Main statistical analysis
+# respective codes are documented in the `code` folder with the given subfolders:
+# 1. processing_cleaning_code folder
+# 2. analysis_code folder
 ```
 
-## Additional result
+# List of Tables
+# Additional results
+# Exploratory Analysis
 
-```{r}
-#| label: Additional Table 1
-#| tbl-cap: "Fit table using mammogram status as the outcome and age & hispanic_status as predictors."
+# Supplementary Table 1
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable1 = readRDS(here("results", "statistical_analysis_result", "age_hispanic_model.rds"))
-knitr::kable(additionaltable1)
+# Loading the `demographic_table2.rds` table which was created during the data exploratory process
+result_table1 <- readRDS(here("results", "exploratory_analysis_result", "demographic_table2.rds"))
+result_table1
 ```
 
-```{r}
-#| label: Additional Table 2
-#| tbl-cap: "Fit table using mammogram status as the outcome and demographic characteristics variables as predictors."
+# Supplementary Table 2
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable2 = readRDS(here("results", "statistical_analysis_result", "demographic_model.rds"))
-knitr::kable(additionaltable2)
+# Loading the `demographic_table3.rds` table which was created during the data exploratory process
+result_table2 <- readRDS(here("results", "exploratory_analysis_result", "demographic_table3.rds"))
+result_table2
 ```
 
-```{r}
-#| label: Additional Table 3
-#| tbl-cap: "Fit table using mammogram status as the outcome and the medical characteristics as the predictors."
+# Model Fitting
+# Bivariate Logistic Regression
+
+# Supplementary Table 3
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable3 = readRDS(here("results", "statistical_analysis_result", "medical_model.rds"))
-knitr::kable(additionaltable3)
+# Loading the `bivariate_mammogram_year.rds` table which was created during the data fitting process
+result_table3 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_year.rds"))
+result_table3
 ```
 
-```{r}
-#| label: Additional Table 4
-#| tbl-cap: "Fit table using mammogram status as the outcome and smoking & alcohol characteristics as the predictors."
+# Supplementary Table 4
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable4 = readRDS(here("results", "statistical_analysis_result", "smoking_alcohol_model.rds"))
-knitr::kable(additionaltable4)
+# Loading the `bivariate_mammogram_hispanic.rds` table which was created during the data fitting process
+result_table4 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_hispanic.rds"))
+result_table4
 ```
 
-```{r}
-#| label: Additional Table 5
-#| tbl-cap: "Model fitting table using mammogram status as the outcome and demographic characteristics as the predictors."
+# Supplementary Table 5
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable5 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "demographic_model.rds"))
-knitr::kable(additionaltable5)
+# Loading the `bivariate_mammogram_age.rds` table which was created during the data fitting process
+result_table5 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_age.rds"))
+result_table5
 ```
 
-```{r}
-#| label: Additional Table 6
-#| tbl-cap: "Model fitting table using mammogram status as the outcome and medical characteristics as the predictors."
+# Supplementary Table 6
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable6 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "medical_model.rds"))
-knitr::kable(additionaltable6)
+# Loading the `bivariate_mammogram_income.rds` table which was created during the data fitting process
+result_table6 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_income.rds"))
+result_table6
 ```
 
-```{r}
-#| label: Additional Table 7
-#| tbl-cap: "Model fitting table using mammogram status as the outcome and smoking and alcohol characteristics as the predictors."
+# Supplementary Table 7
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable7 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "smoking_alcohol_model.rds"))
-knitr::kable(additionaltable7)
+# Loading the `bivariate_mammogram_education.rds` table which was created during the data fitting process
+result_table7 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_education.rds"))
+result_table7
 ```
 
-```{r}
-#| label: Additional Table 8
-#| tbl-cap: "Model fitting table using mammogram status as the outcome and year, age, and hispanic characteristics as the predictors."
+# Supplementary Table 8
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable8 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "year_age_hispanic_model.rds"))
-knitr::kable(additionaltable8)
+# Loading the `bivariate_mammogram_maritalstatus.rds` table which was created during the data fitting process
+result_table8 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_maritalstatus.rds"))
+result_table8
 ```
 
-```{r}
-#| label: Additional Table 9
-#| tbl-cap: "Model performance comparison."
+# Supplementary Table 9
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable9 = readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "model_performance_comparison.rds"))
-knitr::kable(additionaltable9)
+# Loading the `bivariate_mammogram_regionresidence.rds` table which was created during the data fitting process
+result_table9 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_regionresidence.rds"))
+result_table9
 ```
 
-```{r}
-#| label: Additional Table 10
-#| tbl-cap: "Model coefficients table using mammogram status as the outcome and other variables of interests as the predictors using model evaluation."
+# Supplementary Table 10
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable10 = readRDS(here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_full_model.rds"))
-knitr::kable(additionaltable10)
+# Loading the `bivariate_mammogram_insurancestatus.rds` table which was created during the data fitting process
+result_table10 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_insurancestatus.rds"))
+result_table10
 ```
 
-```{r}
-#| label: Additional Table 11
-#| tbl-cap: "Model coefficients table using mammogram status as the outcome and hispanic status as the main predictor using model evaluation."
+# Supplementary Table 11
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable11 = readRDS(here("results", "statistical_analysis_result", "3_machine_learning_result", "lasso_model_final_fit.rds"))
-knitr::kable(additionaltable11)
+# Loading the `bivariate_mammogram_healthstatus.rds` table which was created during the data fitting process
+result_table11 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_healthstatus.rds"))
+result_table11
 ```
 
-```{r}
-#| label: Additional Table 12
-#| tbl-cap: "Lasso model final fit using machine learning approach."
+# Supplementary Table 12
+```{r, message = FALSE}
 #| echo: FALSE
-additionaltable12 = readRDS(here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_outcome_mainpredictor.rds"))
-knitr::kable(additionaltable12)
+# Loading the `bivariate_mammogram_usualmedicalcarestatus.rds` table which was created during the data fitting process
+result_table12 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_usualmedicalcarestatus.rds"))
+result_table12
 ```
 
+# Supplementary Table 13
+```{r, message = FALSE}
+#| echo: FALSE
+# Loading the `bivariate_mammogram_smokingstatus.rds` table which was created during the data fitting process
+result_table13 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_smokingstatus.rds"))
+result_table13
+```
+
+# Supplementary Table 14
+```{r, message = FALSE}
+#| echo: FALSE
+# Loading the `bivariate_mammogram_alcoholstatus.rds` table which was created during the data fitting process
+result_table14 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_alcoholstatus.rds"))
+result_table14
+```
+
+# Supplementary Table 15
+```{r, message = FALSE}
+#| echo: FALSE
+# Loading the `bivariate_mammogram_diabetesstatus.rds` table which was created during the data fitting process
+result_table15 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_diabetesstatus.rds"))
+result_table15
+```
+
+# Supplementary Table 16
+```{r, message = FALSE}
+#| echo: FALSE
+# Loading fit table using mammogram status as the outcome and year, age, & hispanic_status as predictors
+result_table16 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "year_age_hispanic_model.rds"))
+result_table16
+```
+
+# Supplementary Table 17
+```{r, message = FALSE}
+#| echo: FALSE
+# Loading fit table using mammogram status as the outcome and demographic characteristics variables as predictors
+result_table17 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "demographic_model.rds"))
+result_table17
+```
+
+# Supplementary Table 18
+```{r, message = FALSE}
+#| echo: FALSE
+# Loading fit table using mammogram status as the outcome and the medical characteristics as the predictors
+result_table18 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "medical_model.rds"))
+result_table18
+```
+
+# Supplementary Table 19
+```{r, message = FALSE}
+#| echo: FALSE
+# Loading fit table using mammogram status as the outcome and smoking & alcohol characteristics as the predictors
+result_table18 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "smoking_alcohol_model.rds"))
+result_table18
+```
+
+# Model Evaluation
+
+# Supplementary Table 20
+```{r, message = FALSE}
+#| echo: FALSE
+ # Loading coefficients table using mammogram status as the outcome and other variables of interests as the predictors using model evaluation
+result_table20 <- readRDS(here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_full_model.rds"))
+result_table20
+```
+
+# Supplementary Table 21
+```{r, message = FALSE}
+#| echo: FALSE
+ # Loading coefficients table using mammogram status as the outcome and hispanic status as the main predictor using model evaluation
+result_table21 <- readRDS(here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_outcome_mainpredictor.rds"))
+result_table21
+```
+
+# Machine Learning (Model Selection)
+
+# Supplementary Table 22
+
+```{r, message = FALSE}
+#| echo: FALSE
+ # Loading coefficients and penalty data during lasso model process
+result_table22 <- readRDS(here("results", "statistical_analysis_result", "3_machine_learning_result", "lasso_model_final_fit.rds"))
+result_table22
+```
+
+# List of Figures
+
+# Machine Learning (Model Selection)
+
+# Supplementary Figure 1
 ```{r}
 #| label: Additional Figure 1
-#| fig-cap: "Lasso model."
 #| echo: FALSE
-knitr::include_graphics("/results/statistical_analysis_result/3_machine_learning_result/figure3_lasso_model.png")
-version
+
+# Loading figure created using decision tree model for the final fit
+suppl_fig1 <- knitr::include_graphics(here("results", "statistical_analysis_result", "3_machine_learning_result", "figure2_decision_tree_model.png"))
+suppl_fig1
 ```
 
 
-# Discussion
 
-[**To be added]
 
-# References
 
-[**To be added]
+
+
+
+
+
+
+
+

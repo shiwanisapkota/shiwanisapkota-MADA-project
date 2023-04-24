@@ -236,18 +236,21 @@ CREATING FIGURE
 ```{r}
 # Recoding hispanic_status for the figure
 data_clean_main1 <- data_clean_main
-data_clean_main1$hispanic_status <- recode_factor(data_clean_main1$hispanic_status, '1' = 'Non-hispanic Female', '2' = 'Hispanic Female')
+data_clean_main1$hispanic_status <- recode_factor(data_clean_main1$hispanic_status, '1' = 'Non-hispanic', '2' = 'Hispanic')
 
 # Summarizing mammogram_status and Hispanic_status in the given years
-figure1 <- ggplot(data_clean_main1, aes(x = mammogram_status))+
+figure1 <- ggplot(data_clean_main1, aes(x = mammogram_status)) +
   geom_bar(aes(fill = hispanic_status), stat = "count", color = "white",
     position = position_dodge(0.9)) +
   facet_wrap(~year) +
   scale_x_discrete(labels = c("No", "Yes")) +
-  scale_y_continuous(breaks = c(1000, 2000, 3000, 4000, 5000, 6000))
+  scale_y_continuous(breaks = c(1000, 2000, 3000, 4000, 5000, 6000)) +
+  theme(legend.position = "bottom", 
+        legend.title = element_text(size = 12))
+
 figure1
 
 # Saving this figure
-ggsave(filename = here("results", "exploratory_analysis_result", "figure1_mammogram_ses.png"), plot = figure1)
+ggsave(filename = here("results", "exploratory_analysis_result", "figure1_mammogram_ses.png"), plot = figure1, dpi = 300)
 ```
 
