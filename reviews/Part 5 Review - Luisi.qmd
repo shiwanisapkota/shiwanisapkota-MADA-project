@@ -1,0 +1,145 @@
+---
+title: Part5 Project Review 
+author: NICOLE LUISI
+date: "`r file.mtime(knitr::current_input())`"
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+# Overview
+
+Title of project: Trend in mammogram screening for breast cancer and socio-economic status of hispanic and non-hispanic women during 2000, 2005, 2010, and 2015
+
+Name of project author(s): Shiwani Sapkota
+
+Name of project reviewer: Nicole Luisi
+
+# Specific project content evaluation
+
+## Background, Context and Motivation
+
+### Feedback and Comments
+
+The background is well done and comprehensive. It includes a summary of previous work with references and explains the gap that will be addressed by this analysis. The purpose and goals are clear. The format of the citations is a superscript inside of parentheses, I'm not sure if that was intended.
+
+### Summary assessment 
+
+* strong contextualization and motivation
+
+## Question description
+
+### Feedback and Comments
+
+Similar to the background, this is clear and well organized. The description of the NHIS dataset provides evidence that it is well suited to evaluate trends in mammography screening among Hispanic and non-Hispanic women by SES and other factors.  
+
+### Summary assessment
+
+* question/hypotheses fully clear
+
+## Data description
+
+### Feedback and Comments
+
+The data source is described very well, including specifics about the variables of interest and the way they were recorded as well as the steps to arrive at the final sample. A codebook does not seem to be included in the files - this did not create any challenges for me as everything was described well and commented, but it may be helpful to provide some of this information in the repository for future use. One small adjustment could be including a direct link to an online codebook. I don't feel strongly about this since a lot of detail was provided in the text.  
+
+### Summary assessment
+
+* source and overall structure of data well explained
+
+## Data wrangling and exploratory analysis
+
+### Feedback and Comments
+
+The data wrangling and exploratory analysis was very thorough. I had no issues reproducing these on my end, and comments were used extensively throughout to explain everything that was being done and why. In the exploratory analysis, some cleanup could be done, particularly in the nicely formatted tables - the current version has a mix of upper and lower case labels on the variables, and some are using original variable names with underscores, etc. Again, this is just a small thing and not very important for the exploratory analysis phase if any final tables for the analysis have corrected this. Figure 1 in this section is very helpful, some extra details such as data labels and descriptions could be added to make this one stand out more as it holds valuable information about the sample.
+
+### Summary assessment
+
+* essentially no weaknesses in wrangling and exploratory component
+
+## Appropriateness of Analysis
+
+### Feedback and Comments
+
+This section was also easy to follow. It could be beneficial for this type of write-up to present and report the exponentiated values for odds rather than the estimates/log odds. Similarly, a more simple p-value in the table with fewer decimal places (<0.05) would be easier for a reader to quickly interpret. The logic for the model selection is reasonable. In the write-up a bit more information could be included about the models, maybe just a footnote). The title of the ROC curve on the right is cut off so may need to adjust the scale on that image. It may be helpful to include a summary statement that ties everything together for this section and explains which final model was selected and all the relevant details.  
+
+### Summary assessment
+
+* strong and reasonable analysis
+
+## Presentation
+
+### Feedback and Comments
+
+The results are presented well overall, some small details could be adjusted to improve the look and feel. In the main Table 1, the case of the text is not consistent throughout and there are some small errors (no header on education section), use of original variable name (i.e. marital_status), etc. Would do another look over this table to make some small improvements to these details. Labels could also be cleaned up on Figure 1. For the models, the results are presented clearly, for this style of report I would just prefer to have p-values with fewer decimals and perhaps the exponentiated estimates. The fit info is fine, a figure could be considered for that instead of another table, but this is fine as is. It looks like some other interesting work is in the supplemental qmd but there is no HTML file, could consider referencing the supplement in the text to direct people to additional info.
+
+### Summary assessment
+
+* results are presented ok, with room for improvement
+
+## Discussion/Conclusions
+
+### Feedback and Comments
+
+The summary is clear and does a good job bringing everything back together. Strengths and limitations were discussed, and future work proposed. 
+
+### Summary assessment
+
+* strong, complete and clear discussion
+
+## Further comments
+
+Overall, really great job on this and an interesting question. The write-up is very thorough, and everything in the code was easy to follow and reproducible. The only thing that could use a little bit more attention for the final version is the main tables and figures, and it's just cleaning up small thing to improve the overall quality of the report, no major issues. Really great work! 
+
+# Overall project content evaluation
+
+## Structure
+
+### Feedback and Comments
+
+Everything is structured very well and it was easy to find all of the relevant items. Some additional information could be added to the readme files - I do think that people in this class will be much more in tune with what is going on in this template, and it may be helpful to preapre information as if someone would have no idea. The statistical analysis subfolder does not have any readme, so I do think a bulleted summary of what the code files in that folder are doing would be nice to add.
+
+### Summary assessment
+
+* well structured
+
+## Documentation 
+
+### Feedback and Comments
+
+The documentation is thorough, just a few small suggestions for places to add details in the previous sections. Overall, code is very well commented as well as logic for the steps. 
+
+### Summary assessment
+
+* fully and well documented
+
+## Reproducibility
+
+### Feedback and Comments
+
+Everything was reproducible and easy to follow. I didn't have any issues running any of the code provided or following the logic/steps taken. 
+
+### Summary assessment
+
+* fully reproducible without issues
+
+## Thoroughness
+
+### Feedback and Comments
+
+This was a very thorough analysis with a large dataset. From the exploration to the analysis it is clear that many details were considered. There were no major gaps or issues where I had concerns about the approach or interpretation within the data source. 
+
+### Summary assessment
+
+* strong level of thoroughness
+
+## Further comments
+
+No major concerns, I just recommended some minor cleanup of details before the final version. I enjoyed working through it! 
+
+
+
+
+
