@@ -1,0 +1,183 @@
+# Overview
+
+Title of project:Trend in mammogram screening for breast cancer and socio-economic status of hispanic and non-hispanic women during 2000, 2005, 2010, and 2015
+
+Name of project author(s):
+Shiwani Sapkota
+
+Name of project reviewer:
+Yao Lu
+
+
+## Background, Context and Motivation
+How well is the context of the project described? Is a comprehensive background, including summary of previous/related work given? 
+
+### Feedback and Comments
+The context of the project is detailed. Comprehensive background is included. 
+
+
+### Summary assessment (PICK ONE, DELETE THE OTHERS)
+
+* strong contextualization and motivation
+
+
+## Question description
+How well and clear are the question(s)/hypotheses the project aims to address described? Is it clear how the questions relate to the data?
+
+
+### Feedback and Comments
+
+The question is fully clear, it's
+
+'This study was conducted to fill up that knowledge gap with the aim of exploring the relationship trend among socioeconomic status and other predictive factors influencing the likelihood of using mammography screening services within Hispanic and non-Hispanic women.'
+
+The question is related to the data.
+
+### Summary assessment
+
+* question/hypotheses fully clear
+
+
+## Data description
+How well is the data overall described? Is the source provided? Is a codebook or other meta-information available that makes it clear what the data is? 
+
+### Feedback and Comments
+
+There are many data in NHIS. Looks like you didn't put the link in one obvious place. If people miss your data link. New user who are not familiar with your major may need to try hard to find you data. Good thing is you describe it well. So professional people may easy to follow you.
+
+### Summary assessment
+
+* source and overall structure of data somewhat explained
+
+
+
+## Data wrangling and exploratory analysis
+How well is the data cleaned/processed and explored? Are all steps reasonable and well explained? Are alternatives discussed and considered? Are meaningful exploratory results shown (e.g. in the supplementary materials)?
+
+### Feedback and Comments
+
+data_cleaning.Rmd not work well in my computer. Neither exploratory_analysis.Rmd. In html file, I think there should be some summary way you can show your data. Not a long table. Or maybe you can pick few table which you think important and hide others.
+
+### Summary assessment
+
+* some weaknesses in wrangling and exploratory component
+
+
+
+
+## Appropriateness of Analysis
+Were the analysis methods appropriate for the data? Was the analysis done properly? Were different components of the analysis (e.g. performance measure, variable selection, data pre-processing, model evaluation) done in the best way possible and explained well?
+
+### Feedback and Comments
+
+Some code error in my computer to run the code. 
+
+Some of data wrangling is included in model_fitting code. I think you can move them to wrangling part to make your modeling more clear.
+
+Some of data wrangling is included in model_evaluation code. At model_evaluation part. You only tried full model and one 'ALTERNATIVE MODEL' describing few statistical reason. As you tried in logistic regression. There are some large p-value  like 'year2005' with 4.88e- 1, 'year2010'with 1.41e- 4. Why not tried forward or backward model selection to pick a optimal model. Also, if I make to this step. I will try ANOVA analysis, to have look at a F-test. Since there are some categorical variables which including multiple strata. T-test may not be enough. About table 3, Model Performance Comparisons. I think you can try adjusted multivariable logistic regression. Since in real world, we don't have to limit our variables number to 2 or 3. Logistic regression can have an optimal model given the dataset, the alpha threshold and the direction of model selection method.
+
+
+
+
+Some of data wrangling is included in machine_leaning. ROC_AUC result were transfer manually which is a not safe way. I have met some datasets which are tricky. When I come back and double check the data wrangling, manual result transfer make me generate error even I think I am a careful person. Use code to transfer your ROC_AUC result is better.
+
+
+
+### Summary assessment
+
+* defensible but not optimal analysis 
+
+## Presentation
+How well are results presented? Are tables and figures easy to read and understand? Are the main figures/tables publication level quality? 
+
+### Feedback and Comments
+
+Table 1 and figure 1 are good. Table is well looked. But I think ANOVA table is needed. Since like 'year', there are multiple strata. T-test may not enough. Table 3 looks good. But I think backward and forward comparison may be better to put here rather than the current one. If we don't have specific reason why we have to limit the number of variables to 2 or 3. Figure 3 is well looked. But I think there should be several better model than current alternative model.(like backward selection model) Since this alternative model were chosen manually without showing statistic reason.
+
+### Summary assessment
+
+* results are very well presented
+
+
+## Discussion/Conclusions
+Are the study findings properly discussed? Are strengths and limitations acknowledged? Are findings interpreted properly?
+
+### Feedback and Comments
+
+Discussion about confounder is not mentioned. For example, Alcohol and smoke may be related some other disease. Some people with alcohol or smoke may go to hosipital more often. Then they get test more often.  Self-reported bias were mention ,which is good.
+
+### Summary assessment
+
+* strong, complete and clear discussion
+
+
+## Further comments
+
+_Add any other comments regarding the different aspects of the project here. Write anything you think can help your classmate improve their project._
+
+Very good background description. Modeling you can try using code to transfer your result other than transfer it manually. 
+
+
+
+# Overall project content evaluation
+Evaluate overall features of the project  by filling in the sections below.
+
+
+## Structure
+Is the project well structured? Are files in well labeled folders? Do files have reasonable names? Are all "junk" files not needed for analysis/reproduction removed? By just looking at files and folders, can you get an idea of how things fit together?
+
+### Feedback and Comments
+
+well structured. Though some of code not work in my computer.
+
+### Summary assessment
+
+* well structured
+
+
+## Documentation 
+How well is the project documented? Are you able to understand each step of the whole analysis, each decision that was made, and each line of code? Is enough information provided as comments in code or as part of Rmd files? 
+
+### Feedback and Comments
+
+fully and well documented.It will be better if put a link where the data download to a obvious place. I am not sure if there is. But I fail to find that link.
+
+### Summary assessment
+
+* fully and well documented
+
+
+
+## Reproducibility
+Are all results fully reproducible? Is documentation provided which clearly explains how to reproduce things, and does it work without the need for any manual intervention? Are you able to re-run the whole analysis without having to do manual interventions/edits?
+
+### Feedback and Comments
+
+Some of code not work in my computer
+
+### Summary assessment
+
+* small parts not reproducible or required manual intervention 
+
+
+
+## Thoroughness
+How thorough was the overall study? Were alternatives (e.g. different ways of processing the data or different models) considered? Were alternatives discussed? Were the questions/hypotheses fully and thoroughly addressed?
+
+### Feedback and Comments
+
+Some code not work in my computer. Wrangling part is good. Optimal multivariable logistic regression is missing. Machine leaning part is good.
+
+### Summary assessment
+
+* strong level of thorougness
+
+
+## Further comments
+
+_Add any other comments regarding the overall project here. Write anything you think can help your classmate improve their project._
+
+Very good background description and discussion. It will be better if try further modeling. Like comparison between using optimal logistic regression AUC and null model. Or compare backward and forward model selection. I think these can be next steps of your table 3.
+
+
+
