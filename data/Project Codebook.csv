@@ -1,0 +1,54 @@
+﻿Variables,Code,Codes meaning,Restrictions to study,Variables meaning
+sex,2,Female,Restricting study to only females,Sex
+age,1,40-44 yrs,Restricting study to only females aged 40-74,Age
+,2,45-49 yrs,,
+,3,50-54 yrs,,
+,4,55-59 yrs,,
+,5,60-64 yrs,,
+,6,65-69 yrs,,
+,7,70-74 yrs,,
+hispanic_status,1,non-hispanic,,Hispanic ethnicity
+,2,hispanic,,
+income,1,At or above poverty threshold,,Above or below poverty threshold variable
+,2,Below poverty threshold,,
+education,1,Never attended/kindergarten only,,Education attainment
+,2,Less than high school,,
+,3,High school,,
+,4,Some college or Associate's degree,,
+,5,Bachelor's degree and higher,,
+marital_status,0,Never married,,Marital status
+,1,Married,,
+,2,Single (separated/widowed/divorced),,
+,3,Living with partner,,
+region_residence,1,Northeast,,Region of residence
+,2,North Central/Midwest,,
+,3,South,,
+,4,West,,
+insurance_status,0,No coverage,,Health insurance coverage
+,1,Coverage,,
+privateinsurance_status,1,No,,Private health insurance coverage
+,2,Yes,,
+medicaid_status,1,No,,Medicaid status
+,2,Yes,,
+medicare_status,1,No,,Medicare status
+,2,Yes,,
+health_status,1,Excellent/very good/good,,Health status 
+,2,Fair or poor,,
+mammogram_status,0,No,,Ever had a mammogram?
+,1,Yes,,
+number_mammogram_6yrs,0,None,,"Number of mammograms, last 6 years"
+,1,1-5 times,,
+,2,6-10 times,,
+,3,>10 times,,
+cancer_status,0,No,Restricting study to only non-cancer females,Ever told had cancer?
+,1,Yes,,
+usual_medicalcare_status,0,No place,,Has usual place for medical care?
+,1,Usual place,,
+smoking_status,0,Never,,Cigarette smoking status
+,1,Current,,
+,2,Former,,
+alcohol_status,0,Never,,Alcohol drinking status
+,1,Current,,
+,2,Former,,
+diabetes_status,0,No,,Ever told had diabetes?
+,1,Yes,,

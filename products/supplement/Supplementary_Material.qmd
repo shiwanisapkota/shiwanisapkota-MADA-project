@@ -1,5 +1,5 @@
 ---
-title: "Supplement to Manuscript for MADA Project"
+title: "Supplementary Materials for Manuscript of MADA Project"
 subtitle: "Supplement Materials"
 author: Shiwani Sapkota
 date: "`r Sys.Date()`"
@@ -26,6 +26,7 @@ library(gtsummary)
 library(openxlsx)
 library(ggplot2)
 library(ggthemes)
+library(here)
 ```
 
 # Overview
@@ -214,35 +215,6 @@ result_table18
 # Loading fit table using mammogram status as the outcome and smoking & alcohol characteristics as the predictors
 result_table18 <- readRDS(here("results", "statistical_analysis_result", "1_model_fitting_result", "smoking_alcohol_model.rds"))
 result_table18
-```
-
-# Model Evaluation
-
-# Supplementary Table 20
-```{r, message = FALSE}
-#| echo: FALSE
- # Loading coefficients table using mammogram status as the outcome and other variables of interests as the predictors using model evaluation
-result_table20 <- readRDS(here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_full_model.rds"))
-result_table20
-```
-
-# Supplementary Table 21
-```{r, message = FALSE}
-#| echo: FALSE
- # Loading coefficients table using mammogram status as the outcome and hispanic status as the main predictor using model evaluation
-result_table21 <- readRDS(here("results", "statistical_analysis_result", "2_model_evaluation_result", "logistic_outcome_mainpredictor.rds"))
-result_table21
-```
-
-# Machine Learning (Model Selection)
-
-# Supplementary Table 22
-
-```{r, message = FALSE}
-#| echo: FALSE
- # Loading coefficients and penalty data during lasso model process
-result_table22 <- readRDS(here("results", "statistical_analysis_result", "3_machine_learning_result", "lasso_model_final_fit.rds"))
-result_table22
 ```
 
 # List of Figures

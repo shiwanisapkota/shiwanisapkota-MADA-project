@@ -445,7 +445,10 @@ data_clean_main$health_status &lt;- recode_factor(data_clean_main$health_status,
 data_clean_main$usual_medicalcare_status &lt;- recode_factor(data_clean_main$usual_medicalcare_status, &#39;0&#39; = &#39;No place&#39;, &#39;1&#39; = &#39;Usual place&#39;)
 data_clean_main$smoking_status &lt;- recode_factor(data_clean_main$smoking_status, &#39;0&#39; = &#39;Never&#39;, &#39;1&#39; = &#39;Current&#39;, &#39;2&#39; = &#39;Former&#39;)
 data_clean_main$alcohol_status &lt;- recode_factor(data_clean_main$alcohol_status, &#39;0&#39; = &#39;Never&#39;, &#39;1&#39; = &#39;Current&#39;, &#39;2&#39; = &#39;Former&#39;)
-data_clean_main$diabetes_status &lt;- recode_factor(data_clean_main$diabetes_status, &#39;0&#39; = &#39;No&#39;, &#39;1&#39; = &#39;Yes&#39;)</code></pre>
+data_clean_main$diabetes_status &lt;- recode_factor(data_clean_main$diabetes_status, &#39;0&#39; = &#39;No&#39;, &#39;1&#39; = &#39;Yes&#39;)
+
+# Limiting only 3 decimal places
+options(digits = 3)</code></pre>
 <p>FITTING LOGISTIC REGRESSION</p>
 <p>Since our outcome variable <code>mammogram_status</code> is of binary
 type, we will be using bivariate and multivariate logistic regression
@@ -456,66 +459,61 @@ log_mod &lt;- logistic_reg() %&gt;%
 <p>BIVARIATE LOGISTIC REGRESSION</p>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `year` as the predictor
 log_fit_year &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(year), data = data_clean_main)
-log_fit_year</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(year), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##         (Intercept)  as.factor(year)2005  as.factor(year)2010  
-##             1.69846              0.06053              0.27735  
-## as.factor(year)2015  
-##             0.24926  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24844 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19730     AIC: 19740</code></pre>
+tidy(log_fit_year)</code></pre>
+<pre><code>## # A tibble: 4 × 5
+##   term                estimate std.error statistic     p.value
+##   &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+## 1 (Intercept)           1.70      0.0366     46.5  0          
+## 2 as.factor(year)2005   0.0605    0.0521      1.16 0.246      
+## 3 as.factor(year)2010   0.277     0.0543      5.11 0.000000328
+## 4 as.factor(year)2015   0.249     0.0505      4.94 0.000000790</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_year
-bivariate_year &lt;- tidy(log_fit_year)
-saveRDS(bivariate_year, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_year.rds&quot;)))</code></pre>
+bivariate_year &lt;- tidy(log_fit_year) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_year</code></pre>
+<pre><code>## # A tibble: 4 × 3
+##   term                `odds ratio`     p.value
+##   &lt;chr&gt;                      &lt;dbl&gt;       &lt;dbl&gt;
+## 1 (Intercept)                 5.47 0          
+## 2 as.factor(year)2005         1.06 0.246      
+## 3 as.factor(year)2010         1.32 0.000000328
+## 4 as.factor(year)2015         1.28 0.000000790</code></pre>
+<pre class="r"><code>saveRDS(bivariate_year, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_year.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `hispanic_status` as the predictor
 log_fit_hispanicstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(hispanic_status), data = data_clean_main)
-log_fit_hispanicstatus</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(hispanic_status), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                        (Intercept)  as.factor(hispanic_status)Hispanic  
-##                             1.9494                             -0.5624  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19630     AIC: 19630</code></pre>
+tidy(log_fit_hispanicstatus)</code></pre>
+<pre><code>## # A tibble: 2 × 5
+##   term                               estimate std.error statistic  p.value
+##   &lt;chr&gt;                                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                           1.95     0.0209      93.4 0       
+## 2 as.factor(hispanic_status)Hispanic   -0.562    0.0457     -12.3 7.09e-35</code></pre>
 <pre class="r"><code># Looking and saving the summary of log_fit_hispanicstatus
-bivariate_hispanic &lt;- tidy(log_fit_hispanicstatus)
-saveRDS(bivariate_hispanic, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_hispanic.rds&quot;)))</code></pre>
+bivariate_hispanic &lt;- tidy(log_fit_hispanicstatus) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_hispanic</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   term                               `odds ratio`  p.value
+##   &lt;chr&gt;                                     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                               7.02  0       
+## 2 as.factor(hispanic_status)Hispanic        0.570 7.09e-35</code></pre>
+<pre class="r"><code>saveRDS(bivariate_hispanic, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_hispanic.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `age` as the predictor
 log_fit_age &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(age), data = data_clean_main)
-log_fit_age</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(age), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##               (Intercept)  as.factor(age)45-49 years  
-##                    0.8262                     0.9703  
-## as.factor(age)50-54 years  as.factor(age)55-59 years  
-##                    1.4018                     1.5777  
-## as.factor(age)60-64 years  as.factor(age)65-69 years  
-##                    1.7367                     1.6064  
-## as.factor(age)70-74 years  
-##                    1.5532  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24841 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 18470     AIC: 18480</code></pre>
+tidy(log_fit_age)</code></pre>
+<pre><code>## # A tibble: 7 × 5
+##   term                      estimate std.error statistic   p.value
+##   &lt;chr&gt;                        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                  0.826    0.0318      26.0 1.28e-148
+## 2 as.factor(age)45-49 years    0.970    0.0533      18.2 3.80e- 74
+## 3 as.factor(age)50-54 years    1.40     0.0614      22.8 1.98e-115
+## 4 as.factor(age)55-59 years    1.58     0.0678      23.3 1.03e-119
+## 5 as.factor(age)60-64 years    1.74     0.0762      22.8 4.04e-115
+## 6 as.factor(age)65-69 years    1.61     0.0789      20.4 2.94e- 92
+## 7 as.factor(age)70-74 years    1.55     0.0836      18.6 4.11e- 77</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_age
 tidy(log_fit_age)</code></pre>
 <pre><code>## # A tibble: 7 × 5
@@ -528,26 +526,30 @@ tidy(log_fit_age)</code></pre>
 ## 5 as.factor(age)60-64 years    1.74     0.0762      22.8 4.04e-115
 ## 6 as.factor(age)65-69 years    1.61     0.0789      20.4 2.94e- 92
 ## 7 as.factor(age)70-74 years    1.55     0.0836      18.6 4.11e- 77</code></pre>
-<pre class="r"><code>bivariate_age &lt;- tidy(log_fit_age)
-saveRDS(bivariate_age, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_age.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_age &lt;- tidy(log_fit_age) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_age</code></pre>
+<pre><code>## # A tibble: 7 × 3
+##   term                      `odds ratio`   p.value
+##   &lt;chr&gt;                            &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                       2.28 1.28e-148
+## 2 as.factor(age)45-49 years         2.64 3.80e- 74
+## 3 as.factor(age)50-54 years         4.06 1.98e-115
+## 4 as.factor(age)55-59 years         4.84 1.03e-119
+## 5 as.factor(age)60-64 years         5.68 4.04e-115
+## 6 as.factor(age)65-69 years         4.98 2.94e- 92
+## 7 as.factor(age)70-74 years         4.73 4.11e- 77</code></pre>
+<pre class="r"><code>saveRDS(bivariate_age, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_age.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `income` as the predictor
 log_fit_income &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(income), data = data_clean_main)
-log_fit_income</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(income), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                              (Intercept)  
-##                                   1.9837  
-## as.factor(income)Below poverty threshold  
-##                                  -0.7592  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19510     AIC: 19520</code></pre>
+tidy(log_fit_income)</code></pre>
+<pre><code>## # A tibble: 2 × 5
+##   term                                     estimate std.error statistic  p.value
+##   &lt;chr&gt;                                       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                 1.98     0.0210      94.4 0       
+## 2 as.factor(income)Below poverty threshold   -0.759    0.0452     -16.8 3.02e-63</code></pre>
 <pre class="r"><code># Looking at the summary of log_fit_income
 tidy(log_fit_income)</code></pre>
 <pre><code>## # A tibble: 2 × 5
@@ -555,33 +557,21 @@ tidy(log_fit_income)</code></pre>
 ##   &lt;chr&gt;                                       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)                                 1.98     0.0210      94.4 0       
 ## 2 as.factor(income)Below poverty threshold   -0.759    0.0452     -16.8 3.02e-63</code></pre>
-<pre class="r"><code>bivariate_income &lt;- tidy(log_fit_income)
-saveRDS(bivariate_income, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_income.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_income &lt;- tidy(log_fit_income) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_income</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   term                                     `odds ratio`  p.value
+##   &lt;chr&gt;                                           &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                     7.27  0       
+## 2 as.factor(income)Below poverty threshold        0.468 3.02e-63</code></pre>
+<pre class="r"><code>saveRDS(bivariate_income, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_income.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `education` as the predictor
 log_fit_education &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(education), data = data_clean_main)
-log_fit_education</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(education), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                                          (Intercept)  
-##                                               0.5534  
-##            as.factor(education)Less than high school  
-##                                               0.7417  
-##                      as.factor(education)High school  
-##                                               1.1454  
-## as.factor(education)Some college or Associate degree  
-##                                               1.4926  
-##       as.factor(education)Bachelor degree and higher  
-##                                               1.7010  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24843 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19410     AIC: 19420</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_education
+
+# Looking at the summary of log_fit_education
 tidy(log_fit_education)</code></pre>
 <pre><code>## # A tibble: 5 × 5
 ##   term                                          estim…¹ std.e…² stati…³  p.value
@@ -592,31 +582,24 @@ tidy(log_fit_education)</code></pre>
 ## 4 as.factor(education)Some college or Associat…   1.49    0.189    7.91 2.50e-15
 ## 5 as.factor(education)Bachelor degree and high…   1.70    0.190    8.97 3.07e-19
 ## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
-<pre class="r"><code>bivariate_education &lt;- tidy(log_fit_education)
-saveRDS(bivariate_education, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_education.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_education &lt;- tidy(log_fit_education) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_education</code></pre>
+<pre><code>## # A tibble: 5 × 3
+##   term                                                 `odds ratio`  p.value
+##   &lt;chr&gt;                                                       &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                                  1.74 2.78e- 3
+## 2 as.factor(education)Less than high school                    2.10 9.20e- 5
+## 3 as.factor(education)High school                              3.14 1.08e- 9
+## 4 as.factor(education)Some college or Associate degree         4.45 2.50e-15
+## 5 as.factor(education)Bachelor degree and higher               5.48 3.07e-19</code></pre>
+<pre class="r"><code>saveRDS(bivariate_education, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_education.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `marital_status` as the predictor
 log_fit_maritalstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(marital_status), data = data_clean_main)
-log_fit_maritalstatus</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(marital_status), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                                                  (Intercept)  
-##                                                       1.3075  
-##                             as.factor(marital_status)Married  
-##                                                       0.6711  
-## as.factor(marital_status)Single (separated/widowed/divorced)  
-##                                                       0.6065  
-##                 as.factor(marital_status)Living with partner  
-##                                                       0.1662  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24844 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19610     AIC: 19620</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_maritalstatus
+
+# Looking at the summary of log_fit_maritalstatus
 tidy(log_fit_maritalstatus)</code></pre>
 <pre><code>## # A tibble: 4 × 5
 ##   term                                         estim…¹ std.e…² stati…³   p.value
@@ -626,31 +609,24 @@ tidy(log_fit_maritalstatus)</code></pre>
 ## 3 as.factor(marital_status)Single (separated/…   0.606  0.0566   10.7  8.96e- 27
 ## 4 as.factor(marital_status)Living with partner   0.166  0.101     1.65 9.83e-  2
 ## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
-<pre class="r"><code>bivariate_maritalstatus &lt;- tidy(log_fit_maritalstatus)
-saveRDS(bivariate_maritalstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_maritalstatus.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_maritalstatus &lt;- tidy(log_fit_maritalstatus) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_maritalstatus</code></pre>
+<pre><code>## # A tibble: 4 × 3
+##   term                                                         odds …¹   p.value
+##   &lt;chr&gt;                                                          &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                                                     3.70 4.08e-169
+## 2 as.factor(marital_status)Married                                1.96 1.31e- 34
+## 3 as.factor(marital_status)Single (separated/widowed/divorced)    1.83 8.96e- 27
+## 4 as.factor(marital_status)Living with partner                    1.18 9.83e-  2
+## # … with abbreviated variable name ¹​`odds ratio`</code></pre>
+<pre class="r"><code>saveRDS(bivariate_maritalstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_maritalstatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `region_residence` as the predictor
 log_fit_regionresidence &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(region_residence), data = data_clean_main)
-log_fit_regionresidence</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(region_residence), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                                      (Intercept)  
-##                                           2.0971  
-## as.factor(region_residence)North Central/Midwest  
-##                                          -0.1575  
-##                 as.factor(region_residence)South  
-##                                          -0.3535  
-##                  as.factor(region_residence)West  
-##                                          -0.3274  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24844 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19720     AIC: 19730</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_regionresidence
+
+# Looking at the summary of log_fit_regionresidence
 tidy(log_fit_regionresidence)</code></pre>
 <pre><code>## # A tibble: 4 × 5
 ##   term                                          estim…¹ std.e…² stati…³  p.value
@@ -660,77 +636,65 @@ tidy(log_fit_regionresidence)</code></pre>
 ## 3 as.factor(region_residence)South               -0.353  0.0568   -6.23 4.72e-10
 ## 4 as.factor(region_residence)West                -0.327  0.0608   -5.38 7.25e- 8
 ## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
-<pre class="r"><code>bivariate_regionresidence &lt;- tidy(log_fit_regionresidence)
-saveRDS(bivariate_regionresidence, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_regionresidence.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_regionresidence &lt;- tidy(log_fit_regionresidence) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_regionresidence</code></pre>
+<pre><code>## # A tibble: 4 × 3
+##   term                                             `odds ratio`  p.value
+##   &lt;chr&gt;                                                   &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                             8.14  0       
+## 2 as.factor(region_residence)North Central/Midwest        0.854 1.32e- 2
+## 3 as.factor(region_residence)South                        0.702 4.72e-10
+## 4 as.factor(region_residence)West                         0.721 7.25e- 8</code></pre>
+<pre class="r"><code>saveRDS(bivariate_regionresidence, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_regionresidence.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `insurance_status` as the predictor
 log_fit_insurancestatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(insurance_status), data = data_clean_main)
-log_fit_insurancestatus</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(insurance_status), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                         (Intercept)  as.factor(insurance_status)Coverage  
-##                               2.087                               -1.347  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 18950     AIC: 18960</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_insurancestatus
+
+# Looking at the summary of log_fit_insurancestatus
 tidy(log_fit_insurancestatus)</code></pre>
 <pre><code>## # A tibble: 2 × 5
 ##   term                                estimate std.error statistic   p.value
 ##   &lt;chr&gt;                                  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 (Intercept)                             2.09    0.0216      96.6 0        
 ## 2 as.factor(insurance_status)Coverage    -1.35    0.0445     -30.2 9.97e-201</code></pre>
-<pre class="r"><code>bivariate_insurancestatus &lt;- tidy(log_fit_insurancestatus)
-saveRDS(bivariate_insurancestatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_insurancestatus.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_insurancestatus &lt;- tidy(log_fit_insurancestatus) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_insurancestatus</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   term                                `odds ratio`   p.value
+##   &lt;chr&gt;                                      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                                8.06  0        
+## 2 as.factor(insurance_status)Coverage        0.260 9.97e-201</code></pre>
+<pre class="r"><code>saveRDS(bivariate_insurancestatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_insurancestatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `health_status` as the predictor
 log_fit_healthstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(health_status), data = data_clean_main)
-log_fit_healthstatus</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(health_status), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                       (Intercept)  as.factor(health_status)Fair/poor  
-##                           1.85457                           -0.03791  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19770     AIC: 19770</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_healthstatus
+
+# Looking at the summary of log_fit_healthstatus
 tidy(log_fit_healthstatus)</code></pre>
 <pre><code>## # A tibble: 2 × 5
 ##   term                              estimate std.error statistic p.value
 ##   &lt;chr&gt;                                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 (Intercept)                         1.85      0.0204    91.0     0    
 ## 2 as.factor(health_status)Fair/poor  -0.0379    0.0487    -0.779   0.436</code></pre>
-<pre class="r"><code>bivariate_healthstatus &lt;- tidy(log_fit_healthstatus)
-saveRDS(bivariate_healthstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_healthstatus.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_healthstatus &lt;- tidy(log_fit_healthstatus) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_healthstatus</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   term                              `odds ratio` p.value
+##   &lt;chr&gt;                                    &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)                              6.39    0    
+## 2 as.factor(health_status)Fair/poor        0.963   0.436</code></pre>
+<pre class="r"><code>saveRDS(bivariate_healthstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_healthstatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `usual_medicalcare_status` as the predictor
 log_fit_usualmedicalcarestatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(usual_medicalcare_status), data = data_clean_main)
-log_fit_usualmedicalcarestatus</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(usual_medicalcare_status), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                                    (Intercept)  
-##                                         0.5679  
-## as.factor(usual_medicalcare_status)Usual place  
-##                                         1.4677  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19020     AIC: 19020</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_usualmedicalcarestatus
+
+# Looking at the summary of log_fit_usualmedicalcarestatus
 tidy(log_fit_usualmedicalcarestatus)</code></pre>
 <pre><code>## # A tibble: 2 × 5
 ##   term                                         estim…¹ std.e…² stati…³   p.value
@@ -738,27 +702,21 @@ tidy(log_fit_usualmedicalcarestatus)</code></pre>
 ## 1 (Intercept)                                    0.568  0.0456    12.4 1.53e- 35
 ## 2 as.factor(usual_medicalcare_status)Usual pl…   1.47   0.0501    29.3 2.02e-188
 ## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
-<pre class="r"><code>bivariate_usualmedicalcarestatus &lt;- tidy(log_fit_usualmedicalcarestatus)
-saveRDS(bivariate_usualmedicalcarestatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_usualmedicalcarestatus.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_usualmedicalcarestatus &lt;- tidy(log_fit_usualmedicalcarestatus) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_usualmedicalcarestatus</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   term                                           `odds ratio`   p.value
+##   &lt;chr&gt;                                                 &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                                            1.76 1.53e- 35
+## 2 as.factor(usual_medicalcare_status)Usual place         4.34 2.02e-188</code></pre>
+<pre class="r"><code>saveRDS(bivariate_usualmedicalcarestatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_usualmedicalcarestatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `smoking_status` as the predictor
 log_fit_smokingstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(smoking_status), data = data_clean_main)
-log_fit_smokingstatus</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(smoking_status), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                      (Intercept)  as.factor(smoking_status)Current  
-##                           1.8543                           -0.4283  
-##  as.factor(smoking_status)Former  
-##                           0.4501  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24845 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19540     AIC: 19550</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_smokingstatus
+
+# Looking at the summary of log_fit_smokingstatus
 tidy(log_fit_smokingstatus)</code></pre>
 <pre><code>## # A tibble: 3 × 5
 ##   term                             estimate std.error statistic  p.value
@@ -766,27 +724,22 @@ tidy(log_fit_smokingstatus)</code></pre>
 ## 1 (Intercept)                         1.85     0.0242     76.6  0       
 ## 2 as.factor(smoking_status)Current   -0.428    0.0444     -9.65 4.93e-22
 ## 3 as.factor(smoking_status)Former     0.450    0.0523      8.61 7.37e-18</code></pre>
-<pre class="r"><code>bivariate_smokingstatus &lt;- tidy(log_fit_smokingstatus)
-saveRDS(bivariate_smokingstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_smokingstatus.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_smokingstatus &lt;- tidy(log_fit_smokingstatus) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_smokingstatus</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##   term                             `odds ratio`  p.value
+##   &lt;chr&gt;                                   &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                             6.39  0       
+## 2 as.factor(smoking_status)Current        0.652 4.93e-22
+## 3 as.factor(smoking_status)Former         1.57  7.37e-18</code></pre>
+<pre class="r"><code>saveRDS(bivariate_smokingstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_smokingstatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `alcohol_status` as the predictor
 log_fit_alcoholstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(alcohol_status), data = data_clean_main)
-log_fit_alcoholstatus</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(alcohol_status), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                      (Intercept)  as.factor(alcohol_status)Current  
-##                           1.4850                            0.5342  
-##  as.factor(alcohol_status)Former  
-##                           0.4497  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24845 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19600     AIC: 19610</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_alcoholstatus
+
+# Looking at the summary of log_fit_alcoholstatus
 tidy(log_fit_alcoholstatus)</code></pre>
 <pre><code>## # A tibble: 3 × 5
 ##   term                             estimate std.error statistic  p.value
@@ -794,117 +747,44 @@ tidy(log_fit_alcoholstatus)</code></pre>
 ## 1 (Intercept)                         1.49     0.0322     46.1  0       
 ## 2 as.factor(alcohol_status)Current    0.534    0.0414     12.9  4.26e-38
 ## 3 as.factor(alcohol_status)Former     0.450    0.0567      7.93 2.12e-15</code></pre>
-<pre class="r"><code>bivariate_alcoholstatus &lt;- tidy(log_fit_alcoholstatus)
-saveRDS(bivariate_alcoholstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_alcoholstatus.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_alcoholstatus &lt;- tidy(log_fit_alcoholstatus) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_alcoholstatus</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##   term                             `odds ratio`  p.value
+##   &lt;chr&gt;                                   &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                              4.42 0       
+## 2 as.factor(alcohol_status)Current         1.71 4.26e-38
+## 3 as.factor(alcohol_status)Former          1.57 2.12e-15</code></pre>
+<pre class="r"><code>saveRDS(bivariate_alcoholstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_alcoholstatus.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and `diabetes_status` as the predictor
 log_fit_diabetesstatus &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(diabetes_status), data = data_clean_main)
-log_fit_diabetesstatus</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(diabetes_status), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                   (Intercept)  as.factor(diabetes_status)Yes  
-##                        1.8029                         0.3813  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24846 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19730     AIC: 19730</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_diabetesstatus
+
+# Looking at the summary of log_fit_diabetesstatus
 tidy(log_fit_diabetesstatus)</code></pre>
 <pre><code>## # A tibble: 2 × 5
 ##   term                          estimate std.error statistic  p.value
 ##   &lt;chr&gt;                            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)                      1.80     0.0196     92.2  0       
 ## 2 as.factor(diabetes_status)Yes    0.381    0.0608      6.27 3.50e-10</code></pre>
-<pre class="r"><code>bivariate_diabetesstatus &lt;- tidy(log_fit_diabetesstatus)
-saveRDS(bivariate_diabetesstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_diabetesstatus.rds&quot;)))</code></pre>
+<pre class="r"><code>bivariate_diabetesstatus &lt;- tidy(log_fit_diabetesstatus) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+bivariate_diabetesstatus</code></pre>
+<pre><code>## # A tibble: 2 × 3
+##   term                          `odds ratio`  p.value
+##   &lt;chr&gt;                                &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                           6.07 0       
+## 2 as.factor(diabetes_status)Yes         1.46 3.50e-10</code></pre>
+<pre class="r"><code>saveRDS(bivariate_diabetesstatus, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;bivariate_mammogram_diabetesstatus.rds&quot;)))</code></pre>
 <p>MULTIVARIATE LOGISTIC REGRESSION</p>
 <p>Fitting full model</p>
 <pre class="r"><code># Using `mammogram_status` as the outcome and the remaining variables as the predictors
 log_fit_fullmodel &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(year) + as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence) + as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(smoking_status) + as.factor(alcohol_status) + as.factor(diabetes_status), data = data_clean_main)
-log_fit_fullmodel</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(year) + 
-##     as.factor(age) + as.factor(hispanic_status) + as.factor(income) + 
-##     as.factor(education) + as.factor(marital_status) + as.factor(region_residence) + 
-##     as.factor(insurance_status) + as.factor(health_status) + 
-##     as.factor(usual_medicalcare_status) + as.factor(smoking_status) + 
-##     as.factor(alcohol_status) + as.factor(diabetes_status), family = stats::binomial, 
-##     data = data)
-## 
-## Coefficients:
-##                                                  (Intercept)  
-##                                                     -1.54430  
-##                                          as.factor(year)2005  
-##                                                     -0.02165  
-##                                          as.factor(year)2010  
-##                                                      0.22120  
-##                                          as.factor(year)2015  
-##                                                     -0.06195  
-##                                    as.factor(age)45-49 years  
-##                                                      1.04724  
-##                                    as.factor(age)50-54 years  
-##                                                      1.47515  
-##                                    as.factor(age)55-59 years  
-##                                                      1.63884  
-##                                    as.factor(age)60-64 years  
-##                                                      1.77494  
-##                                    as.factor(age)65-69 years  
-##                                                      1.52308  
-##                                    as.factor(age)70-74 years  
-##                                                      1.49774  
-##                           as.factor(hispanic_status)Hispanic  
-##                                                      0.10255  
-##                     as.factor(income)Below poverty threshold  
-##                                                     -0.27226  
-##                    as.factor(education)Less than high school  
-##                                                      0.76488  
-##                              as.factor(education)High school  
-##                                                      0.99305  
-##         as.factor(education)Some college or Associate degree  
-##                                                      1.34735  
-##               as.factor(education)Bachelor degree and higher  
-##                                                      1.46890  
-##                             as.factor(marital_status)Married  
-##                                                      0.48419  
-## as.factor(marital_status)Single (separated/widowed/divorced)  
-##                                                      0.36203  
-##                 as.factor(marital_status)Living with partner  
-##                                                      0.27423  
-##             as.factor(region_residence)North Central/Midwest  
-##                                                     -0.20854  
-##                             as.factor(region_residence)South  
-##                                                     -0.18061  
-##                              as.factor(region_residence)West  
-##                                                     -0.25589  
-##                          as.factor(insurance_status)Coverage  
-##                                                     -0.70572  
-##                            as.factor(health_status)Fair/poor  
-##                                                      0.10541  
-##               as.factor(usual_medicalcare_status)Usual place  
-##                                                      0.90632  
-##                             as.factor(smoking_status)Current  
-##                                                     -0.34404  
-##                              as.factor(smoking_status)Former  
-##                                                      0.11728  
-##                             as.factor(alcohol_status)Current  
-##                                                      0.51735  
-##                              as.factor(alcohol_status)Former  
-##                                                      0.38452  
-##                                as.factor(diabetes_status)Yes  
-##                                                      0.17290  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24818 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 16920     AIC: 16980</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_fullmodel
-table2 &lt;- tidy(log_fit_fullmodel)
-table2</code></pre>
+tidy(log_fit_fullmodel)</code></pre>
 <pre><code>## # A tibble: 30 × 5
 ##    term                      estimate std.error statistic   p.value
 ##    &lt;chr&gt;                        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
@@ -919,38 +799,31 @@ table2</code></pre>
 ##  9 as.factor(age)65-69 years   1.52      0.0848    18.0   3.80e- 72
 ## 10 as.factor(age)70-74 years   1.50      0.0906    16.5   1.92e- 61
 ## # … with 20 more rows</code></pre>
+<pre class="r"><code># Looking and saving the summary of log_fit_fullmodel
+table2 &lt;- tidy(log_fit_fullmodel) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+table2</code></pre>
+<pre><code>## # A tibble: 30 × 3
+##    term                      `odds ratio`   p.value
+##    &lt;chr&gt;                            &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)                      0.213 2.57e- 11
+##  2 as.factor(year)2005              0.979 7.01e-  1
+##  3 as.factor(year)2010              1.25  1.98e-  4
+##  4 as.factor(year)2015              0.940 2.65e-  1
+##  5 as.factor(age)45-49 years        2.85  3.35e- 76
+##  6 as.factor(age)50-54 years        4.37  1.76e-113
+##  7 as.factor(age)55-59 years        5.15  8.15e-114
+##  8 as.factor(age)60-64 years        5.90  1.60e-106
+##  9 as.factor(age)65-69 years        4.59  3.80e- 72
+## 10 as.factor(age)70-74 years        4.47  1.92e- 61
+## # … with 20 more rows</code></pre>
 <pre class="r"><code>saveRDS(table2, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;full_model.rds&quot;)))</code></pre>
 <p>Fitting model using some predictors</p>
 <pre class="r"><code># Using `mammogram_status` as the outcome and year, age, &amp; hispanic_status as predictors
 log_fit_year_age_hispanic &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(year) + as.factor(age) + as.factor(hispanic_status), data = data_clean_main)
-log_fit_year_age_hispanic</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(year) + 
-##     as.factor(age) + as.factor(hispanic_status), family = stats::binomial, 
-##     data = data)
-## 
-## Coefficients:
-##                        (Intercept)                 as.factor(year)2005  
-##                            0.85696                             0.01612  
-##                as.factor(year)2010                 as.factor(year)2015  
-##                            0.19802                             0.08652  
-##          as.factor(age)45-49 years           as.factor(age)50-54 years  
-##                            0.95948                             1.38148  
-##          as.factor(age)55-59 years           as.factor(age)60-64 years  
-##                            1.54168                             1.68856  
-##          as.factor(age)65-69 years           as.factor(age)70-74 years  
-##                            1.57030                             1.51435  
-## as.factor(hispanic_status)Hispanic  
-##                           -0.46613  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24837 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 18360     AIC: 18390</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_year_age_hispanic
-table3 &lt;- tidy(log_fit_year_age_hispanic)
-table3</code></pre>
+tidy(log_fit_year_age_hispanic)</code></pre>
 <pre><code>## # A tibble: 11 × 5
 ##    term                               estimate std.error statistic   p.value
 ##    &lt;chr&gt;                                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
@@ -965,64 +838,30 @@ table3</code></pre>
 ##  9 as.factor(age)65-69 years            1.57      0.0793    19.8   3.33e- 87
 ## 10 as.factor(age)70-74 years            1.51      0.0839    18.0   8.09e- 73
 ## 11 as.factor(hispanic_status)Hispanic  -0.466     0.0475    -9.81  9.86e- 23</code></pre>
+<pre class="r"><code># Looking at the summary of log_fit_year_age_hispanic
+table3 &lt;- tidy(log_fit_year_age_hispanic) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+table3</code></pre>
+<pre><code>## # A tibble: 11 × 3
+##    term                               `odds ratio`   p.value
+##    &lt;chr&gt;                                     &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)                               2.36  4.02e- 78
+##  2 as.factor(year)2005                       1.02  7.65e-  1
+##  3 as.factor(year)2010                       1.22  4.30e-  4
+##  4 as.factor(year)2015                       1.09  9.95e-  2
+##  5 as.factor(age)45-49 years                 2.61  4.66e- 72
+##  6 as.factor(age)50-54 years                 3.98  1.74e-111
+##  7 as.factor(age)55-59 years                 4.67  2.31e-113
+##  8 as.factor(age)60-64 years                 5.41  7.59e-108
+##  9 as.factor(age)65-69 years                 4.81  3.33e- 87
+## 10 as.factor(age)70-74 years                 4.55  8.09e- 73
+## 11 as.factor(hispanic_status)Hispanic        0.627 9.86e- 23</code></pre>
 <pre class="r"><code>saveRDS(table3, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;year_age_hispanic_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and demographic characteristics variables as predictors
 log_fit_demographic &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence), data = data_clean_main)
-log_fit_demographic</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(age) + 
-##     as.factor(hispanic_status) + as.factor(income) + as.factor(education) + 
-##     as.factor(marital_status) + as.factor(region_residence), 
-##     family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                                                  (Intercept)  
-##                                                     -0.60091  
-##                                    as.factor(age)45-49 years  
-##                                                      1.02445  
-##                                    as.factor(age)50-54 years  
-##                                                      1.46675  
-##                                    as.factor(age)55-59 years  
-##                                                      1.67670  
-##                                    as.factor(age)60-64 years  
-##                                                      1.85190  
-##                                    as.factor(age)65-69 years  
-##                                                      1.76593  
-##                                    as.factor(age)70-74 years  
-##                                                      1.77194  
-##                           as.factor(hispanic_status)Hispanic  
-##                                                     -0.06761  
-##                     as.factor(income)Below poverty threshold  
-##                                                     -0.41125  
-##                    as.factor(education)Less than high school  
-##                                                      0.77915  
-##                              as.factor(education)High school  
-##                                                      1.11001  
-##         as.factor(education)Some college or Associate degree  
-##                                                      1.55488  
-##               as.factor(education)Bachelor degree and higher  
-##                                                      1.78261  
-##                             as.factor(marital_status)Married  
-##                                                      0.52665  
-## as.factor(marital_status)Single (separated/widowed/divorced)  
-##                                                      0.35634  
-##                 as.factor(marital_status)Living with partner  
-##                                                      0.21891  
-##             as.factor(region_residence)North Central/Midwest  
-##                                                     -0.25081  
-##                             as.factor(region_residence)South  
-##                                                     -0.35112  
-##                              as.factor(region_residence)West  
-##                                                     -0.34533  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24829 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 17730     AIC: 17760</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_demographic
-table4 &lt;- tidy(log_fit_demographic)
-table4</code></pre>
+tidy(log_fit_demographic)</code></pre>
 <pre><code>## # A tibble: 19 × 5
 ##    term                                        estim…¹ std.e…² stati…³   p.value
 ##    &lt;chr&gt;                                         &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
@@ -1046,35 +885,39 @@ table4</code></pre>
 ## 18 as.factor(region_residence)South            -0.351   0.0595   -5.90 3.70e-  9
 ## 19 as.factor(region_residence)West             -0.345   0.0644   -5.36 8.30e-  8
 ## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
+<pre class="r"><code># Looking at the summary of log_fit_demographic
+table4 &lt;- tidy(log_fit_demographic) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+table4</code></pre>
+<pre><code>## # A tibble: 19 × 3
+##    term                                                        odds …¹   p.value
+##    &lt;chr&gt;                                                         &lt;dbl&gt;     &lt;dbl&gt;
+##  1 (Intercept)                                                   0.548 4.65e-  3
+##  2 as.factor(age)45-49 years                                     2.79  2.74e- 78
+##  3 as.factor(age)50-54 years                                     4.34  3.62e-120
+##  4 as.factor(age)55-59 years                                     5.35  8.27e-128
+##  5 as.factor(age)60-64 years                                     6.37  1.54e-123
+##  6 as.factor(age)65-69 years                                     5.85  1.20e-103
+##  7 as.factor(age)70-74 years                                     5.88  2.66e- 91
+##  8 as.factor(hispanic_status)Hispanic                            0.935 2.10e-  1
+##  9 as.factor(income)Below poverty threshold                      0.663 4.86e- 15
+## 10 as.factor(education)Less than high school                     2.18  9.19e-  5
+## 11 as.factor(education)High school                               3.03  2.59e-  8
+## 12 as.factor(education)Some college or Associate degree          4.73  9.92e- 15
+## 13 as.factor(education)Bachelor degree and higher                5.95  1.56e- 18
+## 14 as.factor(marital_status)Married                              1.69  7.29e- 19
+## 15 as.factor(marital_status)Single (separated/widowed/divorce…   1.43  5.63e-  9
+## 16 as.factor(marital_status)Living with partner                  1.24  4.17e-  2
+## 17 as.factor(region_residence)North Central/Midwest              0.778 1.76e-  4
+## 18 as.factor(region_residence)South                              0.704 3.70e-  9
+## 19 as.factor(region_residence)West                               0.708 8.30e-  8
+## # … with abbreviated variable name ¹​`odds ratio`</code></pre>
 <pre class="r"><code>saveRDS(table4, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;demographic_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome and the medical characteristics as the predictors
 log_fit_medical &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(diabetes_status), data = data_clean_main)
-log_fit_medical</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(insurance_status) + 
-##     as.factor(health_status) + as.factor(usual_medicalcare_status) + 
-##     as.factor(diabetes_status), family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                                    (Intercept)  
-##                                        1.13294  
-##            as.factor(insurance_status)Coverage  
-##                                       -0.99026  
-##              as.factor(health_status)Fair/poor  
-##                                       -0.09278  
-## as.factor(usual_medicalcare_status)Usual place  
-##                                        0.99354  
-##                  as.factor(diabetes_status)Yes  
-##                                        0.31271  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24843 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 18630     AIC: 18640</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_medical
-table5 &lt;- tidy(log_fit_medical)
-table5</code></pre>
+tidy(log_fit_medical)</code></pre>
 <pre><code>## # A tibble: 5 × 5
 ##   term                                          estim…¹ std.e…² stati…³  p.value
 ##   &lt;chr&gt;                                           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
@@ -1084,30 +927,24 @@ table5</code></pre>
 ## 4 as.factor(usual_medicalcare_status)Usual pla…  0.994   0.0566   17.6  4.27e-69
 ## 5 as.factor(diabetes_status)Yes                  0.313   0.0643    4.86 1.16e- 6
 ## # … with abbreviated variable names ¹​estimate, ²​std.error, ³​statistic</code></pre>
+<pre class="r"><code># Looking at the summary of log_fit_medical
+table5 &lt;- tidy(log_fit_medical) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+table5</code></pre>
+<pre><code>## # A tibble: 5 × 3
+##   term                                           `odds ratio`  p.value
+##   &lt;chr&gt;                                                 &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                                           3.10  5.24e-90
+## 2 as.factor(insurance_status)Coverage                   0.371 7.19e-87
+## 3 as.factor(health_status)Fair/poor                     0.911 7.56e- 2
+## 4 as.factor(usual_medicalcare_status)Usual place        2.70  4.27e-69
+## 5 as.factor(diabetes_status)Yes                         1.37  1.16e- 6</code></pre>
 <pre class="r"><code>saveRDS(table5, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;medical_model.rds&quot;)))</code></pre>
 <pre class="r"><code># Using `mammogram_status` as the outcome, and smoking &amp; alcohol characteristics as the predictors
 log_fit_smoking_alcohol &lt;- log_mod %&gt;% fit(as.factor(mammogram_status) ~ as.factor(smoking_status) + as.factor(alcohol_status), data = data_clean_main)
-log_fit_smoking_alcohol</code></pre>
-<pre><code>## parsnip model object
-## 
-## 
-## Call:  stats::glm(formula = as.factor(mammogram_status) ~ as.factor(smoking_status) + 
-##     as.factor(alcohol_status), family = stats::binomial, data = data)
-## 
-## Coefficients:
-##                      (Intercept)  as.factor(smoking_status)Current  
-##                           1.5251                           -0.5534  
-##  as.factor(smoking_status)Former  as.factor(alcohol_status)Current  
-##                           0.3102                            0.5652  
-##  as.factor(alcohol_status)Former  
-##                           0.4753  
-## 
-## Degrees of Freedom: 24847 Total (i.e. Null);  24843 Residual
-## Null Deviance:       19770 
-## Residual Deviance: 19370     AIC: 19380</code></pre>
-<pre class="r"><code># Looking at the summary of log_fit_smoking_alcohol
-table6 &lt;- tidy(log_fit_smoking_alcohol)
-table6</code></pre>
+tidy(log_fit_smoking_alcohol)</code></pre>
 <pre><code>## # A tibble: 5 × 5
 ##   term                             estimate std.error statistic  p.value
 ##   &lt;chr&gt;                               &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
@@ -1116,6 +953,20 @@ table6</code></pre>
 ## 3 as.factor(smoking_status)Former     0.310    0.0538      5.77 8.04e- 9
 ## 4 as.factor(alcohol_status)Current    0.565    0.0430     13.1  1.99e-39
 ## 5 as.factor(alcohol_status)Former     0.475    0.0586      8.11 5.12e-16</code></pre>
+<pre class="r"><code># Looking at the summary of log_fit_smoking_alcohol
+table6 &lt;- tidy(log_fit_smoking_alcohol) %&gt;% 
+  select(term, estimate, p.value) %&gt;% 
+  mutate(&#39;odds ratio&#39; = exp(estimate)) %&gt;% 
+  select(term, &#39;odds ratio&#39;, p.value)
+table6</code></pre>
+<pre><code>## # A tibble: 5 × 3
+##   term                             `odds ratio`  p.value
+##   &lt;chr&gt;                                   &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                             4.60  0       
+## 2 as.factor(smoking_status)Current        0.575 1.56e-33
+## 3 as.factor(smoking_status)Former         1.36  8.04e- 9
+## 4 as.factor(alcohol_status)Current        1.76  1.99e-39
+## 5 as.factor(alcohol_status)Former         1.61  5.12e-16</code></pre>
 <pre class="r"><code>saveRDS(table6, file = (here(&quot;results&quot;, &quot;statistical_analysis_result&quot;, &quot;1_model_fitting_result&quot;, &quot;smoking_alcohol_model.rds&quot;)))</code></pre>
 <p>MODEL PERFORMANCE COMPARISON</p>
 <pre class="r"><code># Comparing all the above models on the basis of model performance

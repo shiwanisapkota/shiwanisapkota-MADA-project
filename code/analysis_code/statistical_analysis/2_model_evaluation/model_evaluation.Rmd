@@ -189,7 +189,7 @@ data_clean_main_aug2 %>%
 
 # Combining and saving the above 2 ROC curves for full model and alternative model
 roc_combined <- plot_grid(roc_fullmodel, roc_altmodel, ncol = 2, align = "h", axis = "tb",
-                           labels = c("ROC Curve for the full model", "ROC Curve for the alternative model"),
+                           labels = c("ROC Curve for full model", "ROC Curve for alternative model"),
                            label_size = 10)
 roc_combined
 ggsave(filename = here("results", "statistical_analysis_result", "2_model_evaluation_result", "figure4_roc_combined.png"), plot = roc_combined)

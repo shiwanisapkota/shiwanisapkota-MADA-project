@@ -1,6 +1,6 @@
 This `results` folder contains results (figures and tables) produced by the codes during exploratory analysis and statistical analysis.
 
-`exploratory_analysis_result`: This subfolder contains the figures and tables generated during EDA process.
+`exploratory_analysis_result`: This subfolder contains the figures and tables generated during exploratory data analysis process.
 
 `statistical_analysis_result`: This subfolder contains the figures and tables generated during various statistical analysis process.
 

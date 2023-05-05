@@ -67,6 +67,9 @@ data_clean_main$usual_medicalcare_status <- recode_factor(data_clean_main$usual_
 data_clean_main$smoking_status <- recode_factor(data_clean_main$smoking_status, '0' = 'Never', '1' = 'Current', '2' = 'Former')
 data_clean_main$alcohol_status <- recode_factor(data_clean_main$alcohol_status, '0' = 'Never', '1' = 'Current', '2' = 'Former')
 data_clean_main$diabetes_status <- recode_factor(data_clean_main$diabetes_status, '0' = 'No', '1' = 'Yes')
+
+# Limiting only 3 decimal places
+options(digits = 3)
 ```
 
 FITTING LOGISTIC REGRESSION
@@ -84,141 +87,184 @@ BIVARIATE LOGISTIC REGRESSION
 ```{r}
 # Using `mammogram_status` as the outcome and `year` as the predictor
 log_fit_year <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(year), data = data_clean_main)
-log_fit_year
+tidy(log_fit_year)
 
 # Looking at the summary of log_fit_year
-bivariate_year <- tidy(log_fit_year)
+bivariate_year <- tidy(log_fit_year) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_year
 saveRDS(bivariate_year, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_year.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `hispanic_status` as the predictor
 log_fit_hispanicstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(hispanic_status), data = data_clean_main)
-log_fit_hispanicstatus
+tidy(log_fit_hispanicstatus)
 
 # Looking and saving the summary of log_fit_hispanicstatus
-bivariate_hispanic <- tidy(log_fit_hispanicstatus)
+bivariate_hispanic <- tidy(log_fit_hispanicstatus) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_hispanic
 saveRDS(bivariate_hispanic, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_hispanic.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `age` as the predictor
 log_fit_age <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age), data = data_clean_main)
-log_fit_age
+tidy(log_fit_age)
 
 # Looking at the summary of log_fit_age
 tidy(log_fit_age)
-bivariate_age <- tidy(log_fit_age)
+bivariate_age <- tidy(log_fit_age) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_age
 saveRDS(bivariate_age, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_age.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `income` as the predictor
 log_fit_income <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(income), data = data_clean_main)
-log_fit_income
+tidy(log_fit_income)
 
 # Looking at the summary of log_fit_income
 tidy(log_fit_income)
-bivariate_income <- tidy(log_fit_income)
+bivariate_income <- tidy(log_fit_income) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_income
 saveRDS(bivariate_income, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_income.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `education` as the predictor
 log_fit_education <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(education), data = data_clean_main)
-log_fit_education
 
 # Looking at the summary of log_fit_education
 tidy(log_fit_education)
-bivariate_education <- tidy(log_fit_education)
+bivariate_education <- tidy(log_fit_education) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_education
 saveRDS(bivariate_education, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_education.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `marital_status` as the predictor
 log_fit_maritalstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(marital_status), data = data_clean_main)
-log_fit_maritalstatus
 
 # Looking at the summary of log_fit_maritalstatus
 tidy(log_fit_maritalstatus)
-bivariate_maritalstatus <- tidy(log_fit_maritalstatus)
+bivariate_maritalstatus <- tidy(log_fit_maritalstatus) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_maritalstatus
 saveRDS(bivariate_maritalstatus, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_maritalstatus.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `region_residence` as the predictor
 log_fit_regionresidence <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(region_residence), data = data_clean_main)
-log_fit_regionresidence
 
 # Looking at the summary of log_fit_regionresidence
 tidy(log_fit_regionresidence)
-bivariate_regionresidence <- tidy(log_fit_regionresidence)
+bivariate_regionresidence <- tidy(log_fit_regionresidence) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_regionresidence
 saveRDS(bivariate_regionresidence, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_regionresidence.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `insurance_status` as the predictor
 log_fit_insurancestatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(insurance_status), data = data_clean_main)
-log_fit_insurancestatus
 
 # Looking at the summary of log_fit_insurancestatus
 tidy(log_fit_insurancestatus)
-bivariate_insurancestatus <- tidy(log_fit_insurancestatus)
+bivariate_insurancestatus <- tidy(log_fit_insurancestatus) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_insurancestatus
 saveRDS(bivariate_insurancestatus, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_insurancestatus.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `health_status` as the predictor
 log_fit_healthstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(health_status), data = data_clean_main)
-log_fit_healthstatus
 
 # Looking at the summary of log_fit_healthstatus
 tidy(log_fit_healthstatus)
-bivariate_healthstatus <- tidy(log_fit_healthstatus)
+bivariate_healthstatus <- tidy(log_fit_healthstatus) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_healthstatus
 saveRDS(bivariate_healthstatus, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_healthstatus.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `usual_medicalcare_status` as the predictor
 log_fit_usualmedicalcarestatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(usual_medicalcare_status), data = data_clean_main)
-log_fit_usualmedicalcarestatus
 
 # Looking at the summary of log_fit_usualmedicalcarestatus
 tidy(log_fit_usualmedicalcarestatus)
-bivariate_usualmedicalcarestatus <- tidy(log_fit_usualmedicalcarestatus)
+bivariate_usualmedicalcarestatus <- tidy(log_fit_usualmedicalcarestatus) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_usualmedicalcarestatus
 saveRDS(bivariate_usualmedicalcarestatus, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_usualmedicalcarestatus.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `smoking_status` as the predictor
 log_fit_smokingstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(smoking_status), data = data_clean_main)
-log_fit_smokingstatus
 
 # Looking at the summary of log_fit_smokingstatus
 tidy(log_fit_smokingstatus)
-bivariate_smokingstatus <- tidy(log_fit_smokingstatus)
+bivariate_smokingstatus <- tidy(log_fit_smokingstatus) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_smokingstatus
 saveRDS(bivariate_smokingstatus, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_smokingstatus.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `alcohol_status` as the predictor
 log_fit_alcoholstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(alcohol_status), data = data_clean_main)
-log_fit_alcoholstatus
 
 # Looking at the summary of log_fit_alcoholstatus
 tidy(log_fit_alcoholstatus)
-bivariate_alcoholstatus <- tidy(log_fit_alcoholstatus)
+bivariate_alcoholstatus <- tidy(log_fit_alcoholstatus) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_alcoholstatus
 saveRDS(bivariate_alcoholstatus, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_alcoholstatus.rds")))
 ```
 
 ```{r}
 # Using `mammogram_status` as the outcome and `diabetes_status` as the predictor
 log_fit_diabetesstatus <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(diabetes_status), data = data_clean_main)
-log_fit_diabetesstatus
 
 # Looking at the summary of log_fit_diabetesstatus
 tidy(log_fit_diabetesstatus)
-bivariate_diabetesstatus <- tidy(log_fit_diabetesstatus)
+bivariate_diabetesstatus <- tidy(log_fit_diabetesstatus) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
+bivariate_diabetesstatus
 saveRDS(bivariate_diabetesstatus, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "bivariate_mammogram_diabetesstatus.rds")))
 ```
 
@@ -229,10 +275,13 @@ Fitting full model
 ```{r}
 # Using `mammogram_status` as the outcome and the remaining variables as the predictors
 log_fit_fullmodel <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(year) + as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence) + as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(smoking_status) + as.factor(alcohol_status) + as.factor(diabetes_status), data = data_clean_main)
-log_fit_fullmodel
+tidy(log_fit_fullmodel)
 
-# Looking at the summary of log_fit_fullmodel
-table2 <- tidy(log_fit_fullmodel)
+# Looking and saving the summary of log_fit_fullmodel
+table2 <- tidy(log_fit_fullmodel) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
 table2
 saveRDS(table2, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "full_model.rds")))
 ```
@@ -242,10 +291,13 @@ Fitting model using some predictors
 ```{r}
 # Using `mammogram_status` as the outcome and year, age, & hispanic_status as predictors
 log_fit_year_age_hispanic <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(year) + as.factor(age) + as.factor(hispanic_status), data = data_clean_main)
-log_fit_year_age_hispanic
+tidy(log_fit_year_age_hispanic)
 
 # Looking at the summary of log_fit_year_age_hispanic
-table3 <- tidy(log_fit_year_age_hispanic)
+table3 <- tidy(log_fit_year_age_hispanic) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
 table3
 saveRDS(table3, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "year_age_hispanic_model.rds")))
 ```
@@ -254,10 +306,13 @@ saveRDS(table3, file = (here("results", "statistical_analysis_result", "1_model_
 ```{r}
 # Using `mammogram_status` as the outcome and demographic characteristics variables as predictors
 log_fit_demographic <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(age) + as.factor(hispanic_status) + as.factor(income) + as.factor(education) + as.factor(marital_status) + as.factor(region_residence), data = data_clean_main)
-log_fit_demographic
+tidy(log_fit_demographic)
 
 # Looking at the summary of log_fit_demographic
-table4 <- tidy(log_fit_demographic)
+table4 <- tidy(log_fit_demographic) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
 table4
 saveRDS(table4, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "demographic_model.rds")))
 ```
@@ -265,10 +320,13 @@ saveRDS(table4, file = (here("results", "statistical_analysis_result", "1_model_
 ```{r}
 # Using `mammogram_status` as the outcome and the medical characteristics as the predictors
 log_fit_medical <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(insurance_status) + as.factor(health_status) + as.factor(usual_medicalcare_status) + as.factor(diabetes_status), data = data_clean_main)
-log_fit_medical
+tidy(log_fit_medical)
 
 # Looking at the summary of log_fit_medical
-table5 <- tidy(log_fit_medical)
+table5 <- tidy(log_fit_medical) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
 table5
 saveRDS(table5, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "medical_model.rds")))
 ```
@@ -276,10 +334,13 @@ saveRDS(table5, file = (here("results", "statistical_analysis_result", "1_model_
 ```{r}
 # Using `mammogram_status` as the outcome, and smoking & alcohol characteristics as the predictors
 log_fit_smoking_alcohol <- log_mod %>% fit(as.factor(mammogram_status) ~ as.factor(smoking_status) + as.factor(alcohol_status), data = data_clean_main)
-log_fit_smoking_alcohol
+tidy(log_fit_smoking_alcohol)
 
 # Looking at the summary of log_fit_smoking_alcohol
-table6 <- tidy(log_fit_smoking_alcohol)
+table6 <- tidy(log_fit_smoking_alcohol) %>% 
+  select(term, estimate, p.value) %>% 
+  mutate('odds ratio' = exp(estimate)) %>% 
+  select(term, 'odds ratio', p.value)
 table6
 saveRDS(table6, file = (here("results", "statistical_analysis_result", "1_model_fitting_result", "smoking_alcohol_model.rds")))
 ```
